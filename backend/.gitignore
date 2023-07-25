@@ -106,6 +106,7 @@ celerybeat.pid
 # Environments
 .env
 .venv
+.env.docker
 env/
 venv/
 ENV/
@@ -135,3 +136,4 @@ sigarte/run
 
 apps/usuarios/tests/geckodriver
 .scannerwork/
+staticfiles/
