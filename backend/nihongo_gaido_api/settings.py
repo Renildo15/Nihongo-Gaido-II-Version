@@ -41,10 +41,18 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
      # Third-Party Apps
     'rest_framework',
+    'rest_framework_simplejwt',
     # Local Apps (Your project's apps)
     'nihongo_gaido_api.core',
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
+APPEND_SLASH=False 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
