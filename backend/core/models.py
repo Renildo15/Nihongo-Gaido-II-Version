@@ -23,8 +23,8 @@ class Grammar(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name_plural = "id"
-        ordering = ('grammar', )
+        verbose_name_plural = "grammars"
+        ordering = ('id', )
 
     def __str__(self):
         return f'{self.grammar} - {self.level}'
