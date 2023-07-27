@@ -12,15 +12,24 @@ def grammar_list(request):
     if request.method == 'GET':
         grammars = Grammar.objects.all()
         serializer = GrammarSerializer(instance=grammars, many=True)
+        
+        data = {
+            'grammars': serializer.data
+        }
 
-        return Response(serializer.data)
+        return Response(data)
     elif request.method == 'POST':
         serializer = GrammarCreateSerializer(data=request.data)
 
         if serializer.is_valid():
             serializer.save(created_by=request.user)
 
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            data ={
+                'message': 'Grammar created',
+                'grammar': serializer.data
+            }
+
+            return Response(data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -34,7 +43,12 @@ def grammar_detail(request, pk):
     
     if request.method == 'GET':
         serializer = GrammarSerializer(grammar)
-        return Response(serializer.data)
+
+        data = {
+            'grammar': serializer.data
+        }
+
+        return Response(data)
     
     elif request.method == 'PUT':
         serializer = GrammarCreateSerializer(grammar, data=request.data)
@@ -42,7 +56,12 @@ def grammar_detail(request, pk):
         if serializer.is_valid():
             serializer.save()
 
-            return Response(serializer.data)
+            data = {
+                'message': 'Grammar updated',
+                'grammar': serializer.data
+            }
+
+            return Response(data)
         else:
              return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
@@ -52,10 +71,20 @@ def grammar_detail(request, pk):
         if serializer.is_valid():
             serializer.save()
 
-            return Response(serializer.data)
+            data = {
+                'message': 'Grammar updated',
+                'grammar': serializer.data
+            }
+
+            return Response(data)
         else:
              return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     elif request.method == 'DELETE':
         grammar.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+
+        data = {
+            'message': 'grammar deleted'
+        }
+        return Response(data,status=status.HTTP_204_NO_CONTENT)
+     
