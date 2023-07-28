@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'drf_yasg',
     # Local Apps (Your project's apps)
-    'nihongo_gaido_api.core',
+    'core',
 ]
 
 REST_FRAMEWORK = {
