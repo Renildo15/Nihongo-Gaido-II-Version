@@ -5,7 +5,7 @@ import re
 class GrammarCreateSerializer(serializers.ModelSerializer):
 
     def validate_grammar(self, value):
-        pattern = r'^[a-zA-Z~-]+$'
+        pattern = r'^[a-zA-Z-~ ]+$' 
 
         if not re.match(pattern, value):
             raise serializers.ValidationError("O campo 'grammar' deve conter apenas letras, '-', '~'.")
@@ -17,6 +17,8 @@ class GrammarCreateSerializer(serializers.ModelSerializer):
 
         if not re.match(pattern, value):
             raise serializers.ValidationError("O campo 'structure' deve conter apenas letras japonesas, '+', '/', '~'.")
+        
+        return value
         
 
     class Meta:
