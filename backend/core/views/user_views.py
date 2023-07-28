@@ -21,10 +21,10 @@ def user_list(request):
         serializer = UserCreateSerializer(data=request.data)
 
         if serializer.is_valid():
-            serializer.save(created_by = request.user)
+            serializer.save()
 
             data ={
-                'message': 'Grammar created',
+                'message': 'User created',
                 'user': serializer.data
             }
 
@@ -34,7 +34,7 @@ def user_list(request):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET', 'POST'])
+@api_view(['GET','PATCH', 'DELETE'])
 def user_detail(request, pk):
     try:
         user = User.objects.get(pk=pk)
