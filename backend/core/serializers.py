@@ -1,6 +1,9 @@
 from rest_framework import serializers
+from django.contrib.auth.models import User
 from core.models import Grammar
 import re
+
+
 
 class GrammarCreateSerializer(serializers.ModelSerializer):
 
@@ -32,3 +35,10 @@ class GrammarSerializer(serializers.ModelSerializer):
         model = Grammar
         fields = ['id','grammar', 'structure', 'level', 'explain', 'created_by', 'created_at', 'updated_at']
         extra_kwargs = {'created_by': {'read_only':True}}
+
+class UserCreateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ['id', 'first_name', 'last_name', 'username', 'email', 'password']
+        extra_kwargs = {'password': {'write_only': True}}
