@@ -22,7 +22,7 @@ def profile_list(request, user_id):
         return Response(data)
     
     elif request.method == 'PATCH':
-        serializer = ProfileSerializer(profile, data=request.data)
+        serializer = ProfileSerializer(profile, data=request.data, partial=True)
 
         if serializer.is_valid():
 
@@ -36,3 +36,4 @@ def profile_list(request, user_id):
             return Response(data)
         else:
             return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+ 
