@@ -53,6 +53,8 @@ class UserCreateSerializer(serializers.ModelSerializer):
         extra_kwargs = {'password': {'write_only': True}}
 
 class ProfileSerializer(serializers.ModelSerializer):
+    user = UserCreateSerializer(read_only=True)
+    avatar = serializers.ImageField(required=False)
 
     class Meta:
         model = Profile
