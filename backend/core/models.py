@@ -34,7 +34,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     phone = models.CharField(null=True, blank=True, max_length=15)
     date_of_birth = models.DateField(null=True, blank=True)
-    avatar = models.ImageField(default="profile.png", null=True, blank=True)
+    avatar = models.ImageField(default="profile.png", upload_to="uploads", null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add = True, null=True, blank=True)
 
 
