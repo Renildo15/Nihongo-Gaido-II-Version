@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
-from core.models import Grammar
+from core.models import Grammar, Profile
 import re
 
 
@@ -29,8 +29,6 @@ class GrammarCreateSerializer(serializers.ModelSerializer):
         model = Grammar
         fields = ['grammar', 'structure', 'level', 'explain']
 
-    
-
 class GrammarSerializer(serializers.ModelSerializer):
      class Meta:
         model = Grammar
@@ -38,7 +36,7 @@ class GrammarSerializer(serializers.ModelSerializer):
         extra_kwargs = {'created_by': {'read_only':True}}
 
 class UserCreateSerializer(serializers.ModelSerializer):
-    
+
     #fonte: https://stackoverflow.com/questions/55906891/django-drf-simple-jwt-authenticationdetail-no-active-account-found-with-the
     def validate_password(self, value: str) -> str:
         """
@@ -53,3 +51,9 @@ class UserCreateSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'first_name', 'last_name', 'username', 'email', 'password']
         extra_kwargs = {'password': {'write_only': True}}
+
+class ProfileSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Profile
+        fields = ['id', 'user', 'phone', 'date_of_birth', 'avatar', 'date_created']
