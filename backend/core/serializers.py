@@ -47,6 +47,22 @@ class UserCreateSerializer(serializers.ModelSerializer):
         """
         return make_password(value)
 
+    def validate_first_name(self, value):
+        pattern = r'^[a-zA-Z ]+$' 
+
+        if not re.match(pattern, value):
+            raise serializers.ValidationError("O campo 'first_name' deve conter apenas letras")
+        
+        return value
+    
+    def validate_last_name(self, value):
+        pattern = r'^[a-zA-Z ]+$' 
+
+        if not re.match(pattern, value):
+            raise serializers.ValidationError("O campo 'last_name' deve conter apenas letras")
+        
+        return value
+
     class Meta:
         model = User
         fields = ['id', 'first_name', 'last_name', 'username', 'email', 'password']
@@ -55,6 +71,15 @@ class UserCreateSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     user = UserCreateSerializer(read_only=True)
     avatar = serializers.ImageField(required=False)
+
+    def validate_phone(self, value):
+        pattern = r'^\d+$'
+
+        if not re.match(pattern, value):
+             raise serializers.ValidationError("O campo 'phone' deve conter apenas números")
+        
+        return value
+
 
     class Meta:
         model = Profile
