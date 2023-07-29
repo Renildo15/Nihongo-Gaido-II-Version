@@ -50,7 +50,7 @@ def user_detail(request, pk):
 
         return Response(data)
     elif request.method == 'PATCH':
-        serializer = UserCreateSerializer(user, data=request.data)
+        serializer = UserCreateSerializer(user, data=request.data, partial=True)
 
         if serializer.is_valid():
             serializer.save()
