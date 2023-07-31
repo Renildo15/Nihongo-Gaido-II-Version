@@ -4,3 +4,4 @@ from core.models import *
 
 admin.site.register(Grammar)
 admin.site.register(Profile)
+admin.site.register(PracticeGrammar)
