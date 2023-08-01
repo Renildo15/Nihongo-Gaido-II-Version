@@ -87,6 +87,31 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 class PracticeGrammarSerializer(serializers.ModelSerializer):
     grammar = GrammarSerializer(read_only=True)
+
+    def validate_first_setence(self, value):
+        pattern = r'^[ぁ-んァ-ン一-龯+/~]+$'
+
+        if not re.match(pattern, value):
+            raise serializers.ValidationError("O campo 'first_setence' deve conter apenas letras japonesas")
+        
+        return value
+    
+    def validate_second_setence(self, value):
+        pattern = r'^[ぁ-んァ-ン一-龯+/~]+$'
+
+        if not re.match(pattern, value):
+            raise serializers.ValidationError("O campo 'second_setence' deve conter apenas letras japonesas")
+        
+        return value
+    
+    def validate_third_setence(self, value):
+        pattern = r'^[ぁ-んァ-ン一-龯+/~]+$'
+
+        if not re.match(pattern, value):
+            raise serializers.ValidationError("O campo 'third_setence' deve conter apenas letras japonesas")
+        
+        return value
+    
     class Meta:
         model = PracticeGrammar
         fields = ['id', 'grammar', 'first_setence', 'second_setence', 'third_setence', 'created_by', 'created_at', 'updated_at']
