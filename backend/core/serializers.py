@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
-from core.models import Grammar, Profile
+from core.models import Grammar, Profile, PracticeGrammar
 import re
 
 
@@ -84,3 +84,34 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = ['id', 'user', 'phone', 'date_of_birth', 'avatar', 'date_created']
+
+class PracticeGrammarSerializer(serializers.ModelSerializer):
+    grammar = GrammarSerializer(read_only=True)
+
+    def validate_first_setence(self, value):
+        pattern = r'^[ぁ-んァ-ン一-龯+/~]+$'
+
+        if not re.match(pattern, value):
+            raise serializers.ValidationError("O campo 'first_setence' deve conter apenas letras japonesas")
+        
+        return value
+    
+    def validate_second_setence(self, value):
+        pattern = r'^[ぁ-んァ-ン一-龯+/~]+$'
+
+        if not re.match(pattern, value):
+            raise serializers.ValidationError("O campo 'second_setence' deve conter apenas letras japonesas")
+        
+        return value
+    
+    def validate_third_setence(self, value):
+        pattern = r'^[ぁ-んァ-ン一-龯+/~]+$'
+
+        if not re.match(pattern, value):
+            raise serializers.ValidationError("O campo 'third_setence' deve conter apenas letras japonesas")
+        
+        return value
+    
+    class Meta:
+        model = PracticeGrammar
+        fields = ['id', 'grammar', 'first_setence', 'second_setence', 'third_setence', 'created_by', 'created_at', 'updated_at']

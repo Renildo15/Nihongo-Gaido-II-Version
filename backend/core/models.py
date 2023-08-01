@@ -40,3 +40,21 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.first_name
+    
+class PracticeGrammar(models.Model):
+    grammar = models.ForeignKey(Grammar, on_delete=models.SET_NULL, null=True, blank=True)
+    first_setence = models.CharField(max_length=250)
+    second_setence = models.CharField(max_length=250)
+    third_setence = models.CharField(max_length=250)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+    class Meta:
+        verbose_name = "practice grammar"
+        verbose_name_plural = "practice grammars"
+        ordering = ('id', )
+
+    def __str__(self):
+        return self.grammar.structure
