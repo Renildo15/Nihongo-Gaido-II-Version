@@ -86,7 +86,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = ['id', 'user', 'phone', 'date_of_birth', 'avatar', 'date_created']
 
 class PracticeGrammarSerializer(serializers.ModelSerializer):
-
+    grammar = GrammarSerializer(read_only=True)
     class Meta:
         model = PracticeGrammar
         fields = ['id', 'grammar', 'first_setence', 'second_setence', 'third_setence', 'created_by', 'created_at', 'updated_at']
