@@ -6,6 +6,8 @@ from django.contrib.auth.models import User
 
 
 
+
+
 class GrammarViewsTest(TestCase):
 
     def setUp(self):
@@ -20,6 +22,7 @@ class GrammarViewsTest(TestCase):
         self.client = APIClient()
 
     def test_grammar_list_get(self):
+        self.client.force_authenticate(user=self.user)
         response = self.client.get('/api/grammar/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -51,6 +54,7 @@ class GrammarViewsTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_grammar_detail(self):
+        self.client.force_authenticate(user=self.user)
         response = self.client.get(f'/api/grammar/{self.grammar.pk}/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["grammar"]["grammar"], self.grammar.grammar)
@@ -60,6 +64,7 @@ class GrammarViewsTest(TestCase):
         self.assertEqual(response.data["grammar"]["created_by"], self.grammar.created_by.id)
 
     def test_grammar_detail_failed(self):
+        self.client.force_authenticate(user=self.user)
         response = self.client.get(f'/api/grammar/{9999999}/')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 

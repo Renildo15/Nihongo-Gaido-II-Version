@@ -24,6 +24,7 @@ class ProfileViewsTest(TestCase):
             "phone": "84999999996"
         }
 
+        self.client.force_authenticate(user=self.user)
         response = self.client.patch(f'/api/profile/{self.user.pk}/', data=data, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -35,16 +36,17 @@ class ProfileViewsTest(TestCase):
             "phone": "84999999996"
         }
 
+        self.client.force_authenticate(user=self.user)
         response = self.client.patch(f'/api/profile/{9999}/', data=data, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_profile_get(self):
-
+        self.client.force_authenticate(user=self.user)
         response = self.client.get(f'/api/profile/{self.user.pk}/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_profile_not_found(self):
-
+        self.client.force_authenticate(user=self.user)
         response = self.client.get(f'/api/profile/{9999}/')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
