@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
-from core.models import Grammar, Profile, PracticeGrammar
+from core.models import *
 import re
 
 
@@ -92,7 +92,7 @@ class PracticeGrammarSerializer(serializers.ModelSerializer):
         pattern = r'^[ぁ-んァ-ン一-龯+/~]+$'
 
         if not re.match(pattern, value):
-            raise serializers.ValidationError("O campo 'first_setence' deve conter apenas letras japonesas")
+            raise serializers.ValidationError("O campo 'first_sentence' deve conter apenas letras japonesas")
         
         return value
     
@@ -100,7 +100,7 @@ class PracticeGrammarSerializer(serializers.ModelSerializer):
         pattern = r'^[ぁ-んァ-ン一-龯+/~]+$'
 
         if not re.match(pattern, value):
-            raise serializers.ValidationError("O campo 'second_setence' deve conter apenas letras japonesas")
+            raise serializers.ValidationError("O campo 'second_sentence' deve conter apenas letras japonesas")
         
         return value
     
@@ -108,10 +108,25 @@ class PracticeGrammarSerializer(serializers.ModelSerializer):
         pattern = r'^[ぁ-んァ-ン一-龯+/~]+$'
 
         if not re.match(pattern, value):
-            raise serializers.ValidationError("O campo 'third_setence' deve conter apenas letras japonesas")
+            raise serializers.ValidationError("O campo 'third_sentence' deve conter apenas letras japonesas")
         
         return value
     
     class Meta:
         model = PracticeGrammar
-        fields = ['id', 'grammar', 'first_setence', 'second_setence', 'third_setence', 'created_by', 'created_at', 'updated_at']
+        fields = ['id', 'grammar', 'first_sentence', 'second_sentence', 'third_sentence', 'created_by', 'created_at', 'updated_at']
+
+class SentenceSerializer(serializers.ModelSerializer):
+    grammar = GrammarSerializer(read_only=True)
+
+    def validate_setence(self, value):
+        pattern = r'^[ぁ-んァ-ン一-龯+/~]+$'
+
+        if not re.match(pattern, value):
+            raise serializers.ValidationError("O campo 'setence' deve conter apenas letras japonesas")
+        
+        return value
+
+    class Meta:
+        model = Sentence
+        fields = ['id', 'sentence', 'translate', 'annotation', 'grammar', 'created_by']
