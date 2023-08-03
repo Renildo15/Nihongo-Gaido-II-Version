@@ -43,7 +43,7 @@ class Profile(models.Model):
     
 class PracticeGrammar(models.Model):
     grammar = models.ForeignKey(Grammar, on_delete=models.SET_NULL, null=True, blank=True)
-    first_setence = models.CharField(max_length=250)
+    first_sentence = models.CharField(max_length=250)
     second_sentence = models.CharField(max_length=250)
     third_sentence = models.CharField(max_length=250)
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True)

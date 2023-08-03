@@ -20,24 +20,24 @@ class PracticeGrammarViewsTest(TestCase):
         
         self.practice_grammar = PracticeGrammar.objects.create(
             grammar=self.grammar,
-            first_setence="あまり",
-            second_setence="あまり",
-            third_setence="あまり",
+            first_sentence="あまり",
+            second_sentence="あまり",
+            third_sentence="あまり",
             created_by=self.user
         )
         self.client = APIClient()
 
     def test_practice_grammar_list_get(self):
         self.client.force_authenticate(user=self.user)
-        response = self.client.get('/api/setence_list/')
+        response = self.client.get('/api/sentence_list/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_practice_grammar_create(self):
         data = {
                 "grammar": self.grammar.id,
-                "first_setence": "あまり",
-                "second_setence": "あまり",
-                "third_setence": "あまり",
+                "first_sentence": "あまり",
+                "second_sentence": "あまり",
+                "third_sentence": "あまり",
                 "created_by": self.user.id
                }  
         self.client.force_authenticate(user=self.user)
@@ -48,9 +48,9 @@ class PracticeGrammarViewsTest(TestCase):
     def test_practice_grammar_create_failed(self):
         data = {
                 "grammar": self.grammar.id,
-                "first_setence": "",
-                "second_setence": "あまり",
-                "third_setence": "あまり",
+                "first_sentence": "",
+                "second_sentence": "あまり",
+                "third_sentence": "あまり",
                 "created_by": self.user.id
             }  
         
@@ -62,9 +62,9 @@ class PracticeGrammarViewsTest(TestCase):
     def test_practice_grammar_update(self):
         data = {
                 "grammar": self.grammar.id,
-                "first_setence": "あまり",
-                "second_setence": "あまり",
-                "third_setence": "あまり",
+                "first_sentence": "あまり",
+                "second_sentence": "あまり",
+                "third_sentence": "あまり",
                 "created_by": self.user.id
                }  
         self.client.force_authenticate(user=self.user)
@@ -75,9 +75,9 @@ class PracticeGrammarViewsTest(TestCase):
     def test_practice_grammar_update_failed(self):     
         data = {
                 "grammar": self.grammar.id,
-                "first_setence": "",
-                "second_setence": "あまり",
-                "third_setence": "あまり",
+                "first_sentence": "",
+                "second_sentence": "あまり",
+                "third_sentence": "あまり",
                 "created_by": self.user.id
                }  
         self.client.force_authenticate(user=self.user)
