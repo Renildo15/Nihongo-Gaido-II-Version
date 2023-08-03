@@ -1,6 +1,5 @@
-from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 import random
@@ -11,7 +10,6 @@ from core.models import Grammar, PracticeGrammar
 
 
 @api_view(['GET','POST'])
-@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def choice_grammar(request):
     grammars = Grammar.objects.filter(created_by=request.user)
@@ -41,7 +39,6 @@ def choice_grammar(request):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
    
 @api_view(['PATCH', 'DELETE'])
-@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def choice_grammar_detail(request, pk):
     try:
@@ -70,7 +67,6 @@ def choice_grammar_detail(request, pk):
     
 
 @api_view(['GET'])
-@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def setence_list(request):
     setences = PracticeGrammar.objects.filter(created_by=request.user)

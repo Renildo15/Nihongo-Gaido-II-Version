@@ -1,14 +1,12 @@
-from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 from core.serializers import UserCreateSerializer
 from django.contrib.auth.models import User
 
 @api_view(['GET', 'POST'])
-@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def user_list(request):
     
@@ -39,7 +37,6 @@ def user_list(request):
 
 
 @api_view(['GET','PATCH', 'DELETE'])
-@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def user_detail(request, pk):
     try:
