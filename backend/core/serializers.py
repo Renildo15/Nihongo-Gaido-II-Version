@@ -116,16 +116,21 @@ class PracticeGrammarSerializer(serializers.ModelSerializer):
         model = PracticeGrammar
         fields = ['id', 'grammar', 'first_sentence', 'second_sentence', 'third_sentence', 'created_by', 'created_at', 'updated_at']
 
-class SentenceSerializer(serializers.ModelSerializer):
-    grammar = GrammarSerializer(read_only=True)
-
+class SentenceCreateSerializer(serializers.ModelSerializer):
     def validate_setence(self, value):
         pattern = r'^[ぁ-んァ-ン一-龯+/~]+$'
 
         if not re.match(pattern, value):
-            raise serializers.ValidationError("O campo 'setence' deve conter apenas letras japonesas")
+            raise serializers.ValidationError("O campo 'sentence' deve conter apenas letras japonesas")
         
         return value
+
+    class Meta:
+        model = Sentence
+        fields = ['id', 'sentence', 'translate', 'annotation', 'grammar', 'created_by']
+
+class SentenceListSerializer(serializers.ModelSerializer):
+    grammar = GrammarSerializer(read_only=True)
 
     class Meta:
         model = Sentence
