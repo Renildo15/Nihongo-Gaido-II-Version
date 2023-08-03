@@ -1,13 +1,11 @@
 from core.models import Profile
-from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
 from core.serializers import ProfileSerializer
-from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 @api_view(['GET','PATCH'])
-@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def profile_list(request, user_id):
 
