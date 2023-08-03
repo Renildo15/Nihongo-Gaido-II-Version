@@ -19,6 +19,7 @@ class UserViewTest(TestCase):
 
 
     def test_user_lis_get(self):
+        self.client.force_authenticate(user=self.user)
         response = self.client.get('/api/user/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -31,7 +32,7 @@ class UserViewTest(TestCase):
             "last_name": "test lastname",
             "password": "Password1!"
         }
-
+        self.client.force_authenticate(user=self.user)
         response = self.client.post('/api/user/', data=data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
@@ -44,11 +45,12 @@ class UserViewTest(TestCase):
             "last_name": "test lastname",
             "password": "Password1!"
         }
-
+        self.client.force_authenticate(user=self.user)
         response = self.client.post('/api/user/', data=data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_list_user(self):
+        self.client.force_authenticate(user=self.user)
         response = self.client.get(f'/api/user/{self.user.pk}/')
         
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -58,6 +60,7 @@ class UserViewTest(TestCase):
         self.assertEqual(response.data['user']['last_name'], self.user.last_name)
 
     def test_list_user_failed(self):
+        self.client.force_authenticate(user=self.user)
         response = self.client.get(f'/api/user/{99999}/')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
@@ -66,7 +69,7 @@ class UserViewTest(TestCase):
         data = {
             "username": "new_username",
         }
-
+        self.client.force_authenticate(user=self.user)
         response = self.client.patch(f'/api/user/{self.user.pk}/', data=data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['user']['username'], data['username'])
@@ -76,7 +79,7 @@ class UserViewTest(TestCase):
         data={
             "username": ""
         }
-
+        self.client.force_authenticate(user=self.user)
         response = self.client.patch(f'/api/user/{self.user.pk}/', data=data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
@@ -85,16 +88,17 @@ class UserViewTest(TestCase):
         data = {
             "username": "new_username",
         }
-
+        
+        self.client.force_authenticate(user=self.user)
         response = self.client.patch(f'/api/user/{9999}/', data=data, format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_delete_user(self):
-
+        self.client.force_authenticate(user=self.user)
         response = self.client.delete(f'/api/user/{self.user.pk}/')
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
     def test_delete_user_failed(self):
-
+        self.client.force_authenticate(user=self.user)
         response = self.client.delete(f'/api/user/{9999}/')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
