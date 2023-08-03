@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 
 from core.models import Sentence
-from core.serializers import SentenceSerializer
+from core.serializers import SentenceCreateSerializer, SentenceListSerializer
 
 
 
@@ -15,7 +15,7 @@ def sentence_list(request):
     if request.method == 'GET':
         sentences = Sentence.objects.filter(created_by=request.user)
 
-        serializer = SentenceSerializer(instance=sentences, many=True)
+        serializer = SentenceListSerializer(instance=sentences, many=True)
 
         data = {
             "sentences": serializer.data
@@ -23,7 +23,7 @@ def sentence_list(request):
 
         return Response(data)
     elif request.method == 'POST':
-        serializer = SentenceSerializer(data=request.data)
+        serializer = SentenceCreateSerializer(data=request.data)
 
         if serializer.is_valid():
             serializer.save(created_by=request.user)
@@ -46,7 +46,7 @@ def sentence_detail(request, pk):
         return Response(status=status.HTTP_404_NOT_FOUND)
     
     if request.method == 'GET':
-        serializer = SentenceSerializer(sentence)
+        serializer = SentenceListSerializer(sentence)
 
         data = {
             'sentence': serializer.data
@@ -55,7 +55,7 @@ def sentence_detail(request, pk):
         return Response(data)
     
     elif request.method == 'PATCH':
-        serializer = SentenceSerializer(sentence, data=request.data)
+        serializer = SentenceCreateSerializer(sentence, data=request.data)
 
         if serializer.is_valid():
             serializer.save()
