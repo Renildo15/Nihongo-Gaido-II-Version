@@ -74,4 +74,4 @@ class Sentence(models.Model):
         ordering = ('translate', )
 
     def __str__(self):
-        return self.setence
+        return self.sentence
