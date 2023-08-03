@@ -1,6 +1,5 @@
-from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 
@@ -9,7 +8,6 @@ from core.models import Grammar
 
 
 @api_view(['GET','POST'])
-@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def grammar_list(request):
 
@@ -38,7 +36,6 @@ def grammar_list(request):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT', 'PATCH', 'DELETE'])
-@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def grammar_detail(request, pk):
 
