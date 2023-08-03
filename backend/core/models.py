@@ -44,8 +44,8 @@ class Profile(models.Model):
 class PracticeGrammar(models.Model):
     grammar = models.ForeignKey(Grammar, on_delete=models.SET_NULL, null=True, blank=True)
     first_setence = models.CharField(max_length=250)
-    second_setence = models.CharField(max_length=250)
-    third_setence = models.CharField(max_length=250)
+    second_sentence = models.CharField(max_length=250)
+    third_sentence = models.CharField(max_length=250)
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -58,3 +58,20 @@ class PracticeGrammar(models.Model):
 
     def __str__(self):
         return self.grammar.structure
+    
+
+class Sentence(models.Model):
+    sentence = models.CharField(max_length=200, unique=True)
+    translate = models.CharField(max_length=200)
+    annotation = models.TextField(max_length=300, blank=True, null=True)
+    grammar = models.ForeignKey(Grammar, on_delete=models.CASCADE, null=True, blank=True, related_name="Grammar_Phrase")
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True)
+    
+
+    class Meta:
+        verbose_name = "sentence"
+        verbose_name_plural = "sentences"
+        ordering = ('translate', )
+
+    def __str__(self):
+        return self.setence
