@@ -135,3 +135,22 @@ class SentenceListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sentence
         fields = ['id', 'sentence', 'translate', 'annotation', 'grammar', 'created_by']
+
+class CategoryCreateSerializer(serializers.ModelSerializer):
+
+    def validate_name(self, value):
+        pattern = r'^[a-zA-Z ]+$'
+
+        if not re.match(pattern, value):
+            raise serializers.ValidationError("O campo 'name' deve conter apenas letras")
+        
+        return value
+
+    class Meta:
+        model = Category
+        fields = ['name']
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['id', 'name','is_created_by_user', 'created_by']
