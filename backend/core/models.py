@@ -75,3 +75,17 @@ class Sentence(models.Model):
 
     def __str__(self):
         return self.sentence
+    
+
+class Category(models.Model):
+    name = models.CharField(max_length=200, unique=True)
+    is_created_by_user = models.BooleanField(default=False)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True)
+
+    class Meta:
+        verbose_name = "categopry"
+        verbose_name_plural = "categories"
+        ordering = ('name', )
+
+    def __str__(self):
+        return self.name
