@@ -132,3 +132,28 @@ class Word(models.Model):
 
     def __str__(self):
         return f'{self.word} - {self.meaning}'
+
+class Conjugation(models.Model):
+    word = models.OneToOneField(Word, on_delete=models.CASCADE, blank=True, null=True)
+    present = models.CharField(max_length=20, blank=True, null=True)
+    negative = models.CharField(max_length=20, blank=True, null=True)
+    past = models.CharField(max_length=20, blank=True, null=True)
+    te_form = models.CharField(max_length=20, blank=True, null=True)
+    volitional = models.CharField(max_length=20, blank=True, null=True)
+    potential = models.CharField(max_length=20, blank=True, null=True)
+    imperative = models.CharField(max_length=20, blank=True, null=True)
+    causative = models.CharField(max_length=20, blank=True, null=True)
+    conditional = models.CharField(max_length=20, blank=True, null=True)
+    passive = models.CharField(max_length=20, blank=True, null=True)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
+
+
+    class Meta:
+        verbose_name = "conjugation"
+        verbose_name_plural = "conjugations"
+        ordering = ("word",)
+
+    def __str__(self):
+        return self.present
