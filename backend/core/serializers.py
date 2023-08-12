@@ -192,3 +192,131 @@ class WordSerializer(serializers.ModelSerializer):
     class Meta:
         model = Word
         fields = ['id', 'word', 'reading', 'meaning', 'type', 'level', 'category', 'created_by', 'created_at', 'updated_at']
+
+class ConjugationCreateSerializer(serializers.ModelSerializer):
+    
+    def validate_word(self, value):
+        pattern = r'^[ぁ-んァ-ン一-龯+/~]+$'
+
+        if not re.match(pattern, value):
+            raise serializers.ValidationError("O campo 'word' deve conter apenas letras japonesas.")
+        
+        return value
+    
+    def validate_present(self, value):
+        pattern = r'^[ぁ-んァ-ン一-龯]+$'
+
+        if not re.match(pattern, value):
+            raise serializers.ValidationError("O campo 'present' deve conter apenas letras japonesas.")
+        
+        return value
+    
+    def validate_negative(self, value):
+        pattern = r'^[ぁ-んァ-ン一-龯]+$'
+
+        if not re.match(pattern, value):
+            raise serializers.ValidationError("O campo 'negative' deve conter apenas letras japonesas.")
+        
+        return value
+    
+    def validate_past(self, value):
+        pattern = r'^[ぁ-んァ-ン一-龯]+$'
+
+        if not re.match(pattern, value):
+            raise serializers.ValidationError("O campo 'past' deve conter apenas letras japonesas.")
+        
+        return value
+    
+    def validate_te_form(self, value):
+        pattern = r'^[ぁ-んァ-ン一-龯]+$'
+
+        if not re.match(pattern, value):
+            raise serializers.ValidationError("O campo 'te_form' deve conter apenas letras japonesas.")
+        
+        return value
+    
+    def validate_volitional(self, value):
+        pattern = r'^[ぁ-んァ-ン一-龯]+$'
+
+        if not re.match(pattern, value):
+            raise serializers.ValidationError("O campo 'volitional' deve conter apenas letras japonesas.")
+        
+        return value
+    
+    def validate_passive(self, value):
+        pattern = r'^[ぁ-んァ-ン一-龯]+$'
+
+        if not re.match(pattern, value):
+            raise serializers.ValidationError("O campo 'passive' deve conter apenas letras japonesas.")
+        
+        return value
+    
+    def validate_causative(self, value):
+        pattern = r'^[ぁ-んァ-ン一-龯]+$'
+
+        if not re.match(pattern, value):
+            raise serializers.ValidationError("O campo 'causative' deve conter apenas letras japonesas.")
+        
+        return value
+    
+    def validate_potential(self, value):
+        pattern = r'^[ぁ-んァ-ン一-龯]+$'
+
+        if not re.match(pattern, value):
+           raise serializers.ValidationError("O campo 'potential' deve conter apenas letras japonesas.")
+        
+        return value
+    
+    def validate_imperative(self, value): 
+        pattern = r'^[ぁ-んァ-ン一-龯]+$'
+
+        if not re.match(pattern, value):
+           raise serializers.ValidationError("O campo 'imperative' deve conter apenas letras japonesas.")
+        
+        return value
+    
+    def validate_conditional(self, value):
+        pattern = r'^[ぁ-んァ-ン一-龯]+$'
+
+        if not re.match(pattern, value):
+           raise serializers.ValidationError("O campo 'conditional' deve conter apenas letras japonesas.")
+        
+        return value
+
+    class Meta:
+        model = Conjugation
+        fields = [
+            'word', 
+            'present', 
+            'negative', 
+            'past', 
+            'te_form', 
+            'volitional', 
+            'passive', 
+            'causative', 
+            'potential', 
+            'imperative', 
+            'conditional'
+            ]
+        
+class ConjugationSerializer(serializers.ModelSerializer):
+    word = WordSerializer(read_only=True)
+    class Meta:
+        model = Conjugation
+        fields = [
+            'id',
+            'word', 
+            'present', 
+            'negative', 
+            'past', 
+            'te_form', 
+            'volitional', 
+            'passive', 
+            'causative', 
+            'potential', 
+            'imperative', 
+            'conditional',
+            'created_by', 
+            'created_at', 
+            'updated_at'
+            ]
