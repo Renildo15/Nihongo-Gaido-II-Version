@@ -19,8 +19,8 @@ class Grammar(models.Model):
     level = models.CharField(max_length=6, choices=nivel_choices)
     explain = models.TextField(null=True, blank=True)
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
 
     class Meta:
         verbose_name_plural = "grammars"
@@ -47,8 +47,8 @@ class PracticeGrammar(models.Model):
     second_sentence = models.CharField(max_length=250)
     third_sentence = models.CharField(max_length=250)
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
 
 
     class Meta:
@@ -66,6 +66,8 @@ class Sentence(models.Model):
     annotation = models.TextField(max_length=300, blank=True, null=True)
     grammar = models.ForeignKey(Grammar, on_delete=models.CASCADE, null=True, blank=True, related_name="Grammar_Phrase")
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
     
 
     class Meta:
@@ -81,11 +83,52 @@ class Category(models.Model):
     name = models.CharField(max_length=200, unique=True)
     is_created_by_user = models.BooleanField(default=False)
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
 
     class Meta:
-        verbose_name = "categopry"
+        verbose_name = "category"
         verbose_name_plural = "categories"
         ordering = ('name', )
 
     def __str__(self):
         return self.name
+    
+class Word(models.Model):
+
+    level_choices = (
+        ('N5','N5'),
+        ('N4','N4'),
+        ('N3','N3'),
+        ('N2','N2'),
+        ('N1','N1'),
+        ('UNKNOW','UNKNOW')
+    )
+
+    type_choice = (
+        ("Verbo - Grupo 1", "Verbo - Grupo 1 "),
+        ("Verbo - Grupo 2 ", "Verbo - Grupo 2"),
+        ("Verbo - Grupo 3", "Verbo - Grupo 3"),
+        ("Adjetivo-I", "Adjetivo-I"),
+        ("Adjetivo-NA", "Adjetivo-NA"),
+        ("Substantivo", "Substantivo"),
+        ("Onomatopeia", "Onomatopeia"),
+    )
+    word = models.CharField(max_length=20)
+    reading = models.CharField(max_length=20, unique=True)
+    meaning = models.CharField(max_length=200)
+    type = models.CharField(max_length=20, choices= type_choice)
+    level = models.CharField(max_length=6, choices=level_choices)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, blank=True, null=True)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
+
+
+    class Meta:
+        verbose_name = "word"
+        verbose_name_plural = "words"
+        ordering = ('word',)
+
+    def __str__(self):
+        return f'{self.word} - {self.meaning}'
