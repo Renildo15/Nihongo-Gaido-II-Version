@@ -7,7 +7,7 @@ from core.models import Word
 from core.serializers import WordSerializer, WordCreateSerializer
 
 
-@api_view(['GET, POST'])
+@api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
 def word_list(request):
 
@@ -35,7 +35,7 @@ def word_list(request):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['GET, PATCH, DELETE'])
+@api_view(['GET', 'PATCH', 'DELETE'])
 @permission_classes([IsAuthenticated])
 def word_detail(request, pk):
 
