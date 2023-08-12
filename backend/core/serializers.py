@@ -134,7 +134,7 @@ class SentenceListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Sentence
-        fields = ['id', 'sentence', 'translate', 'annotation', 'grammar', 'created_by']
+        fields = ['id', 'sentence', 'translate', 'annotation', 'grammar', 'created_by', 'created_at', 'updated_at']
 
 class CategoryCreateSerializer(serializers.ModelSerializer):
 
@@ -153,4 +153,42 @@ class CategoryCreateSerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['id', 'name','is_created_by_user', 'created_by']
+        fields = ['id', 'name','is_created_by_user', 'created_by','created_at', 'updated_at']
+
+class WordCreateSerializer(serializers.ModelSerializer):
+
+    def validate_word(self, value):
+        pattern = r'^[ぁ-んァ-ン一-龯+/~]+$'
+
+        if not re.match(pattern, value):
+            raise serializers.ValidationError("O campo 'word' deve conter apenas letras japonesas.")
+        
+        return value
+
+    def validate_reading(self, value):
+        pattern = r'^[ぁ-んァ-ン一-龯+/~]+$'
+
+        if not re.match(pattern, value):
+            raise serializers.ValidationError("O campo 'reading' deve conter apenas letras japonesas.")
+        
+        return value
+
+
+    def validate_meaning(self, value):
+        pattern = r'^[a-zA-Z]+$' 
+
+        if not re.match(pattern, value):
+            raise serializers.ValidationError("O campo 'meaning' deve conter apenas letras.")
+        
+        return value
+
+    class Meta:
+        model = Word
+        fields = ['word', 'reading', 'meaning', 'type', 'level', 'category']
+
+class WordSerializer(serializers.ModelSerializer):
+    category = CategorySerializer(read_only=True)
+
+    class Meta:
+        model = Word
+        fields = ['id', 'word', 'reading', 'meaning', 'type', 'level', 'category', 'created_by', 'created_at', 'updated_at']
