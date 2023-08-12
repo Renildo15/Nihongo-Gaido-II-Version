@@ -161,15 +161,15 @@ class WordCreateSerializer(serializers.ModelSerializer):
         pattern = r'^[ぁ-んァ-ン一-龯+/~]+$'
 
         if not re.match(pattern, value):
-            raise serializers.ValidationError("O campo 'word' deve conter apenas letras japonesas, '+', '/', '~'.")
+            raise serializers.ValidationError("O campo 'word' deve conter apenas letras japonesas.")
         
         return value
 
     def validate_reading(self, value):
-        pattern = r'^[a-zA-Z]+$' 
+        pattern = r'^[ぁ-んァ-ン一-龯+/~]+$'
 
         if not re.match(pattern, value):
-            raise serializers.ValidationError("O campo 'reading' deve conter apenas letras.")
+            raise serializers.ValidationError("O campo 'reading' deve conter apenas letras japonesas.")
         
         return value
 
