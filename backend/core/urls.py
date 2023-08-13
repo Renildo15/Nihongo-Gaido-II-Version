@@ -6,6 +6,7 @@ from .views.practice_grammar_views import choice_grammar, choice_grammar_detail,
 from .views.sentence_views import sentence_list, sentence_detail
 from .views.category_views import category_list, category_detail
 from .views.word_views import word_list, word_detail
+from .views.conjugation_views import conjugation_list, conjugation_detail
 
 urlpatterns = [
     path('grammar/', grammar_list, name="grammar_list_create"),
@@ -28,4 +29,8 @@ urlpatterns = [
 
     path('word/', word_list, name="word_list_create"),
     path('word/<int:pk>/', word_detail, name="word_detail"),
+
+    path('conjugation/<int:word_id>/', conjugation_list, name="conjugation_list_create"),
+    path('conjugation_detail/<int:pk>/', conjugation_detail, name="conjugation_detail"),
+
 ]
