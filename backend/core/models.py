@@ -115,7 +115,7 @@ class Word(models.Model):
         ("Onomatopeia", "Onomatopeia"),
     )
     word = models.CharField(max_length=20)
-    reading = models.CharField(max_length=20, unique=True)
+    reading = models.CharField(max_length=20)
     meaning = models.CharField(max_length=200)
     type = models.CharField(max_length=20, choices= type_choice)
     level = models.CharField(max_length=6, choices=level_choices)
