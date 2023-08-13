@@ -44,7 +44,7 @@ def conjugation_list(request, word_id):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
 
-@api_view(['PATCH','DELETE'])
+@api_view(['PATCH', 'DELETE'])
 @permission_classes([IsAuthenticated])
 def conjugation_detail(request, pk):
 
