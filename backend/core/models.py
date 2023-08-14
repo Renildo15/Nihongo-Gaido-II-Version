@@ -157,3 +157,22 @@ class Conjugation(models.Model):
 
     def __str__(self):
         return self.present
+    
+
+class Example(models.Model):
+    example = models.CharField(max_length=200)
+    reading = models.CharField(max_length=200)
+    meaning = models.CharField(max_length=200)
+    annotation = models.TextField(max_length=500, null=True, blank=True)
+    word = models.ForeignKey(Word, on_delete=models.CASCADE, blank=True, null=True)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
+
+    class Meta:
+        verbose_name = "example"
+        verbose_name_plural = "examples"
+        ordering = ('example',)
+
+    def __str__(self):
+        return self.example
