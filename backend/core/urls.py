@@ -8,6 +8,7 @@ from .views.category_views import category_list, category_detail
 from .views.word_views import word_list, word_detail
 from .views.conjugation_views import conjugation_list, conjugation_detail
 from .views.example_views import example_list, example_detail
+from .views.text_views import text_list, text_detail
 
 urlpatterns = [
     path('grammar/', grammar_list, name="grammar_list_create"),
@@ -36,4 +37,7 @@ urlpatterns = [
     
     path('example/<int:word_id>/', example_list, name="example_list_create"),
     path('example_detail/<int:word_id>/<int:example_id>/', example_detail, name="example_detail"),
+
+    path('text/', text_list, name="text_list_create"),
+    path('text/<int:text_id>/', text_detail, name="text_detail"),
 ]
