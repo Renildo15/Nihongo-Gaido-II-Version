@@ -356,3 +356,66 @@ class ExampleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Example
         fields = ['id', 'example', 'reading', 'meaning', 'annotation', 'word', 'created_by', 'created_at', 'updated_at']
+
+class TextCreateSerializer(serializers.ModelSerializer):
+    def validate_title(self, value):
+        pattern = r'^[ぁ-んァ-ン一-龯+/~ ]+$'
+
+        if not re.match(pattern, value):
+            raise serializers.ValidationError("O campo 'title' deve conter apenas letras japonesas.")
+        
+        return value
+
+    class Meta:
+        model = Text
+        fields = ['title', 'text', 'annotation']
+
+class TextSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Text
+        fields = ['id', 'title', 'text', 'annotation', 'created_by', 'created_at', 'updated_at']
+
+class TextTranslateCreateSerializer(serializers.ModelSerializer):
+    def validate_title(self, value):
+        pattern = r'^[a-zA-Z-~ ]+$' 
+
+        if not re.match(pattern, value):
+            raise serializers.ValidationError("O campo 'title' deve conter apenas letras.")
+        
+        return value
+
+    class Meta:
+        model = TextTranslate
+        fields = ['title', 'text', 'text_original']
+
+class TextTranslateSerializer(serializers.ModelSerializer):
+    text_original = TextSerializer(read_only=True)
+    class Meta:
+        model = TextTranslate
+        fields = ['id', 'title', 'text', 'text_original', 'created_by', 'created_at', 'updated_at']
+
+class TextWritingCreateSerializer(serializers.ModelSerializer):
+    def validate_title(self, value):
+        pattern = r'^[ぁ-んァ-ン一-龯+/~ ]+$'
+
+        if not re.match(pattern, value):
+            raise serializers.ValidationError("O campo 'title' deve conter apenas letras japonesas.")
+        
+        return value
+    
+    def validate_text(self, value):
+        pattern = r'^[ぁ-んァ-ン一-龯+/~ ]+$'
+
+        if not re.match(pattern, value):
+            raise serializers.ValidationError("O campo 'text' deve conter apenas letras japonesas.")
+        
+        return value
+
+    class Meta:
+        model = TextWriting
+        fields = ['title', 'text', 'annotation']
+
+class TextWritingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TextWriting
+        fields = ['id', 'title', 'text', 'annotation', 'created_by', 'created_at', 'updated_at']
