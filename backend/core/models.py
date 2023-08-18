@@ -29,7 +29,6 @@ class Grammar(models.Model):
     def __str__(self):
         return f'{self.grammar} - {self.level}'
     
-
 class Profile(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     phone = models.CharField(null=True, blank=True, max_length=15)
@@ -59,7 +58,6 @@ class PracticeGrammar(models.Model):
     def __str__(self):
         return self.grammar.structure
     
-
 class Sentence(models.Model):
     sentence = models.CharField(max_length=200, unique=True)
     translate = models.CharField(max_length=200)
@@ -78,7 +76,6 @@ class Sentence(models.Model):
     def __str__(self):
         return self.sentence
     
-
 class Category(models.Model):
     name = models.CharField(max_length=200, unique=True)
     is_created_by_user = models.BooleanField(default=False)
@@ -158,7 +155,6 @@ class Conjugation(models.Model):
     def __str__(self):
         return self.present
     
-
 class Example(models.Model):
     example = models.CharField(max_length=200)
     reading = models.CharField(max_length=200)
@@ -176,3 +172,51 @@ class Example(models.Model):
 
     def __str__(self):
         return self.example
+    
+class Text(models.Model):
+    title = models.CharField(max_length=200)
+    text = models.TextField()
+    annotation = models.TextField(blank=True, null=True)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
+
+    class Meta:
+        verbose_name = "text"
+        verbose_name_plural = "texts"
+        ordering = ('title', )
+
+    def __str__(self):
+        return self.title
+    
+class TextTranslate(models.Model):
+    title = models.CharField(max_length=200)
+    text = models.TextField()
+    text_original = models.OneToOneField(Text,on_delete=models.CASCADE,blank=True, null=True)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
+
+    class Meta:
+        verbose_name = "text translate"
+        verbose_name_plural = "text translates"
+        ordering = ('title', )
+
+    def __str__(self):
+        return self.title
+
+class TextWriting(models.Model):
+    title = models.CharField(max_length=200)
+    text = models.TextField()
+    annotation = models.TextField(blank=True, null=True)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
+
+    class Meta:
+        verbose_name = "text-writing"
+        verbose_name_plural = "text-writings"
+        ordering = ('title', )
+
+    def __str__(self):
+        return self.title
