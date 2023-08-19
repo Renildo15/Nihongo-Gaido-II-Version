@@ -5,30 +5,29 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('core', '0008_rename_grammar_id_setence_grammar'),
+        ("core", "0008_rename_grammar_id_setence_grammar"),
     ]
 
     operations = [
         migrations.RenameModel(
-            old_name='Setence',
-            new_name='Sentence',
+            old_name="Setence",
+            new_name="Sentence",
         ),
         migrations.RenameField(
-            model_name='practicegrammar',
-            old_name='second_setence',
-            new_name='second_sentence',
+            model_name="practicegrammar",
+            old_name="second_setence",
+            new_name="second_sentence",
         ),
         migrations.RenameField(
-            model_name='practicegrammar',
-            old_name='third_setence',
-            new_name='third_sentence',
+            model_name="practicegrammar",
+            old_name="third_setence",
+            new_name="third_sentence",
         ),
         migrations.RenameField(
-            model_name='sentence',
-            old_name='setence',
-            new_name='sentence',
+            model_name="sentence",
+            old_name="setence",
+            new_name="sentence",
         ),
     ]

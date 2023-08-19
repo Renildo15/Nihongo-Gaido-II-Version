@@ -4,60 +4,59 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('core', '0014_alter_category_options_word'),
+        ("core", "0014_alter_category_options_word"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='category',
-            name='created_at',
+            model_name="category",
+            name="created_at",
             field=models.DateTimeField(auto_now_add=True, null=True),
         ),
         migrations.AddField(
-            model_name='category',
-            name='updated_at',
+            model_name="category",
+            name="updated_at",
             field=models.DateTimeField(auto_now=True, null=True),
         ),
         migrations.AddField(
-            model_name='sentence',
-            name='created_at',
+            model_name="sentence",
+            name="created_at",
             field=models.DateTimeField(auto_now_add=True, null=True),
         ),
         migrations.AddField(
-            model_name='sentence',
-            name='updated_at',
+            model_name="sentence",
+            name="updated_at",
             field=models.DateTimeField(auto_now=True, null=True),
         ),
         migrations.AddField(
-            model_name='word',
-            name='created_at',
+            model_name="word",
+            name="created_at",
             field=models.DateTimeField(auto_now_add=True, null=True),
         ),
         migrations.AddField(
-            model_name='word',
-            name='updated_at',
+            model_name="word",
+            name="updated_at",
             field=models.DateTimeField(auto_now=True, null=True),
         ),
         migrations.AlterField(
-            model_name='grammar',
-            name='created_at',
+            model_name="grammar",
+            name="created_at",
             field=models.DateTimeField(auto_now_add=True, null=True),
         ),
         migrations.AlterField(
-            model_name='grammar',
-            name='updated_at',
+            model_name="grammar",
+            name="updated_at",
             field=models.DateTimeField(auto_now=True, null=True),
         ),
         migrations.AlterField(
-            model_name='practicegrammar',
-            name='created_at',
+            model_name="practicegrammar",
+            name="created_at",
             field=models.DateTimeField(auto_now_add=True, null=True),
         ),
         migrations.AlterField(
-            model_name='practicegrammar',
-            name='updated_at',
+            model_name="practicegrammar",
+            name="updated_at",
             field=models.DateTimeField(auto_now=True, null=True),
         ),
     ]

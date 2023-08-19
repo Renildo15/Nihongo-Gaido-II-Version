@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('core', '0016_conjugation'),
+        ("core", "0016_conjugation"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='word',
-            name='reading',
+            model_name="word",
+            name="reading",
             field=models.CharField(max_length=20),
         ),
     ]

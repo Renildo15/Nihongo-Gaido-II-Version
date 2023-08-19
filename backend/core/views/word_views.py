@@ -7,65 +7,55 @@ from core.models import Word
 from core.serializers import WordSerializer, WordCreateSerializer
 
 
-@api_view(['GET', 'POST'])
+@api_view(["GET", "POST"])
 @permission_classes([IsAuthenticated])
 def word_list(request):
-
-    if request.method == 'GET':
+    if request.method == "GET":
         words = Word.objects.filter(created_by=request.user)
         serializer = WordSerializer(words, many=True)
 
-        data = {
-            "words": serializer.data
-        }
+        data = {"words": serializer.data}
 
         return Response(data)
-    elif request.method == 'POST':
+    elif request.method == "POST":
         serializer = WordCreateSerializer(data=request.data)
 
         if serializer.is_valid():
-
             serializer.save(created_by=request.user)
 
-            data={
-                "message": "Word created successfully",
-                "word": serializer.data
-            }
+            data = {"message": "Word created successfully", "word": serializer.data}
             return Response(data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['GET', 'PATCH', 'DELETE'])
+
+@api_view(["GET", "PATCH", "DELETE"])
 @permission_classes([IsAuthenticated])
 def word_detail(request, pk):
-
     try:
         word = Word.objects.get(pk=pk)
     except Word.DoesNotExist:
         return Response({"message": "Word not found"}, status=status.HTTP_404_NOT_FOUND)
-    
-    if request.method == 'GET':
+
+    if request.method == "GET":
         serializer = WordSerializer(word)
-        data ={
-            "word": serializer.data
-        }
+        data = {"word": serializer.data}
 
         return Response(data)
-    elif request.method == 'PATCH':
+    elif request.method == "PATCH":
         serializer = WordCreateSerializer(word, data=request.data, partial=True)
 
         if serializer.is_valid():
             serializer.save()
 
-            data ={
-                "message": "Word updated successfully",
-                "word": serializer.data
-            }
+            data = {"message": "Word updated successfully", "word": serializer.data}
 
             return Response(data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    elif request.method == 'DELETE':
+    elif request.method == "DELETE":
         word.delete()
-        return Response({"message": "Word deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+        return Response(
+            {"message": "Word deleted successfully"}, status=status.HTTP_204_NO_CONTENT
+        )

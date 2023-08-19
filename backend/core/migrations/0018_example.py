@@ -6,30 +6,53 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('core', '0017_alter_word_reading'),
+        ("core", "0017_alter_word_reading"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Example',
+            name="Example",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('example', models.CharField(max_length=200)),
-                ('reading', models.CharField(max_length=200)),
-                ('meaning', models.CharField(max_length=200)),
-                ('annotation', models.TextField(blank=True, max_length=500, null=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True, null=True)),
-                ('updated_at', models.DateTimeField(auto_now=True, null=True)),
-                ('created_by', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL)),
-                ('word', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='core.word')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("example", models.CharField(max_length=200)),
+                ("reading", models.CharField(max_length=200)),
+                ("meaning", models.CharField(max_length=200)),
+                ("annotation", models.TextField(blank=True, max_length=500, null=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True, null=True)),
+                ("updated_at", models.DateTimeField(auto_now=True, null=True)),
+                (
+                    "created_by",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "word",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="core.word",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'example',
-                'verbose_name_plural': 'examples',
-                'ordering': ('example',),
+                "verbose_name": "example",
+                "verbose_name_plural": "examples",
+                "ordering": ("example",),
             },
         ),
     ]
