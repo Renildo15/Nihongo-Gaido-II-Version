@@ -9,7 +9,6 @@ from core.serializers import TextTranslateSerializer, TextTranslateCreateSeriali
 
 @api_view(['GET','POST'])
 @permission_classes([IsAuthenticated])
-
 def text_translate_list(request, text_id):
 
     try:
@@ -19,7 +18,7 @@ def text_translate_list(request, text_id):
     
     if request.method == "GET":
         
-        text_translate = TextTranslate.objects.get(created_by=request.user, text=text)
+        text_translate = TextTranslate.objects.get(created_by=request.user, text_original=text)
         serializer = TextTranslateSerializer(text_translate)
 
         data = {
@@ -52,7 +51,7 @@ def text_translate_detail(request, text_id, text_translate_id):
         return Response(status=status.HTTP_404_NOT_FOUND)
     
     try:
-        text_translate = TextTranslate.objects.get(pk=text_translate_id, text=text)
+        text_translate = TextTranslate.objects.get(pk=text_translate_id, text_original=text)
     except TextTranslate.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     
@@ -68,7 +67,7 @@ def text_translate_detail(request, text_id, text_translate_id):
                 'text': serializer.data
             }
 
-            return Response(data)
+            return Response(data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
