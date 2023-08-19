@@ -402,14 +402,6 @@ class TextWritingCreateSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("O campo 'title' deve conter apenas letras japonesas.")
         
         return value
-    
-    def validate_text(self, value):
-        pattern = r'^[ぁ-んァ-ン一-龯+/~ ]+$'
-
-        if not re.match(pattern, value):
-            raise serializers.ValidationError("O campo 'text' deve conter apenas letras japonesas.")
-        
-        return value
 
     class Meta:
         model = TextWriting
