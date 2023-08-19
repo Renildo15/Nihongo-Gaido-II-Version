@@ -3,28 +3,28 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 
-from core.models import Sentence
-from core.serializers import SentenceCreateSerializer, SentenceListSerializer
+from core.models import Text
+from core.serializers import TextCreateSerializer, TextSerializer
 
 
 @api_view(["GET", "POST"])
 @permission_classes([IsAuthenticated])
-def sentence_list(request):
+def text_list(request):
     if request.method == "GET":
-        sentences = Sentence.objects.filter(created_by=request.user)
+        texts = Text.objects.filter(created_by=request.user)
+        serializer = TextSerializer(texts, many=True)
 
-        serializer = SentenceListSerializer(instance=sentences, many=True)
-
-        data = {"sentences": serializer.data}
+        data = {"texts": serializer.data}
 
         return Response(data)
+
     elif request.method == "POST":
-        serializer = SentenceCreateSerializer(data=request.data)
+        serializer = TextCreateSerializer(data=request.data)
 
         if serializer.is_valid():
             serializer.save(created_by=request.user)
 
-            data = {"message": "Sentence created", "sentence": serializer.data}
+            data = {"message": "Text created successfully", "text": serializer.data}
 
             return Response(data, status=status.HTTP_201_CREATED)
         else:
@@ -33,34 +33,31 @@ def sentence_list(request):
 
 @api_view(["GET", "PATCH", "DELETE"])
 @permission_classes([IsAuthenticated])
-def sentence_detail(request, pk):
+def text_detail(request, text_id):
     try:
-        sentence = Sentence.objects.get(pk=pk)
-    except Sentence.DoesNotExist:
+        text = Text.objects.get(pk=text_id)
+    except Text.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == "GET":
-        serializer = SentenceListSerializer(sentence)
+        serializer = TextSerializer(text)
 
-        data = {"sentence": serializer.data}
+        data = {"text": serializer.data}
 
         return Response(data)
-
     elif request.method == "PATCH":
-        serializer = SentenceCreateSerializer(sentence, data=request.data)
+        serializer = TextCreateSerializer(text, data=request.data, partial=True)
 
         if serializer.is_valid():
             serializer.save()
 
-            data = {"message": "Sentence updated", "sentence": serializer.data}
+            data = {"message": "Text updated successfully", "text": serializer.data}
 
             return Response(data)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == "DELETE":
-        sentence.delete()
+        text.delete()
 
-        data = {"message": "Sentence deleted"}
-
-        return Response(data, status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_204_NO_CONTENT)

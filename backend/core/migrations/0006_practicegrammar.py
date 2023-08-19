@@ -6,29 +6,52 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('core', '0005_alter_profile_avatar'),
+        ("core", "0005_alter_profile_avatar"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='PracticeGrammar',
+            name="PracticeGrammar",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('first_setence', models.CharField(max_length=250)),
-                ('second_setence', models.CharField(max_length=250)),
-                ('third_setence', models.CharField(max_length=250)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('created_by', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL)),
-                ('grammar', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='core.grammar')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("first_setence", models.CharField(max_length=250)),
+                ("second_setence", models.CharField(max_length=250)),
+                ("third_setence", models.CharField(max_length=250)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "created_by",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "grammar",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to="core.grammar",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'practice grammar',
-                'verbose_name_plural': 'practice grammars',
-                'ordering': ('id',),
+                "verbose_name": "practice grammar",
+                "verbose_name_plural": "practice grammars",
+                "ordering": ("id",),
             },
         ),
     ]

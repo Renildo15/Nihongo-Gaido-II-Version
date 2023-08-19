@@ -6,27 +6,51 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('core', '0006_practicegrammar'),
+        ("core", "0006_practicegrammar"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Setence',
+            name="Setence",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('setence', models.CharField(max_length=200, unique=True)),
-                ('translate', models.CharField(max_length=200)),
-                ('annotation', models.TextField(blank=True, max_length=300, null=True)),
-                ('created_by', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL)),
-                ('grammar_id', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='Grammar_Phrase', to='core.grammar')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("setence", models.CharField(max_length=200, unique=True)),
+                ("translate", models.CharField(max_length=200)),
+                ("annotation", models.TextField(blank=True, max_length=300, null=True)),
+                (
+                    "created_by",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "grammar_id",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="Grammar_Phrase",
+                        to="core.grammar",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'setence',
-                'verbose_name_plural': 'setences',
-                'ordering': ('translate',),
+                "verbose_name": "setence",
+                "verbose_name_plural": "setences",
+                "ordering": ("translate",),
             },
         ),
     ]

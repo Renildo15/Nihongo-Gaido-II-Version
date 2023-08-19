@@ -7,86 +7,75 @@ from core.models import Example, Word
 from core.serializers import ExampleSerializer, ExampleCreateSerializer
 
 
-@api_view(['GET','POST'])
+@api_view(["GET", "POST"])
 @permission_classes([IsAuthenticated])
 def example_list(request, word_id):
-
     try:
         word = Word.objects.get(pk=word_id)
     except Word.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-    
-    if request.method == 'GET':
+
+    if request.method == "GET":
         examples = Example.objects.filter(created_by=request.user, word=word)
         serializer = ExampleSerializer(examples, many=True)
 
-        data = {
-            'examples': serializer.data
-        }
+        data = {"examples": serializer.data}
 
         return Response(data)
-    elif request.method == 'POST':
+    elif request.method == "POST":
         serializer = ExampleCreateSerializer(data=request.data)
 
         if serializer.is_valid():
             serializer.save(created_by=request.user, word=word)
 
             data = {
-                'message': 'Example created successfully',
-                'example': serializer.data
+                "message": "Example created successfully",
+                "example": serializer.data,
             }
-
 
             return Response(data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
-@api_view(['GET','PATCH','DELETE'])
+
+
+@api_view(["GET", "PATCH", "DELETE"])
 @permission_classes([IsAuthenticated])
 def example_detail(request, word_id, example_id):
-    
     try:
         word = Word.objects.get(pk=word_id)
     except Word.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-    
 
     try:
         example = Example.objects.get(pk=example_id, word=word)
     except Example.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-    
 
-    if request.method == 'GET':
+    if request.method == "GET":
         serializer = ExampleSerializer(example)
 
-        data = {
-            'example': serializer.data
-        }
+        data = {"example": serializer.data}
 
         return Response(data)
-    
-    elif request.method == 'PATCH':
+
+    elif request.method == "PATCH":
         serializer = ExampleCreateSerializer(example, data=request.data, partial=True)
 
         if serializer.is_valid():
             serializer.save()
 
             data = {
-                'message': 'Example updated successfully',
-                'example': serializer.data
+                "message": "Example updated successfully",
+                "example": serializer.data,
             }
 
             return Response(data)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
-    elif request.method == 'DELETE':
 
+    elif request.method == "DELETE":
         example.delete()
 
-        data = {
-            'message': 'Example deleted successfully'
-        }
+        data = {"message": "Example deleted successfully"}
 
         return Response(data, status=status.HTTP_204_NO_CONTENT)

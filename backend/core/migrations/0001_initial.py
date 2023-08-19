@@ -6,7 +6,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -15,20 +14,49 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Grammar',
+            name="Grammar",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('grammar', models.CharField(max_length=200)),
-                ('structure', models.CharField(max_length=200)),
-                ('level', models.CharField(choices=[('N5', 'N5'), ('N4', 'N4'), ('N3', 'N3'), ('N2', 'N2'), ('N1', 'N1'), ('UNKNOW', 'UNKNOW')], max_length=6)),
-                ('explain', models.TextField(blank=True, null=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('created_by', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("grammar", models.CharField(max_length=200)),
+                ("structure", models.CharField(max_length=200)),
+                (
+                    "level",
+                    models.CharField(
+                        choices=[
+                            ("N5", "N5"),
+                            ("N4", "N4"),
+                            ("N3", "N3"),
+                            ("N2", "N2"),
+                            ("N1", "N1"),
+                            ("UNKNOW", "UNKNOW"),
+                        ],
+                        max_length=6,
+                    ),
+                ),
+                ("explain", models.TextField(blank=True, null=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "created_by",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'verbose_name_plural': 'grammars',
-                'ordering': ('grammar',),
+                "verbose_name_plural": "grammars",
+                "ordering": ("grammar",),
             },
         ),
     ]

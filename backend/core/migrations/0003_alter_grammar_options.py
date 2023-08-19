@@ -4,14 +4,13 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('core', '0002_alter_grammar_options'),
+        ("core", "0002_alter_grammar_options"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='grammar',
-            options={'ordering': ('id',), 'verbose_name_plural': 'grammars'},
+            name="grammar",
+            options={"ordering": ("id",), "verbose_name_plural": "grammars"},
         ),
     ]
