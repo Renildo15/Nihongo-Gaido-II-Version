@@ -1,4 +1,6 @@
 import React,{useState} from "react"
+import { GetServerSidePropsContext } from "next";
+import Cookies from "cookies";
 import { Button, 
         Box, 
         VStack, 
@@ -16,12 +18,32 @@ import Image from "next/image";
 import Logo from "../../public/logo.png";
 
 
+export async function getServerSideProps({req, res}: GetServerSidePropsContext) {
+    const cookies = new Cookies(req, res)
+
+    if(cookies.get('auth-token')) {
+        return {
+            redirect: {
+                destination: '/home',
+                permanent: false,
+            }
+        }
+    }
+
+    return {
+        props: {}
+    }
+}
+
 export default function Login() {
+    const [userName, setUserName] = useState("")
+    const [password, setPassword] = useState("")
+    const [sendingLogin, setSendingLogin] = useState(false)
     const [showPassword, setShowPassword] = useState(false)
 
     const handleState = () => {
         setShowPassword((showState) => {
-        return !showState
+            return !showState
         })
     }
     
