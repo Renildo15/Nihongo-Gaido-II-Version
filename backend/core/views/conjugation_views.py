@@ -41,9 +41,15 @@ def conjugation_list(request, word_id):
 
 @api_view(["PATCH", "DELETE"])
 @permission_classes([IsAuthenticated])
-def conjugation_detail(request, pk):
+def conjugation_detail(request, word_id, conjugation_id):
+
     try:
-        conjugation = Conjugation.objects.get(pk=pk)
+        word = Word.objects.get(pk=word_id)
+    except Word.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    try:
+        conjugation = Conjugation.objects.get(pk=conjugation_id, word=word)
     except Conjugation.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
