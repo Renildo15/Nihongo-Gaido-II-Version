@@ -15,6 +15,7 @@ from .views.example_views import example_list, example_detail
 from .views.text_views import text_list, text_detail
 from .views.text_translate_views import text_translate_list, text_translate_detail
 from .views.text_writing_views import text_writing_list, text_writing_detail
+from .views.login_views import login_view
 
 
 urlpatterns = [
@@ -62,4 +63,6 @@ urlpatterns = [
         text_writing_detail,
         name="text_writing_detail",
     ),
+
+    path("auth/login/", login_view, name="login"),
 ]
