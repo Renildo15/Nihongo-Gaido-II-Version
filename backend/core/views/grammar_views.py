@@ -11,7 +11,7 @@ from core.models import Grammar
 @permission_classes([IsAuthenticated])
 def grammar_list(request):
     if request.method == "GET":
-        grammars = Grammar.objects.all()
+        grammars = Grammar.objects.filter(created_by=request.user)
         serializer = GrammarSerializer(instance=grammars, many=True)
 
         data = {"grammars": serializer.data}
