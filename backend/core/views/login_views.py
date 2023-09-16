@@ -30,13 +30,14 @@ def login_view(request):
     
     serializer_user = UserSerializer(user).data
 
-    access_token = generate_access_token(user)
+    access_token, expiry = generate_access_token(user)
     refresh_token = generate_refresh_token(user)
 
     response.set_cookie(key="refreshtoken", value=refresh_token, httponly=True)
     response.data = {
-        "access_token": access_token,
+        "token": access_token,
         "refresh_token": refresh_token,
+        "expiry": expiry,
         "user": serializer_user
     }
 

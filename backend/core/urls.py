@@ -64,5 +64,5 @@ urlpatterns = [
         name="text_writing_detail",
     ),
 
-    path("auth/login/", login_view, name="login"),
+    path("auth/login", login_view, name="login"),
 ]
