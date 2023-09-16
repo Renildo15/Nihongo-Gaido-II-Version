@@ -13,7 +13,11 @@ import { Button,
         ButtonText,
         EyeIcon,
         EyeOffIcon,
-        ButtonSpinner
+        ButtonSpinner,
+        useToast,
+        Toast,
+        ToastTitle,
+        ToastDescription
     } from '@gluestack-ui/themed';
 import Image from "next/image";
 import Logo from "../../public/logo.png";
@@ -46,7 +50,7 @@ export default function Login() {
 
     // const errorToast = useToast()
     const router = useRouter()
-
+    const toast = useToast()
     const handleState = () => {
         setShowPassword((showState) => {
             return !showState
@@ -69,9 +73,38 @@ export default function Login() {
                 }
 
                 router.push('/home')
+                toast.show({
+                    placement: "top",
+                    render: ({ id }) => {
+                        return (
+                            <Toast nativeId={id} action="attention" variant="solid" bg="$green600">
+                            <VStack space="xs">
+                                <ToastTitle color="$white">Login efetuado com sucesso</ToastTitle>
+                                <ToastDescription color="$white">
+                                Seja bem vindo {user.first_name}
+                                </ToastDescription>
+                            </VStack>
+                            </Toast>
+                        )
+                    }
+                })
             } catch (err) {
                 if ( err instanceof AxiosError || err instanceof Error) {
-                    window.alert(err.message)
+                    toast.show({
+                        placement: "top",
+                        render: ({ id }) => {
+                          return (
+                            <Toast nativeId={id} action="attention" variant="solid" bg="$red600">
+                              <VStack space="xs">
+                                <ToastTitle color="$white">Usuário não encontrado</ToastTitle>
+                                <ToastDescription color="$white">
+                                  Verifique seu usuário e senha e tente novamente
+                                </ToastDescription>
+                              </VStack>
+                            </Toast>
+                          )
+                        },
+                      })
                 } else {
                   console.error(err)
                 }
@@ -84,7 +117,9 @@ export default function Login() {
     return (
        <Center>
             <Box display="flex" justifyContent="center" alignItems="center" flexDirection="colunm">
-                <FormControl mt="130px" isRequired>
+                <FormControl 
+                    mt="130px" 
+                    isRequired>
                     <VStack space="md" justifyContent="center" alignItems="center" mb="20px">
                         <Image
                             src={Logo}
@@ -96,11 +131,17 @@ export default function Login() {
                     </VStack>
                     <VStack space="md" width="400px">
                         <VStack space="md" mb="10px">
-                            <Input>
+                            <Input
+                                sx={{
+                                    ":focus": {
+                                        borderColor: "$red600",
+                                    }
+                                }}
+                            >
                                 <InputInput 
                                     type="text" 
                                     placeholder="Username" 
-                                    color="grey" 
+                                    color="$gray700" 
                                     onChangeText={(text) => setUserName(text)}
                                 />
                             </Input>
@@ -109,17 +150,33 @@ export default function Login() {
                             </FormControl.Error>
                         </VStack>
                         <VStack space="md" mb="10px">
-                            <Input>
+                            <Input
+                                sx={{
+                                    ":focus": {
+                                        borderColor: "$red600",
+                                    }
+                                }}
+                            >
                                 <InputInput 
                                     type={showPassword ? "text" : "password"} 
-                                    placeholder="Senha" color="grey" 
+                                    placeholder="Senha" 
+                                    color="$gray700" 
                                     onChangeText={(text) => setPassword(text)}
+                                    
                                 />
-                                <InputIcon pr="$3" onPress={handleState}>
+                                <InputIcon 
+                                    pr="$3" onPress={handleState}
+                                    borderColor="none"
+                                    sx={{
+                                        ":focus": {
+                                            borderColor: "$red600",
+                                        }
+                                    }}
+                                >
                             
                                 <Icon
                                     as={showPassword ? EyeIcon : EyeOffIcon}
-                                    color="$darkBlue500"
+                                    color="$red500"
                                 />
                                 </InputIcon>
                             </Input>
