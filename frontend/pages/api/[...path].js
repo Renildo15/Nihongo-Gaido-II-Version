@@ -19,8 +19,8 @@ export default(req, res) => {
 
         const cookies = new Cookies(req, res)
         const authToken = cookies.get('auth-token')
-
-        if(pathName === '/api/auth/logout/'){
+        
+        if(pathName === '/api/auth/logout'){
             cookies.set('auth-token')
             reject()
         }
