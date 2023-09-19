@@ -5,6 +5,8 @@ import { redirectIfNoCredentials } from "@/utils";
 import { useRouter } from "next/router";
 import axios from "axios";
 
+import { HomeDefaultPage } from "@/components/home/HomeDefaultPage";
+
 
 export async function getServerSideProps({req, res}: GetServerSidePropsContext) {
   return redirectIfNoCredentials({req, res});
@@ -19,12 +21,9 @@ export default function Home() {
   } 
 
   return (
-    <>
-      <h1>Home</h1>
-      <Button onPress={logout}>
-        <ButtonText>Logout</ButtonText>
-      </Button>
-    </>
-
+    <HomeDefaultPage title="Home">
+       
+    </HomeDefaultPage>
+        
   );
 }
