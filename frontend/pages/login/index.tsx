@@ -1,6 +1,7 @@
 import React,{useState} from "react"
 import { GetServerSidePropsContext } from "next";
 import Cookies from "cookies";
+import Head from "next/head"
 import { Button, 
         Box, 
         VStack, 
@@ -116,6 +117,11 @@ export default function Login() {
     
     return (
        <Center>
+            <Head>
+                <title>
+                    Nihongo Gaido - Login
+                </title>
+            </Head>
             <Box display="flex" justifyContent="center" alignItems="center" flexDirection="colunm">
                 <FormControl 
                     mt="130px" 
