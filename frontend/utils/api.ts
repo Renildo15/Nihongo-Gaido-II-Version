@@ -3,7 +3,7 @@ import useSWR from "swr";
 
 const fetcchSimple = (url: string) => axios.get(url).then((res) => res.data);
 
-interface IUser{
+export interface IUser{
     id: number;
     first_name: string;
     last_name: string;
@@ -29,3 +29,4 @@ export async function doLogin(username: string, password: string){
         console.log(err);
     }
 }
+
