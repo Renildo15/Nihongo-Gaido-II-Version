@@ -13,15 +13,15 @@ type Props = {
 
 export const HomeDefaultPage: FunctionComponent<Props> = ({children, title}) => {
     return(
-        <VStack>
+        <VStack maxWidth={"1116px"}>
             <Head>
                 <title>{title}</title>
             </Head>
-           <HStack>
-            <MenuLateral />
-            <Heading/>
-            <Box>{children}</Box>
-           </HStack>
+            <HStack  width="auto">
+                <MenuLateral />
+                <Heading/>
+                <Box>{children}</Box>
+            </HStack>
         </VStack>
     )
 }
