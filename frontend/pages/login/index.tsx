@@ -1,7 +1,8 @@
-import React,{useState} from "react"
+import React,{useState, useContext} from "react"
 import { GetServerSidePropsContext } from "next";
 import Cookies from "cookies";
 import Head from "next/head"
+import { AuthContext } from "@/context/AuthContext";
 import { Button, 
         Box, 
         VStack, 
@@ -22,7 +23,6 @@ import { Button,
     } from '@gluestack-ui/themed';
 import Image from "next/image";
 import Logo from "../../public/logo.png";
-import { doLogin } from "@/utils/api";
 import { useRouter } from "next/router";
 import { AxiosError } from "axios";
 
@@ -49,7 +49,8 @@ export default function Login() {
     const [sendingLogin, setSendingLogin] = useState(false)
     const [showPassword, setShowPassword] = useState(false)
 
-    // const errorToast = useToast()
+    const {authenticateUser, userInfo} = useContext(AuthContext)
+
     const router = useRouter()
     const toast = useToast()
     const handleState = () => {
@@ -63,13 +64,10 @@ export default function Login() {
         if(userName && password){
             setSendingLogin(true)
             try{
-                const user = await doLogin(userName, password)
+                await authenticateUser(userName, password)
 
-                if(!user){
-                    throw new Error("Usuário não encontrado")
-                }
 
-                if(!user.is_active){
+                if(!userInfo?.is_active){
                     throw new Error("Usuário inativo")
                 }
 
@@ -78,11 +76,11 @@ export default function Login() {
                     placement: "top",
                     render: ({ id }) => {
                         return (
-                            <Toast nativeId={id} action="attention" variant="solid" bg="$green600">
+                            <Toast id={id} action="attention" variant="solid" bg="$green600">
                             <VStack space="xs">
                                 <ToastTitle color="$white">Login efetuado com sucesso</ToastTitle>
                                 <ToastDescription color="$white">
-                                Seja bem vindo {user.first_name}
+                                Seja bem vindo {userInfo?.first_name}
                                 </ToastDescription>
                             </VStack>
                             </Toast>
@@ -95,7 +93,7 @@ export default function Login() {
                         placement: "top",
                         render: ({ id }) => {
                           return (
-                            <Toast nativeId={id} action="attention" variant="solid" bg="$red600">
+                            <Toast id={id} action="attention" variant="solid" bg="$red600">
                               <VStack space="xs">
                                 <ToastTitle color="$white">Usuário não encontrado</ToastTitle>
                                 <ToastDescription color="$white">
@@ -122,7 +120,7 @@ export default function Login() {
                     Nihongo Gaido - Login
                 </title>
             </Head>
-            <Box display="flex" justifyContent="center" alignItems="center" flexDirection="colunm">
+            <Box display="flex" justifyContent="center" alignItems="center" >
                 <FormControl 
                     mt="130px" 
                     isRequired>
