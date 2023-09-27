@@ -23,7 +23,7 @@ urlpatterns = [
     path("grammar/<int:pk>/", grammar_detail, name="grammar_detail"),
     path("user/", user_list, name="user_list_create"),
     path("user/<int:pk>/", user_detail, name="user_detail"),
-    path("profile/<int:user_id>/", profile_list, name="profile_list"),
+    path("profile/<int:user_id>", profile_list, name="profile_list"),
     path("choice_grammar/", choice_grammar, name="choice_grammar"),
     path(
         "choice_grammar/<int:pk>/", choice_grammar_detail, name="choice_grammar_detail"
