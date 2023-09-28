@@ -9,6 +9,10 @@ migrate:
 #executa o servidor
 server:
 	python manage.py runserver
+
+#roda o docker-compose
+db:
+	docker compose up db
 #instala as dependências
 dependencies:
 	pip install -r requirements.txt
