@@ -19,7 +19,7 @@ export const HomeDefaultPage: FunctionComponent<Props> = ({children, title}) => 
             </Head>
             <HStack  width="auto">
                 <MenuLateral />
-                <Heading/>
+                <Heading title="Home"/>
                 <Box>{children}</Box>
             </HStack>
         </VStack>

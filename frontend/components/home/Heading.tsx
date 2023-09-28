@@ -1,12 +1,28 @@
 import React,{useContext} from "react";
 import { Box, HStack, Text } from "@gluestack-ui/themed";
 import ArrowLeft from "../../public/arrowLeft.svg";
+import Default from "../../public/default.jpg"
 import Image from "next/image";
 import { AuthContext } from "@/context/AuthContext";
+import { useProfile } from "@/utils/api";
 
+interface IHeadingProps {
+    title: string;
+}
 
-export function Heading(){
+export function Heading({title}: IHeadingProps){
     const {userInfo} = useContext(AuthContext)
+
+    const {
+        data: profile,
+        error: profileError,
+        isLoading: profileIsLoading,
+        isValidating: profileIsValidating,
+        mutate: profileMutate,
+    } = useProfile(userInfo?.id)
+
+    console.log("profile", profile)
+
     return(
         <Box
             bg="#D02C23"
@@ -26,19 +42,15 @@ export function Heading(){
                     fontWeight="bold"
                     fontFamily="Inter"
                 >
-                    Home
+                    {title}
                 </Text>
                 <HStack
                     alignItems="center"
                     justifyContent="space-between"
                     w={140}
                 >
-                    <Box
-                        bg="white"
-                        w={30}
-                        h={30}
-                        borderRadius={30}
-                    ></Box>
+                 
+                    <Image src={profile?.avatar || Default} alt="Avatar" width={30} height={30} />
                     <Text
                         color="white"
                         fontSize={18}

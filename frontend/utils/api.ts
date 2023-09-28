@@ -12,6 +12,14 @@ export interface IUser{
     is_active: boolean;
 }
 
+export interface IProfile{
+    id: number;
+    user: IUser;
+    phone: string;
+    date_of_birth: string;
+    avatar: string;
+    date_created: string;
+}
 
 export async function doLogin(username: string, password: string){
     interface ILoginResponse{
@@ -30,3 +38,24 @@ export async function doLogin(username: string, password: string){
     }
 }
 
+export function useProfile(userId: number | undefined){
+    interface IResponse{
+        profile: IProfile;
+    }
+
+    const {
+        data, 
+        error, 
+        isLoading, 
+        isValidating, 
+        mutate
+    } = useSWR<IResponse>(`/api/profile/${userId}`, fetcchSimple);
+
+    return {
+        data: data?.profile,
+        error,
+        isLoading,
+        isValidating,
+        mutate
+    }
+}
