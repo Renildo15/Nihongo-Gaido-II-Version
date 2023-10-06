@@ -1,11 +1,15 @@
-import React,{useContext} from "react";
+import React,{useContext, useState, useRef} from "react";
 import { useProfile } from "@/utils/api";
 import { AuthContext } from "@/context/AuthContext";
 import { Box, VStack, HStack, Text, Button, ButtonText } from "@gluestack-ui/themed";
 import Image from "next/image";
 import Default from "../../public/default.jpg"
+import ModalProfile from "./ModalProfile";
+
 export default function ProfileInfo(){
     const {userInfo} = useContext(AuthContext)
+    const [isOpen, setIsOpen] = useState(false)
+    const ref = useRef(null)
 
     const {
         data: profile,
@@ -15,7 +19,7 @@ export default function ProfileInfo(){
         mutate: profileMutate,
     } = useProfile(userInfo?.id)
 
-    console.log(profile)
+
     return(
         <Box justifyContent="center" alignItems="center" w={"100%"} >
           <VStack borderWidth={1} w={800} h={400} borderRadius={9} borderColor="#D02C23" py={5} px={8} space="lg">
@@ -55,6 +59,7 @@ export default function ProfileInfo(){
             </VStack>
             <HStack justifyContent="flex-end">
                 <Button
+                    onPress={() => setIsOpen(true)}
                     bg="#D02C23"
                     w={70}
                     h={30}
@@ -70,6 +75,7 @@ export default function ProfileInfo(){
                     <ButtonText color="#white">Editar</ButtonText>
                 </Button>
             </HStack>
+            <ModalProfile isOpen={isOpen} onClose={() => setIsOpen(false)} ref={ref} />
           </VStack>
         </Box>
     )
