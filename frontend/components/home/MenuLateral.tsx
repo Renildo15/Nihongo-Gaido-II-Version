@@ -185,6 +185,8 @@ export function MenuLateral(){
                             flexDirection="column"
                             alignItems="flex-start"
                             w={"100%"}
+                            onPress={() => router.push('/profile')}
+                            isPressed={router.asPath.startsWith('/profile')}
                         >
                                 <HStack>
                                     <Image
