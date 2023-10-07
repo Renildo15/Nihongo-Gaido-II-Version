@@ -1,15 +1,15 @@
-import React,{useContext, useState, useRef} from "react";
+import React,{useContext, useState} from "react";
 import { useProfile } from "@/utils/api";
 import { AuthContext } from "@/context/AuthContext";
-import { Box, VStack, HStack, Text, Button, ButtonText } from "@gluestack-ui/themed";
+import { Box, VStack, HStack, Text, Button, ButtonText, Spinner } from "@gluestack-ui/themed";
 import Image from "next/image";
 import Default from "../../public/default.jpg"
 import ModalProfile from "./ModalProfile";
+import { format } from 'date-fns'
 
 export default function ProfileInfo(){
     const {userInfo} = useContext(AuthContext)
     const [isOpen, setIsOpen] = useState(false)
-    const ref = useRef(null)
 
     const {
         data: profile,
@@ -19,7 +19,21 @@ export default function ProfileInfo(){
         mutate: profileMutate,
     } = useProfile(userInfo?.id)
 
+    if(profileIsLoading || profileIsValidating) {
+        return(
+            <Box justifyContent="center" alignItems="center" w={"100%"} >
+                <Spinner size="large" color="$fuchsia600" />
+            </Box>
+        )
+    }
 
+    if (profileError) {
+        return (
+            <Box justifyContent="center" alignItems="center" w={"100%"} >
+                <Text color="#D02C23">Erro ao carregar perfil</Text>
+            </Box>
+        )
+    }
     return(
         <Box justifyContent="center" alignItems="center" w={"100%"} >
           <VStack borderWidth={1} w={800} h={400} borderRadius={9} borderColor="#D02C23" py={5} px={8} space="lg">
@@ -54,7 +68,7 @@ export default function ProfileInfo(){
                 </Text>
                 <Text color="#D02C23">
                     <Text color="#D02C23" fontWeight="bold">Data de Nascimento: </Text>
-                    {profile?.date_of_birth}
+                    {profile?.date_of_birth ? format(new Date(profile.date_of_birth), 'dd-MM-yyyy') : 'Data não disponível'}
                 </Text>  
             </VStack>
             <HStack justifyContent="flex-end">
@@ -75,7 +89,7 @@ export default function ProfileInfo(){
                     <ButtonText color="#white">Editar</ButtonText>
                 </Button>
             </HStack>
-            <ModalProfile isOpen={isOpen} onClose={() => setIsOpen(false)} ref={ref} />
+            <ModalProfile isOpen={isOpen} onClose={() => setIsOpen(false)} />
           </VStack>
         </Box>
     )
