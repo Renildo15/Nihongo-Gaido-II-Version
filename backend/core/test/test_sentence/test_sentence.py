@@ -1,8 +1,9 @@
-from django.test import TestCase
-from rest_framework.test import APIClient
-from rest_framework import status
-from core.models import Sentence, Grammar
 from django.contrib.auth.models import User
+from django.test import TestCase
+from rest_framework import status
+from rest_framework.test import APIClient
+
+from core.models import Grammar, Sentence
 
 
 class SentenceViewsTest(TestCase):

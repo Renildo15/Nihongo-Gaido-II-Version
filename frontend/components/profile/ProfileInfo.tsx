@@ -22,7 +22,7 @@ export default function ProfileInfo(){
     if(profileIsLoading || profileIsValidating) {
         return(
             <Box justifyContent="center" alignItems="center" w={"100%"} >
-                <Spinner size="large" color="$fuchsia600" />
+                <Spinner size="large" color="$primary400" />
             </Box>
         )
     }
