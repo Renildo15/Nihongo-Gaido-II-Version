@@ -25,6 +25,11 @@ import {
 import { useProfile } from "@/utils/api";
 import {AuthContext} from "@/context/AuthContext";
 import InputMask from 'react-input-mask';
+import DatePicker,{ registerLocale }  from "react-datepicker";
+import ptBR from 'date-fns/locale/pt-BR';
+registerLocale('ptBR', ptBR);
+import "react-datepicker/dist/react-datepicker.css";
+
 
 
 interface ModalProfileProps {
@@ -50,6 +55,8 @@ export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
     const [email, setEmail] = useState(originalProfile?.user.email || "")
     const [telefone, setTelefone] = useState(originalProfile?.phone || "")
     const [dataNascimento, setDataNascimento] = useState(originalProfile?.date_of_birth || "")
+
+    const [startDate, setStartDate] = useState(originalProfile?.date_of_birth || "")
 
     const [telefoneValido, setTelefoneValido] = useState(true)
 
@@ -163,12 +170,7 @@ export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
                                     </Input>
                                     {!telefoneValido && <div style={{color: 'red'}}>Número de telefone inválido.</div>}
                                     <FormControlLabelText color="#D02C23">Data de Nascimento:</FormControlLabelText>
-                                    <Input>
-                                        <InputInput 
-                                            value={dataNascimento}
-                                            onChange={(e) => setDataNascimento(e.target.value)}
-                                        />
-                                    </Input>
+                                    <DatePicker locale="ptBR" selected={startDate} onChange={(date) => setStartDate(date)} /> 
                             </VStack>
                         </HStack>
                     </FormControl>
