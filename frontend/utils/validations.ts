@@ -1,12 +1,12 @@
-export const nameIsValid = (nome: string) => {
-    const nomeUser = nome.replace(/\s/g, '');
-    if (!/^[a-zA-ZÀ-ÿ\u00f1\u00d1\s-]+$/.test(nomeUser) || nomeUser.trim().split(/\s+/).length < 2) {
-        return false
-      } else {
-        return true
-      }
-}
-
+export const nameIsValid = (name: string) => {
+    const fullName = name.replace(/\s+/g, ' ')
+    if (!/^[a-zA-ZÀ-ÿ\u00f1\u00d1\s-]+$/.test(fullName) || fullName.trim().split(/\s+/).length < 2) {
+      return false
+    } else {
+      return true
+    }
+  }
+  
 export const emailIsValid = (email: string) => {
 
     const emailRegex = /^(?![^a-zA-Z0-9])[^.:;](?!.*\.\.)(?:"(?:[\x20-\x21\x23-\x5B\x5D\x5F\x60\x7B-\x7E]|\\[\x09\x20-\x7E])*"|[\x21-\x7E]+)@(([a-zA-Z][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]\.)+[a-zA-Z]{2,}|(\[((?:IPv6:)?(?:[a-fA-F0-9]{1,4}:){7}[a-fA-F0-9]{1,4}|\[(?:(?:[a-fA-F0-9]{1,4}:)*[a-fA-F0-9]{1,4}\])\]))$)/
