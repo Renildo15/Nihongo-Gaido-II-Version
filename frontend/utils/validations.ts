@@ -5,8 +5,36 @@ export const nameIsValid = (name: string) => {
     } else {
       return true
     }
-  }
+}
+
+export const usernameIsValid = (username: string) => {
+    if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+      return false
+    } else {
+      return true
+    }
+}
+
+export const dateBirthIsValid = (dateBirth: string) => {
+    const dateBirthRegex = /^\d{4}-\d{2}-\d{2}$/
+    const hasValidFormat = dateBirthRegex.test(dateBirth)
   
+    if (!hasValidFormat) {
+      return false
+    }
+  
+    const [year, month, day] = dateBirth.split('-')
+  
+    const date = new Date(Number(year), Number(month) - 1, Number(day))
+  
+    const isDateValid =
+      date.getFullYear() === Number(year) &&
+      date.getMonth() === Number(month) - 1 &&
+      date.getDate() === Number(day)
+  
+    return isDateValid
+}
+
 export const emailIsValid = (email: string) => {
 
     const emailRegex = /^(?![^a-zA-Z0-9])[^.:;](?!.*\.\.)(?:"(?:[\x20-\x21\x23-\x5B\x5D\x5F\x60\x7B-\x7E]|\\[\x09\x20-\x7E])*"|[\x21-\x7E]+)@(([a-zA-Z][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]\.)+[a-zA-Z]{2,}|(\[((?:IPv6:)?(?:[a-fA-F0-9]{1,4}:){7}[a-fA-F0-9]{1,4}|\[(?:(?:[a-fA-F0-9]{1,4}:)*[a-fA-F0-9]{1,4}\])\]))$)/
