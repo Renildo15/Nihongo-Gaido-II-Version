@@ -15,6 +15,10 @@ import {
     CloseIcon,
     FormControl,
     FormControlLabelText,
+    FormControlError,
+    FormControlErrorText,
+    FormControlErrorIcon,
+    AlertCircleIcon,
     Input,
     InputInput,
     HStack,
@@ -24,6 +28,7 @@ import {
 
 import { useProfile } from "@/utils/api";
 import {AuthContext} from "@/context/AuthContext";
+import { nameIsValid, usernameIsValid, emailIsValid, dateBirthIsValid } from "@/utils/validations";
 import InputMask from 'react-input-mask';
 import DatePicker,{ registerLocale }  from "react-datepicker";
 import ptBR from 'date-fns/locale/pt-BR';
@@ -38,8 +43,6 @@ interface ModalProfileProps {
 }
 
 export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
-
-    
 
     const {userInfo} = useContext(AuthContext)
 
@@ -56,11 +59,17 @@ export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
     const [telefone, setTelefone] = useState(originalProfile?.phone || "")
     const [dataNascimento, setDataNascimento] = useState(originalProfile?.date_of_birth || "")
 
+    const [isNomeValido, setIsNomeValido] = useState(true)
+    const [isSobrenomeValido, setIsSobrenomeValido] = useState(true)
+    const [isUsernameValido, setIsUsernameValido] = useState(true)
+    const [isEmailValido, setIsEmailValido] = useState(true)
+    const [isTelefoneValido, setIsTelefoneValido] = useState(true)
+    const [isDataNascimentoValido, setIsDataNascimentoValido] = useState(true)
+
+    const [mensagemErro, setMensagemErro] = useState("")
+
     const [startDate, setStartDate] = useState(originalProfile?.date_of_birth || "")
 
-    const [telefoneValido, setTelefoneValido] = useState(true)
-
-    
     const someInfoChanged = (
         nome !== originalProfile?.user.first_name ||
         sobrenome !== originalProfile?.user.last_name ||
@@ -81,21 +90,56 @@ export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
         }
     }
 
-
-    const isValidPhone = (phone: string) => {
-        const regex = /^\(\d{2}\) \d \d{4}-\d{4}$/;
-        return regex.test(phone);
+    const handleNameChange = (name: string) => {
+        setNome(name);
+        setIsNomeValido(nameIsValid(name));
     }
 
-    const handleTelefoneChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
+    const handleLastNameChange = (lastname: string) => {
+        setSobrenome(lastname);
+        setIsSobrenomeValido(nameIsValid(lastname));
+    }
+
+    const handleUsernameChange = (username: string) => {
+        setUsername(username);
+        setIsUsernameValido(usernameIsValid(username));
+    }
+
+    const handleEmailChange = (email: string) => {
+        setEmail(email);
+        setIsEmailValido(emailIsValid(email));
+    }
+
+    const handleDateBirthChange = (dateBirth: string) => {
+        setDataNascimento(dateBirth);
+        setIsDataNascimentoValido(dateBirthIsValid(dateBirth));
+    }
+
+    const handlePhoneChange = (newPhone: string) => {
+        const value = newPhone.replace(/\D/g, '')
     
-        setTelefone(value);
-    
-        if (!isValidPhone(value)) {
-            setTelefoneValido(false);
+        let formattedPhone = ''
+        let isInvalid = false
+        if (value.length <= 10) {
+          formattedPhone = `(${value.slice(0, 2)}) ${value.slice(2)}`
+          isInvalid = true
+        } else if (value.length <= 11) {
+          formattedPhone = `(${value.slice(0, 2)}) ${value.slice(2, 7)}-${value.slice(7)}`
+          isInvalid = false
         } else {
-            setTelefoneValido(true);
+          formattedPhone = telefone
+          isInvalid = true
+        }
+        setTelefone(formattedPhone)
+        setIsTelefoneValido(isInvalid)
+        validatePhone(formattedPhone)
+    }
+
+    const validatePhone = (phone: string) => {
+        if (phone.length >= 15) {
+            setIsTelefoneValido(true)
+        } else {
+            setIsTelefoneValido(false)
         }
     }
     
@@ -123,57 +167,105 @@ export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
                     </ModalCloseButton>
                 </ModalHeader>
                 <ModalBody>
-                    <FormControl>
+                    <VStack>
                         <HStack justifyContent="space-between">
                             <VStack space="md">
-                                <FormControlLabelText color="#D02C23">Nome:</FormControlLabelText>
-                                <Input>
-                                    <InputInput
-                                        value={nome}
-                                        onChange={(e) => setNome(e.target.value)}
-                                    />
-                                </Input>
-                                <FormControlLabelText color="#D02C23">Sobrenome:</FormControlLabelText>
-                                <Input>
-                                    <InputInput 
-                                        value={sobrenome}
-                                        onChange={(e) => setSobrenome(e.target.value)}
-                                    />
-                                </Input>
-                                <FormControlLabelText color="#D02C23">Username:</FormControlLabelText>
-                                <Input>
-                                    <InputInput 
-                                        value={username}
-                                        onChange={(e) => setUsername(e.target.value)}
-                                    />
-                                </Input>
-                            
+                               <FormControl isInvalid={!isNomeValido}>
+                                    <FormControlLabelText color="#D02C23">Nome:</FormControlLabelText>
+                                    <Input>
+                                        <InputInput
+                                            value={nome}
+                                            onChangeText={handleNameChange}
+                                        />
+                                    </Input>
+                                    <FormControlError>
+                                        <FormControlErrorIcon as={AlertCircleIcon} color="#D02C23" />
+                                        <FormControlErrorText>
+                                            Informe um nome válido.
+                                        </FormControlErrorText>
+                                    </FormControlError>
+                               </FormControl>
+                                <FormControl isInvalid={!isSobrenomeValido}>
+                                    <FormControlLabelText color="#D02C23">Sobrenome:</FormControlLabelText>
+                                    <Input>
+                                        <InputInput 
+                                            value={sobrenome}
+                                            onChangeText={handleLastNameChange}
+                                        />
+                                    </Input>
+                                    <FormControlError>
+                                        <FormControlErrorIcon as={AlertCircleIcon} color="#D02C23" />
+                                        <FormControlErrorText>
+                                            Informe um sobrenome válido.
+                                        </FormControlErrorText>
+                                    </FormControlError>
+                                </FormControl>
+                                <FormControl isInvalid={!isUsernameValido}>
+                                    <FormControlLabelText color="#D02C23">Username:</FormControlLabelText>
+                                    <Input>
+                                        <InputInput 
+                                            value={username}
+                                            onChangeText={handleUsernameChange}
+                                        />
+                                    </Input>
+                                    <FormControlError>
+                                        <FormControlErrorIcon as={AlertCircleIcon} color="#D02C23" />
+                                        <FormControlErrorText>
+                                            Informe um username válido.
+                                        </FormControlErrorText>
+                                    </FormControlError>
+                                </FormControl>
                             </VStack>
                             <VStack space="md">
-                                <FormControlLabelText color="#D02C23">Email:</FormControlLabelText>
+                                <FormControl isInvalid={!isEmailValido}>
+                                    <FormControlLabelText color="#D02C23">Email:</FormControlLabelText>
                                     <Input>
                                         <InputInput 
                                             value={email}
-                                            onChangeText={setEmail}
+                                            onChangeText={handleEmailChange}
                                         />
                                     </Input>
+                                    <FormControlError>
+                                        <FormControlErrorIcon as={AlertCircleIcon} color="#D02C23" />
+                                        <FormControlErrorText>
+                                            Informe um email válido.
+                                        </FormControlErrorText>
+                                    </FormControlError>
+                                </FormControl>
+                                <FormControl isInvalid={!isTelefoneValido}>
                                     <FormControlLabelText color="#D02C23">Telefone:</FormControlLabelText>
                                     <Input>
-                                        <InputMask
-                                            mask="(99) 9 9999-9999"
+                                        <InputInput 
                                             value={telefone}
-                                            onChange={handleTelefoneChange}
-                                            
-                                        >
-                                            {(inputProps) => <InputInput {...inputProps} />}
-                                        </InputMask>                                     
+                                            onChangeText={handlePhoneChange}
+                                            mask="+55 (99) 99999-9999"
+                                        />                                    
                                     </Input>
-                                    {!telefoneValido && <div style={{color: 'red'}}>Número de telefone inválido.</div>}
+                                    <FormControlError>
+                                        <FormControlErrorIcon as={AlertCircleIcon} color="#D02C23" />
+                                        <FormControlErrorText>
+                                           Número de telefone inválido.
+                                        </FormControlErrorText>
+                                    </FormControlError>
+                                </FormControl>
+                                <FormControl isInvalid={!isDataNascimentoValido}>
                                     <FormControlLabelText color="#D02C23">Data de Nascimento:</FormControlLabelText>
-                                    <DatePicker locale="ptBR" selected={startDate} onChange={(date) => setStartDate(date)} /> 
+                                    <DatePicker    
+                                        locale="ptBR" 
+                                        selected={startDate} 
+                                        onChange={(date) => setStartDate(date)} 
+                                        
+                                    /> 
+                                    <FormControlError>
+                                        <FormControlErrorIcon as={AlertCircleIcon} color="#D02C23" />
+                                        <FormControlErrorText>
+                                            Informe uma data válida.
+                                        </FormControlErrorText>
+                                    </FormControlError>
+                                </FormControl>
                             </VStack>
                         </HStack>
-                    </FormControl>
+                    </VStack>
                 </ModalBody>
                 <ModalFooter>
                     <Button
@@ -203,7 +295,15 @@ export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
                               bg: "$red800",
                             },
                         }}
-                        isDisabled={!someInfoChanged}
+                        isDisabled={
+                            !someInfoChanged || 
+                            !isNomeValido || 
+                            !isSobrenomeValido || 
+                            !isUsernameValido || 
+                            !isEmailValido || 
+                            !isTelefoneValido || 
+                            !isDataNascimentoValido
+                        }
                     >
                         <ButtonText>Salvar</ButtonText>
                     </Button>
