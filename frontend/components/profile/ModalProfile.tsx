@@ -250,7 +250,12 @@ export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
                                 </FormControl>
                                 <FormControl isInvalid={!isDataNascimentoValido}>
                                     <FormControlLabelText color="#D02C23">Data de Nascimento:</FormControlLabelText>
-                                    <DatePicker locale="ptBR" selected={startDate} onChange={(date) => setStartDate(date)} /> 
+                                    <DatePicker    
+                                        locale="ptBR" 
+                                        selected={startDate} 
+                                        onChange={(date) => setStartDate(date)} 
+                                        
+                                    /> 
                                     <FormControlError>
                                         <FormControlErrorIcon as={AlertCircleIcon} color="#D02C23" />
                                         <FormControlErrorText>
