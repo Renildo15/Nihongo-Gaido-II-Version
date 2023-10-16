@@ -15,6 +15,10 @@ import {
     CloseIcon,
     FormControl,
     FormControlLabelText,
+    FormControlError,
+    FormControlErrorText,
+    FormControlErrorIcon,
+    AlertCircleIcon,
     Input,
     InputInput,
     HStack,
@@ -24,6 +28,7 @@ import {
 
 import { useProfile } from "@/utils/api";
 import {AuthContext} from "@/context/AuthContext";
+import { nameIsValid } from "@/utils/validations";
 import InputMask from 'react-input-mask';
 import DatePicker,{ registerLocale }  from "react-datepicker";
 import ptBR from 'date-fns/locale/pt-BR';
@@ -38,8 +43,6 @@ interface ModalProfileProps {
 }
 
 export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
-
-    
 
     const {userInfo} = useContext(AuthContext)
 
@@ -67,9 +70,6 @@ export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
 
     const [startDate, setStartDate] = useState(originalProfile?.date_of_birth || "")
 
-    const [telefoneValido, setTelefoneValido] = useState(true)
-
-    
     const someInfoChanged = (
         nome !== originalProfile?.user.first_name ||
         sobrenome !== originalProfile?.user.last_name ||
@@ -90,21 +90,36 @@ export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
         }
     }
 
-
-    const isValidPhone = (phone: string) => {
-        const regex = /^\(\d{2}\) \d \d{4}-\d{4}$/;
-        return regex.test(phone);
+    const handleNameChange = (name: string) => {
+        setNome(name);
+        setIsNomeValido(nameIsValid(name));
     }
 
-    const handleTelefoneChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
+    const handlePhoneChange = (newPhone: string) => {
+        const value = newPhone.replace(/\D/g, '')
     
-        setTelefone(value);
-    
-        if (!isValidPhone(value)) {
-            setTelefoneValido(false);
+        let formattedPhone = ''
+        let isInvalid = false
+        if (value.length <= 10) {
+          formattedPhone = `(${value.slice(0, 2)}) ${value.slice(2)}`
+          isInvalid = true
+        } else if (value.length <= 11) {
+          formattedPhone = `(${value.slice(0, 2)}) ${value.slice(2, 7)}-${value.slice(7)}`
+          isInvalid = false
         } else {
-            setTelefoneValido(true);
+          formattedPhone = telefone
+          isInvalid = true
+        }
+        setTelefone(formattedPhone)
+        setIsTelefoneValido(isInvalid)
+        validatePhone(formattedPhone)
+    }
+
+    const validatePhone = (phone: string) => {
+        if (phone.length >= 15) {
+            setIsTelefoneValido(true)
+        } else {
+            setIsTelefoneValido(false)
         }
     }
     
@@ -135,16 +150,22 @@ export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
                     <VStack>
                         <HStack justifyContent="space-between">
                             <VStack space="md">
-                               <FormControl>
+                               <FormControl isInvalid={!isNomeValido}>
                                     <FormControlLabelText color="#D02C23">Nome:</FormControlLabelText>
                                     <Input>
                                         <InputInput
                                             value={nome}
-                                            onChange={(e) => setNome(e.target.value)}
+                                            onChangeText={handleNameChange}
                                         />
                                     </Input>
+                                    <FormControlError>
+                                        <FormControlErrorIcon as={AlertCircleIcon} color="#D02C23" />
+                                        <FormControlErrorText>
+                                            Informe um nome válido.
+                                        </FormControlErrorText>
+                                    </FormControlError>
                                </FormControl>
-                                 <FormControl>
+                                <FormControl>
                                     <FormControlLabelText color="#D02C23">Sobrenome:</FormControlLabelText>
                                     <Input>
                                         <InputInput 
@@ -173,19 +194,21 @@ export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
                                         />
                                     </Input>
                                 </FormControl>
-                                <FormControl>
+                                <FormControl isInvalid={!isTelefoneValido}>
                                     <FormControlLabelText color="#D02C23">Telefone:</FormControlLabelText>
                                     <Input>
-                                        <InputMask
-                                            mask="(99) 9 9999-9999"
+                                        <InputInput 
                                             value={telefone}
-                                            onChange={handleTelefoneChange}
-                                            
-                                        >
-                                            {(inputProps) => <InputInput {...inputProps} />}
-                                        </InputMask>                                     
+                                            onChangeText={handlePhoneChange}
+                                            mask="+55 (99) 99999-9999"
+                                        />                                    
                                     </Input>
-                                    {!telefoneValido && <div style={{color: 'red'}}>Número de telefone inválido.</div>}
+                                    <FormControlError>
+                                        <FormControlErrorIcon as={AlertCircleIcon} color="#D02C23" />
+                                        <FormControlErrorText>
+                                           Número de telefone inválido.
+                                        </FormControlErrorText>
+                                    </FormControlError>
                                 </FormControl>
                                 <FormControl>
                                     <FormControlLabelText color="#D02C23">Data de Nascimento:</FormControlLabelText>
@@ -223,7 +246,7 @@ export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
                               bg: "$red800",
                             },
                         }}
-                        isDisabled={!someInfoChanged}
+                        isDisabled={!someInfoChanged || !isNomeValido || !isSobrenomeValido || !isUsernameValido || !isEmailValido || !isTelefoneValido || !isDataNascimentoValido}
                     >
                         <ButtonText>Salvar</ButtonText>
                     </Button>
