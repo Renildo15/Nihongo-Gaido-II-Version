@@ -28,7 +28,7 @@ import {
 
 import { useProfile } from "@/utils/api";
 import {AuthContext} from "@/context/AuthContext";
-import { nameIsValid } from "@/utils/validations";
+import { nameIsValid, usernameIsValid, emailIsValid, dateBirthIsValid } from "@/utils/validations";
 import InputMask from 'react-input-mask';
 import DatePicker,{ registerLocale }  from "react-datepicker";
 import ptBR from 'date-fns/locale/pt-BR';
@@ -93,6 +93,26 @@ export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
     const handleNameChange = (name: string) => {
         setNome(name);
         setIsNomeValido(nameIsValid(name));
+    }
+
+    const handleLastNameChange = (lastname: string) => {
+        setSobrenome(lastname);
+        setIsSobrenomeValido(nameIsValid(lastname));
+    }
+
+    const handleUsernameChange = (username: string) => {
+        setUsername(username);
+        setIsUsernameValido(usernameIsValid(username));
+    }
+
+    const handleEmailChange = (email: string) => {
+        setEmail(email);
+        setIsEmailValido(emailIsValid(email));
+    }
+
+    const handleDateBirthChange = (dateBirth: string) => {
+        setDataNascimento(dateBirth);
+        setIsDataNascimentoValido(dateBirthIsValid(dateBirth));
     }
 
     const handlePhoneChange = (newPhone: string) => {
@@ -165,34 +185,52 @@ export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
                                         </FormControlErrorText>
                                     </FormControlError>
                                </FormControl>
-                                <FormControl>
+                                <FormControl isInvalid={!isSobrenomeValido}>
                                     <FormControlLabelText color="#D02C23">Sobrenome:</FormControlLabelText>
                                     <Input>
                                         <InputInput 
                                             value={sobrenome}
-                                            onChange={(e) => setSobrenome(e.target.value)}
+                                            onChangeText={handleLastNameChange}
                                         />
                                     </Input>
+                                    <FormControlError>
+                                        <FormControlErrorIcon as={AlertCircleIcon} color="#D02C23" />
+                                        <FormControlErrorText>
+                                            Informe um sobrenome válido.
+                                        </FormControlErrorText>
+                                    </FormControlError>
                                 </FormControl>
-                                <FormControl>
+                                <FormControl isInvalid={!isUsernameValido}>
                                     <FormControlLabelText color="#D02C23">Username:</FormControlLabelText>
                                     <Input>
                                         <InputInput 
                                             value={username}
-                                            onChange={(e) => setUsername(e.target.value)}
+                                            onChangeText={handleUsernameChange}
                                         />
                                     </Input>
+                                    <FormControlError>
+                                        <FormControlErrorIcon as={AlertCircleIcon} color="#D02C23" />
+                                        <FormControlErrorText>
+                                            Informe um username válido.
+                                        </FormControlErrorText>
+                                    </FormControlError>
                                 </FormControl>
                             </VStack>
                             <VStack space="md">
-                                <FormControl>
+                                <FormControl isInvalid={!isEmailValido}>
                                     <FormControlLabelText color="#D02C23">Email:</FormControlLabelText>
                                     <Input>
                                         <InputInput 
                                             value={email}
-                                            onChangeText={setEmail}
+                                            onChangeText={handleEmailChange}
                                         />
                                     </Input>
+                                    <FormControlError>
+                                        <FormControlErrorIcon as={AlertCircleIcon} color="#D02C23" />
+                                        <FormControlErrorText>
+                                            Informe um email válido.
+                                        </FormControlErrorText>
+                                    </FormControlError>
                                 </FormControl>
                                 <FormControl isInvalid={!isTelefoneValido}>
                                     <FormControlLabelText color="#D02C23">Telefone:</FormControlLabelText>
@@ -210,9 +248,15 @@ export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
                                         </FormControlErrorText>
                                     </FormControlError>
                                 </FormControl>
-                                <FormControl>
+                                <FormControl isInvalid={!isDataNascimentoValido}>
                                     <FormControlLabelText color="#D02C23">Data de Nascimento:</FormControlLabelText>
                                     <DatePicker locale="ptBR" selected={startDate} onChange={(date) => setStartDate(date)} /> 
+                                    <FormControlError>
+                                        <FormControlErrorIcon as={AlertCircleIcon} color="#D02C23" />
+                                        <FormControlErrorText>
+                                            Informe uma data válida.
+                                        </FormControlErrorText>
+                                    </FormControlError>
                                 </FormControl>
                             </VStack>
                         </HStack>
@@ -246,7 +290,15 @@ export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
                               bg: "$red800",
                             },
                         }}
-                        isDisabled={!someInfoChanged || !isNomeValido || !isSobrenomeValido || !isUsernameValido || !isEmailValido || !isTelefoneValido || !isDataNascimentoValido}
+                        isDisabled={
+                            !someInfoChanged || 
+                            !isNomeValido || 
+                            !isSobrenomeValido || 
+                            !isUsernameValido || 
+                            !isEmailValido || 
+                            !isTelefoneValido || 
+                            !isDataNascimentoValido
+                        }
                     >
                         <ButtonText>Salvar</ButtonText>
                     </Button>
