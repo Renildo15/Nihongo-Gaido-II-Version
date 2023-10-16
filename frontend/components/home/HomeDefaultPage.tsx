@@ -19,8 +19,10 @@ export const HomeDefaultPage: FunctionComponent<Props> = ({children, title}) => 
             </Head>
             <HStack  width="auto">
                 <MenuLateral />
-                <Heading title="Home"/>
-                <Box>{children}</Box>
+                <VStack w={"100%"}>
+                    <Heading title={title}/>
+                    <Box>{children}</Box>
+                </VStack>
             </HStack>
         </VStack>
     )

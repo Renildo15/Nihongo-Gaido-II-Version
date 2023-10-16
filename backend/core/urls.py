@@ -1,22 +1,20 @@
 from django.urls import path
-from .views.grammar_views import grammar_list, grammar_detail
-from .views.user_views import user_list, user_detail
-from .views.profile_views import profile_list
-from .views.practice_grammar_views import (
-    choice_grammar,
-    choice_grammar_detail,
-    setence_list,
-)
-from .views.sentence_views import sentence_list, sentence_detail
-from .views.category_views import category_list, category_detail
-from .views.word_views import word_list, word_detail
-from .views.conjugation_views import conjugation_list, conjugation_detail
-from .views.example_views import example_list, example_detail
-from .views.text_views import text_list, text_detail
-from .views.text_translate_views import text_translate_list, text_translate_detail
-from .views.text_writing_views import text_writing_list, text_writing_detail
-from .views.login_views import login_view
 
+from .views.category_views import category_detail, category_list
+from .views.conjugation_views import conjugation_detail, conjugation_list
+from .views.example_views import example_detail, example_list
+from .views.grammar_views import grammar_detail, grammar_list
+from .views.login_views import login_view
+from .views.practice_grammar_views import (choice_grammar,
+                                           choice_grammar_detail, setence_list)
+from .views.profile_views import profile_list
+from .views.sentence_views import sentence_detail, sentence_list
+from .views.text_translate_views import (text_translate_detail,
+                                         text_translate_list)
+from .views.text_views import text_detail, text_list
+from .views.text_writing_views import text_writing_detail, text_writing_list
+from .views.user_views import user_detail, user_list
+from .views.word_views import word_detail, word_list
 
 urlpatterns = [
     path("grammar/", grammar_list, name="grammar_list_create"),
@@ -38,7 +36,11 @@ urlpatterns = [
     path(
         "conjugation/<int:word_id>/", conjugation_list, name="conjugation_list_create"
     ),
-    path("conjugation_detail/<int:word_id>/<int:conjugation_id>/", conjugation_detail, name="conjugation_detail"),
+    path(
+        "conjugation_detail/<int:word_id>/<int:conjugation_id>/",
+        conjugation_detail,
+        name="conjugation_detail",
+    ),
     path("example/<int:word_id>/", example_list, name="example_list_create"),
     path(
         "example_detail/<int:word_id>/<int:example_id>/",
@@ -63,6 +65,5 @@ urlpatterns = [
         text_writing_detail,
         name="text_writing_detail",
     ),
-
     path("auth/login", login_view, name="login"),
 ]

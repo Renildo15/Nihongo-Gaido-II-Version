@@ -1,15 +1,16 @@
 import jwt
-from rest_framework.authentication import BaseAuthentication
-from django.middleware.csrf import CsrfViewMiddleware
-from rest_framework import exceptions
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.middleware.csrf import CsrfViewMiddleware
+from rest_framework import exceptions
+from rest_framework.authentication import BaseAuthentication
 
 
 class CSRFCheck(CsrfViewMiddleware):
     def _reject(self, request, reason):
         return reason
-    
+
+
 class SafeJWTAuthentication(BaseAuthentication):
     def authenticate(self, request):
         header = request.headers.get("Authorization")
@@ -19,7 +20,9 @@ class SafeJWTAuthentication(BaseAuthentication):
 
         try:
             access_token = header.split(" ")[1]
-            payload = jwt.decode(access_token, settings.SECRET_KEY, algorithms=["HS256"])
+            payload = jwt.decode(
+                access_token, settings.SECRET_KEY, algorithms=["HS256"]
+            )
 
         except jwt.ExpiredSignatureError:
             raise exceptions.AuthenticationFailed("access token expired")
@@ -36,11 +39,11 @@ class SafeJWTAuthentication(BaseAuthentication):
             raise exceptions.AuthenticationFailed("User is inactive")
 
         return (user, None)
-    
+
     def enforce_csrf(self, request):
         check = CSRFCheck()
         check.process_request(request)
         reason = check.process_view(request, None, (), {})
-        
+
         if reason:
             raise exceptions.PermissionDenied("CSRF Failed: %s" % reason)

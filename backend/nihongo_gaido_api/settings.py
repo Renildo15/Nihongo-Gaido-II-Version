@@ -10,10 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
-from pathlib import Path
-from decouple import config
 import os
 from datetime import timedelta
+from pathlib import Path
+
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -49,14 +50,11 @@ INSTALLED_APPS = [
 ]
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'core.utils.authentication.SafeJWTAuthentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "core.utils.authentication.SafeJWTAuthentication",
     ),
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    )
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
 }
-
 
 
 APPEND_SLASH = False
@@ -159,8 +157,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-
-CORS_ALLOW_CREDENTIALS = True # to accept cookies via ajax request
+CORS_ALLOW_CREDENTIALS = True  # to accept cookies via ajax request
 CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000' # the domain for front-end app(you can add more than 1)
+    "http://localhost:3000"  # the domain for front-end app(you can add more than 1)
 ]

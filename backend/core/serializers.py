@@ -1,8 +1,10 @@
-from rest_framework import serializers
-from django.contrib.auth.models import User
-from django.contrib.auth.hashers import make_password
-from core.models import *
 import re
+
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth.models import User
+from rest_framework import serializers
+
+from core.models import *
 
 
 class GrammarCreateSerializer(serializers.ModelSerializer):
@@ -83,11 +85,13 @@ class UserCreateSerializer(serializers.ModelSerializer):
         fields = ["id", "first_name", "last_name", "username", "email", "password"]
         extra_kwargs = {"password": {"write_only": True}}
 
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["id", "first_name", "last_name", "username", "email", "is_active"]
-        
+
+
 class ProfileSerializer(serializers.ModelSerializer):
     user = UserCreateSerializer(read_only=True)
     avatar = serializers.ImageField(required=False)
@@ -105,6 +109,97 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = ["id", "user", "phone", "date_of_birth", "avatar", "date_created"]
+
+
+class ProfileUpdateSerializer(serializers.Serializer):
+    phone = serializers.CharField(max_length=20, required=False)
+    date_of_birth = serializers.DateField(required=False)
+    avatar = serializers.ImageField(required=False)
+    username = serializers.CharField(max_length=150, required=False)
+    email = serializers.EmailField(required=False)
+    first_name = serializers.CharField(max_length=150, required=False)
+    last_name = serializers.CharField(max_length=150, required=False)
+
+    def validate_phone(self, value):
+        pattern = r"^\d+$"
+
+        if not re.match(pattern, value):
+            raise serializers.ValidationError(
+                "O campo 'phone' deve conter apenas números"
+            )
+
+        return value
+
+    def validate_first_name(self, value):
+        pattern = r"^[a-zA-Z ]+$"
+
+        if not re.match(pattern, value):
+            raise serializers.ValidationError(
+                "O campo 'first_name' deve conter apenas letras"
+            )
+
+        if len(value) < 2:
+            raise serializers.ValidationError(
+                "O campo 'first_name' deve conter pelo menos 2 caracteres"
+            )
+
+    def validate_last_name(self, value):
+        pattern = r"^[a-zA-Z ]+$"
+
+        if not re.match(pattern, value):
+            raise serializers.ValidationError(
+                "O campo 'last_name' deve conter apenas letras"
+            )
+
+        if len(value) < 2:
+            raise serializers.ValidationError(
+                "O campo 'last_name' deve conter pelo menos 2 caracteres"
+            )
+
+        return value
+
+    def validate_username(self, value):
+        if len(value) < 5:
+            raise serializers.ValidationError(
+                "O campo 'username' deve conter pelo menos 5 caracteres"
+            )
+
+        return value
+
+    def validate_email(self, value):
+        if not value:
+            raise serializers.ValidationError("O campo 'email' é obrigatório")
+
+        return value
+
+    def update(self, instance, validated_data):
+        user = instance.user
+
+        user.username = validated_data.get("username", user.username)
+        user.email = validated_data.get("email", user.email)
+        user.first_name = validated_data.get("first_name", user.first_name)
+        user.last_name = validated_data.get("last_name", user.last_name)
+
+        user.save()
+
+        instance.phone = validated_data.get("phone", instance.phone)
+        instance.date_of_birth = validated_data.get(
+            "date_of_birth", instance.date_of_birth
+        )
+        instance.avatar = validated_data.get("avatar", instance.avatar)
+
+        instance.save()
+
+        return instance
+
+
+class ProfileSerializerResponse(serializers.Serializer):
+    id = serializers.IntegerField()
+    user = UserSerializer()
+    phone = serializers.CharField(max_length=20)
+    date_of_birth = serializers.DateField()
+    avatar = serializers.ImageField()
+    date_created = serializers.DateTimeField()
 
 
 class PracticeGrammarSerializer(serializers.ModelSerializer):
@@ -249,7 +344,7 @@ class WordCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Word
-        fields = ["id","word", "reading", "meaning", "type", "level", "category"]
+        fields = ["id", "word", "reading", "meaning", "type", "level", "category"]
 
 
 class WordSerializer(serializers.ModelSerializer):

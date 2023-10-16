@@ -1,10 +1,10 @@
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
 from core.models import Conjugation, Word
-from core.serializers import ConjugationSerializer, ConjugationCreateSerializer
+from core.serializers import ConjugationCreateSerializer, ConjugationSerializer
 
 
 @api_view(["GET", "POST"])
@@ -42,7 +42,6 @@ def conjugation_list(request, word_id):
 @api_view(["PATCH", "DELETE"])
 @permission_classes([IsAuthenticated])
 def conjugation_detail(request, word_id, conjugation_id):
-
     try:
         word = Word.objects.get(pk=word_id)
     except Word.DoesNotExist:

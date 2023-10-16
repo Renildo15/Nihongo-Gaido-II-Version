@@ -1,9 +1,11 @@
-from core.models import Profile
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.response import Response
 from rest_framework import status
-from core.serializers import ProfileSerializer
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+
+from core.models import Profile
+from core.serializers import (ProfileSerializer, ProfileSerializerResponse,
+                              ProfileUpdateSerializer)
 
 
 @api_view(["GET", "PATCH"])
@@ -22,13 +24,20 @@ def profile_list(request, user_id):
         return Response(data)
 
     elif request.method == "PATCH":
-        serializer = ProfileSerializer(profile, data=request.data, partial=True)
+        serializer = ProfileUpdateSerializer(profile, data=request.data, partial=True)
 
         if serializer.is_valid():
             serializer.save()
 
-            data = {"message": "Profile updated", "profile": serializer.data}
+            updated_profile = Profile.objects.get(user=user_id)
 
-            return Response(data)
+            response_serializer = ProfileSerializer(updated_profile)
+
+            data = {
+                "success": "update profile successfully",
+                "profile": response_serializer.data,
+            }
+
+            return Response(data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

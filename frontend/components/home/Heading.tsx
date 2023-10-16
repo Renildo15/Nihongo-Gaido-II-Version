@@ -21,8 +21,6 @@ export function Heading({title}: IHeadingProps){
         mutate: profileMutate,
     } = useProfile(userInfo?.id)
 
-    console.log("profile", profile)
-
     return(
         <Box
             bg="#D02C23"
