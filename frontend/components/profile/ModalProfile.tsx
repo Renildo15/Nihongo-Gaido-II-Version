@@ -56,6 +56,15 @@ export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
     const [telefone, setTelefone] = useState(originalProfile?.phone || "")
     const [dataNascimento, setDataNascimento] = useState(originalProfile?.date_of_birth || "")
 
+    const [isNomeValido, setIsNomeValido] = useState(true)
+    const [isSobrenomeValido, setIsSobrenomeValido] = useState(true)
+    const [isUsernameValido, setIsUsernameValido] = useState(true)
+    const [isEmailValido, setIsEmailValido] = useState(true)
+    const [isTelefoneValido, setIsTelefoneValido] = useState(true)
+    const [isDataNascimentoValido, setIsDataNascimentoValido] = useState(true)
+
+    const [mensagemErro, setMensagemErro] = useState("")
+
     const [startDate, setStartDate] = useState(originalProfile?.date_of_birth || "")
 
     const [telefoneValido, setTelefoneValido] = useState(true)
@@ -123,40 +132,48 @@ export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
                     </ModalCloseButton>
                 </ModalHeader>
                 <ModalBody>
-                    <FormControl>
+                    <VStack>
                         <HStack justifyContent="space-between">
                             <VStack space="md">
-                                <FormControlLabelText color="#D02C23">Nome:</FormControlLabelText>
-                                <Input>
-                                    <InputInput
-                                        value={nome}
-                                        onChange={(e) => setNome(e.target.value)}
-                                    />
-                                </Input>
-                                <FormControlLabelText color="#D02C23">Sobrenome:</FormControlLabelText>
-                                <Input>
-                                    <InputInput 
-                                        value={sobrenome}
-                                        onChange={(e) => setSobrenome(e.target.value)}
-                                    />
-                                </Input>
-                                <FormControlLabelText color="#D02C23">Username:</FormControlLabelText>
-                                <Input>
-                                    <InputInput 
-                                        value={username}
-                                        onChange={(e) => setUsername(e.target.value)}
-                                    />
-                                </Input>
-                            
+                               <FormControl>
+                                    <FormControlLabelText color="#D02C23">Nome:</FormControlLabelText>
+                                    <Input>
+                                        <InputInput
+                                            value={nome}
+                                            onChange={(e) => setNome(e.target.value)}
+                                        />
+                                    </Input>
+                               </FormControl>
+                                 <FormControl>
+                                    <FormControlLabelText color="#D02C23">Sobrenome:</FormControlLabelText>
+                                    <Input>
+                                        <InputInput 
+                                            value={sobrenome}
+                                            onChange={(e) => setSobrenome(e.target.value)}
+                                        />
+                                    </Input>
+                                </FormControl>
+                                <FormControl>
+                                    <FormControlLabelText color="#D02C23">Username:</FormControlLabelText>
+                                    <Input>
+                                        <InputInput 
+                                            value={username}
+                                            onChange={(e) => setUsername(e.target.value)}
+                                        />
+                                    </Input>
+                                </FormControl>
                             </VStack>
                             <VStack space="md">
-                                <FormControlLabelText color="#D02C23">Email:</FormControlLabelText>
+                                <FormControl>
+                                    <FormControlLabelText color="#D02C23">Email:</FormControlLabelText>
                                     <Input>
                                         <InputInput 
                                             value={email}
                                             onChangeText={setEmail}
                                         />
                                     </Input>
+                                </FormControl>
+                                <FormControl>
                                     <FormControlLabelText color="#D02C23">Telefone:</FormControlLabelText>
                                     <Input>
                                         <InputMask
@@ -169,11 +186,14 @@ export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
                                         </InputMask>                                     
                                     </Input>
                                     {!telefoneValido && <div style={{color: 'red'}}>Número de telefone inválido.</div>}
+                                </FormControl>
+                                <FormControl>
                                     <FormControlLabelText color="#D02C23">Data de Nascimento:</FormControlLabelText>
                                     <DatePicker locale="ptBR" selected={startDate} onChange={(date) => setStartDate(date)} /> 
+                                </FormControl>
                             </VStack>
                         </HStack>
-                    </FormControl>
+                    </VStack>
                 </ModalBody>
                 <ModalFooter>
                     <Button
