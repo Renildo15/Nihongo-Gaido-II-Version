@@ -63,7 +63,7 @@ export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
     const [username, setUsername] = useState(originalProfile?.user.username || "")
     const [email, setEmail] = useState(originalProfile?.user.email || "")
     const [telefone, setTelefone] = useState(originalProfile?.phone || "")
-    const [dataNascimento, setDataNascimento] = useState(originalProfile?.date_of_birth || "")
+    const [dataNascimento, setDataNascimento] = useState("")
 
     const [isNomeValido, setIsNomeValido] = useState(true)
     const [isSobrenomeValido, setIsSobrenomeValido] = useState(true)
@@ -158,7 +158,7 @@ export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
             </Box>
         )
     }
-    console.log("Data de nascimento",dataNascimento)
+
     async function save () {
         setSaving(true)
         
