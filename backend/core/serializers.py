@@ -142,6 +142,7 @@ class ProfileUpdateSerializer(serializers.Serializer):
             raise serializers.ValidationError(
                 "O campo 'first_name' deve conter pelo menos 2 caracteres"
             )
+        return value
 
     def validate_last_name(self, value):
         pattern = r"^[a-zA-Z ]+$"

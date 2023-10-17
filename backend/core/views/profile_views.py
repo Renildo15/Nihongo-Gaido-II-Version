@@ -14,8 +14,7 @@ def profile_list(request, user_id):
     try:
         profile = Profile.objects.get(user=user_id)
     except Profile.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
+        return Response(status=status.HTTP_404_NOT_FOUND)                               
     if request.method == "GET":
         serializer = ProfileSerializer(profile)
 
@@ -25,14 +24,12 @@ def profile_list(request, user_id):
 
     elif request.method == "PATCH":
         serializer = ProfileUpdateSerializer(profile, data=request.data, partial=True)
-
+        
         if serializer.is_valid():
             serializer.save()
 
             updated_profile = Profile.objects.get(user=user_id)
-
             response_serializer = ProfileSerializer(updated_profile)
-
             data = {
                 "success": "update profile successfully",
                 "profile": response_serializer.data,
