@@ -57,12 +57,12 @@ export const removePhoneFormatting = (telefone: string) => {
     return telefone.replace(/\s|\(|\)|-/g, '')
 }
   
-export const applyPhoneMask = (telefone: string) => {
-    const value = telefone.replace(/\D/g, '')
+export const applyPhoneMask = (telefone: string | undefined) => {
+    const value = telefone?.replace(/\D/g, '')
   
-    if (value.length <= 10) {
+    if ( value && value.length <= 10) {
       return `(${value.slice(0, 2)}) ${value.slice(2)}`
-    } else if (value.length <= 11) {
+    } else if ( value && value.length <= 11) {
       return `(${value.slice(0, 2)}) ${value.slice(2, 7)}-${value.slice(7)}`
     } else {
       return telefone
