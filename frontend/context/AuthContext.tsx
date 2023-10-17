@@ -1,5 +1,5 @@
 import React,{createContext, useEffect} from "react";  
-import { IUser, doLogin } from "@/utils/api";
+import { IUser, doLogin } from "@/utils/api/user";
 import Cookies from "js-cookie"
 interface IAuthContext {
     authenticateUser: (email: string, password: string) => Promise<void>;

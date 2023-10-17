@@ -4,7 +4,7 @@ import type { AppProps } from 'next/app';
 import { SWRConfig } from 'swr';
 import { HomeContext } from '@/components/home/HomeContext';
 import { AuthProvider } from '@/context/AuthContext';
-import { IUser } from '@/utils/api';
+import { IUser } from '@/utils/api/user';
 
 export default function App({ Component, pageProps }: AppProps) {
   const menuIsCollapsed = useState(false);

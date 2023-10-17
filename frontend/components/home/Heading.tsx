@@ -4,7 +4,7 @@ import ArrowLeft from "../../public/arrowLeft.svg";
 import Default from "../../public/default.jpg"
 import Image from "next/image";
 import { AuthContext } from "@/context/AuthContext";
-import { useProfile } from "@/utils/api";
+import { useProfile } from "@/utils/api/user";
 
 interface IHeadingProps {
     title: string;

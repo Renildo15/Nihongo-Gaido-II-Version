@@ -1,5 +1,5 @@
 import React,{useContext, useState} from "react";
-import { useProfile } from "@/utils/api";
+import { useProfile } from "@/utils/api/user";
 import { AuthContext } from "@/context/AuthContext";
 import { Box, VStack, HStack, Text, Button, ButtonText, Spinner } from "@gluestack-ui/themed";
 import Image from "next/image";
