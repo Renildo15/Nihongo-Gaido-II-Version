@@ -11,6 +11,7 @@ import {
     VStack,
     Button,
     ButtonText,
+    ButtionSpinner,
     ModalFooter,
     CloseIcon,
     FormControl,
@@ -23,17 +24,22 @@ import {
     InputInput,
     HStack,
     Box, 
-    Text
+    Text,
+    useToast,
+    Toast,
+    ToastTitle,
+    ToastDescription
 } from "@gluestack-ui/themed";
 
-import { useProfile } from "@/utils/api";
+import { useProfile, updateProfile } from "@/utils/api/user";
 import {AuthContext} from "@/context/AuthContext";
-import { nameIsValid, usernameIsValid, emailIsValid, dateBirthIsValid } from "@/utils/validations";
+import { nameIsValid, usernameIsValid, emailIsValid, dateBirthIsValid, removePhoneFormatting } from "@/utils/validations";
 import InputMask from 'react-input-mask';
 import DatePicker,{ registerLocale }  from "react-datepicker";
 import ptBR from 'date-fns/locale/pt-BR';
 registerLocale('ptBR', ptBR);
 import "react-datepicker/dist/react-datepicker.css";
+import { format } from 'date-fns'
 
 
 
@@ -57,7 +63,7 @@ export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
     const [username, setUsername] = useState(originalProfile?.user.username || "")
     const [email, setEmail] = useState(originalProfile?.user.email || "")
     const [telefone, setTelefone] = useState(originalProfile?.phone || "")
-    const [dataNascimento, setDataNascimento] = useState(originalProfile?.date_of_birth || "")
+    const [dataNascimento, setDataNascimento] = useState("")
 
     const [isNomeValido, setIsNomeValido] = useState(true)
     const [isSobrenomeValido, setIsSobrenomeValido] = useState(true)
@@ -65,10 +71,11 @@ export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
     const [isEmailValido, setIsEmailValido] = useState(true)
     const [isTelefoneValido, setIsTelefoneValido] = useState(true)
     const [isDataNascimentoValido, setIsDataNascimentoValido] = useState(true)
+    const [saving, setSaving] = useState(false)
 
     const [mensagemErro, setMensagemErro] = useState("")
 
-    const [startDate, setStartDate] = useState(originalProfile?.date_of_birth || "")
+    const toast = useToast()
 
     const someInfoChanged = (
         nome !== originalProfile?.user.first_name ||
@@ -152,6 +159,63 @@ export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
         )
     }
 
+    async function save () {
+        setSaving(true)
+        
+        try {
+            const telefoneSemFormatacao = removePhoneFormatting(telefone)
+            const dataNascimentoFormatada = format(new Date(dataNascimento), 'yyyy-MM-dd')
+            
+            const profileUpdated = await updateProfile(
+                userInfo?.id,
+                {
+                    id: originalProfile?.id,
+                    first_name: nome,
+                    last_name: sobrenome,
+                    username: username,
+                    email: email,
+                    phone: telefoneSemFormatacao,
+                    date_of_birth: dataNascimentoFormatada
+                }
+            )
+           
+            if (profileUpdated){
+                toast.show({
+                    placement: "top",
+                    render: ({ id }) => {
+                        return (
+                            <Toast id={id} action="attention" variant="solid" bg="$green600">
+                                <VStack space="xs">
+                                    <ToastTitle color="$white">Perfil alterado com sucesso!</ToastTitle>
+                                </VStack>
+                            </Toast>
+                        )
+                    }
+                })
+
+                originalProfileMutate()
+                setSaving(false)
+                onClose()
+            }
+
+            setSaving(false)
+            onClose()
+        } catch (error) {
+            console.log(error)
+            toast.show({
+                placement: "top",
+                render: ({ id }) => {
+                  return (
+                    <Toast id={id} action="attention" variant="solid" bg="$red600">
+                      <VStack space="xs">
+                        <ToastTitle color="$white">Problema ao salvar perfil</ToastTitle>
+                      </VStack>
+                    </Toast>
+                  )
+                },
+            })
+        }
+    }
 
     return(
         <Modal
@@ -252,8 +316,8 @@ export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
                                     <FormControlLabelText color="#D02C23">Data de Nascimento:</FormControlLabelText>
                                     <DatePicker    
                                         locale="ptBR" 
-                                        selected={startDate} 
-                                        onChange={(date) => setStartDate(date)} 
+                                        selected={dataNascimento} 
+                                        onChange={(date) => setDataNascimento(date)} 
                                         
                                     /> 
                                     <FormControlError>
@@ -285,7 +349,7 @@ export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
                         size="sm"
                         action="positive"
                         borderWidth="$0"
-                        onPress={onClose}
+                        onPress={save}
                         bg="#D02C23"
                         sx={{
                             ":hover": {

@@ -1,7 +1,8 @@
 import React,{useContext, useState} from "react";
-import { useProfile } from "@/utils/api";
+import { useProfile } from "@/utils/api/user";
 import { AuthContext } from "@/context/AuthContext";
 import { Box, VStack, HStack, Text, Button, ButtonText, Spinner } from "@gluestack-ui/themed";
+import { applyPhoneMask } from "@/utils/validations";
 import Image from "next/image";
 import Default from "../../public/default.jpg"
 import ModalProfile from "./ModalProfile";
@@ -64,7 +65,7 @@ export default function ProfileInfo(){
                 </Text>
                 <Text color="#D02C23">
                     <Text color="#D02C23" fontWeight="bold">Telefone: </Text>
-                    {profile?.phone}
+                    {applyPhoneMask(profile?.phone)}
                 </Text>
                 <Text color="#D02C23">
                     <Text color="#D02C23" fontWeight="bold">Data de Nascimento: </Text>

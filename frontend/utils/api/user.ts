@@ -21,6 +21,16 @@ export interface IProfile{
     date_created: string;
 }
 
+export interface IProfileUpdate {
+    phone?: string;
+    date_of_birth?: string;
+    avatar?: string;
+    username?: string;
+    email?: string;
+    first_name?: string;
+    last_name?: string;
+}
+
 export async function doLogin(username: string, password: string){
     interface ILoginResponse{
         user: IUser;
@@ -57,5 +67,23 @@ export function useProfile(userId: number | undefined){
         isLoading,
         isValidating,
         mutate
+    }
+}
+
+export async function updateProfile (userId: number, {avatar, date_of_birth, email, first_name, last_name, phone, username}: IProfileUpdate) {
+    interface IUpdateResponse{
+        profile: IProfile;
+    }
+
+    try{
+        const response = await axios.patch<IUpdateResponse>(`/api/profile/${userId}`,{avatar, date_of_birth, email, first_name, last_name, phone, username});
+        if(response.status < 200 || response.status >= 300){
+            return
+        }
+
+        console.log(response.data?.profile)
+        return response.data?.profile;
+    } catch(err){
+        console.log(err);
     }
 }
