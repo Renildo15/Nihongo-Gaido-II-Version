@@ -31,6 +31,29 @@ export interface IProfileUpdate {
     last_name?: string;
 }
 
+export function WhoIam(){
+    interface IResponse {
+        user: IUser
+    }
+
+    const{
+        data,
+        error,
+        isLoading,
+        isValidating,
+        mutate
+    } = useSWR<IResponse>('/api/whoami/', fetcchSimple);
+
+    return {
+        data: data?.user,
+        error,
+        isLoading,
+        isValidating,
+        mutate
+    
+    }
+}
+
 export async function doLogin(username: string, password: string){
     interface ILoginResponse{
         user: IUser;
