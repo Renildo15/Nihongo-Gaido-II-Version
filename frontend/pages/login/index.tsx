@@ -1,8 +1,7 @@
-import React,{useState, useContext} from "react"
+import React,{ useState } from "react"
 import { GetServerSidePropsContext } from "next";
 import Cookies from "cookies";
 import Head from "next/head"
-import { AuthContext } from "@/context/AuthContext";
 import { Button, 
         Box, 
         VStack, 
@@ -25,6 +24,7 @@ import Image from "next/image";
 import Logo from "../../public/logo.png";
 import { useRouter } from "next/router";
 import { AxiosError } from "axios";
+import { doLogin } from "@/utils/api/user";
 
 export async function getServerSideProps({req, res}: GetServerSidePropsContext) {
     const cookies = new Cookies(req, res)
@@ -49,8 +49,6 @@ export default function Login() {
     const [sendingLogin, setSendingLogin] = useState(false)
     const [showPassword, setShowPassword] = useState(false)
 
-    const {authenticateUser, userInfo} = useContext(AuthContext)
-
     const router = useRouter()
     const toast = useToast()
     const handleState = () => {
@@ -64,12 +62,7 @@ export default function Login() {
         if(userName && password){
             setSendingLogin(true)
             try{
-                await authenticateUser(userName, password)
-
-
-                if(!userInfo?.is_active){
-                    throw new Error("Usuário inativo")
-                }
+                const user = await doLogin(userName, password)
 
                 router.push('/home')
                 toast.show({
@@ -80,7 +73,7 @@ export default function Login() {
                             <VStack space="xs">
                                 <ToastTitle color="$white">Login efetuado com sucesso</ToastTitle>
                                 <ToastDescription color="$white">
-                                Seja bem vindo {userInfo?.first_name}
+                                Seja bem vindo {user?.first_name}
                                 </ToastDescription>
                             </VStack>
                             </Toast>
