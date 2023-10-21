@@ -4,7 +4,20 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from core.serializers import UserCreateSerializer
+from core.serializers import UserCreateSerializer, UserSerializer
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def whoami(request):
+    if request.method == "GET" and request.user.is_authenticated:
+        user = request.user
+        serializer = UserSerializer(user)
+
+        data = {"user": serializer.data}
+
+        return Response(data)
+    else:
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 
 @api_view(["GET", "POST"])
@@ -12,7 +25,7 @@ from core.serializers import UserCreateSerializer
 def user_list(request):
     if request.method == "GET":
         users = User.objects.all()
-        serializer = UserCreateSerializer(instance=users, many=True)
+        serializer = UserSerializer(instance=users, many=True)
 
         data = {"users": serializer.data}
 
@@ -40,7 +53,7 @@ def user_detail(request, pk):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == "GET":
-        serializer = UserCreateSerializer(user)
+        serializer = UserSerializer(user)
 
         data = {"user": serializer.data}
 
