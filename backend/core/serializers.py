@@ -131,7 +131,7 @@ class ProfileUpdateSerializer(serializers.Serializer):
         return value
 
     def validate_first_name(self, value):
-        pattern = r"^[a-zA-Z ]+$"
+        pattern = r"^[a-zA-ZÀ-ÖØ-öø-ÿ ]+$"
 
         if not re.match(pattern, value):
             raise serializers.ValidationError(
@@ -145,7 +145,7 @@ class ProfileUpdateSerializer(serializers.Serializer):
         return value
 
     def validate_last_name(self, value):
-        pattern = r"^[a-zA-Z ]+$"
+        pattern = r"^[a-zA-ZÀ-ÖØ-öø-ÿ ]+$"
 
         if not re.match(pattern, value):
             raise serializers.ValidationError(

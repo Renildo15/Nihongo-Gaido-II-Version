@@ -1,17 +1,23 @@
 import React,{useContext} from "react";
 import { Box, HStack, Text } from "@gluestack-ui/themed";
-import ArrowLeft from "../../public/arrowLeft.svg";
+import ArrowLeft from "../../public/arrowLeft.svg"
 import Default from "../../public/default.jpg"
 import Image from "next/image";
 import { AuthContext } from "@/context/AuthContext";
-import { useProfile } from "@/utils/api/user";
+import { useProfile,WhoIam } from "@/utils/api/user";
 
 interface IHeadingProps {
     title: string;
 }
 
 export function Heading({title}: IHeadingProps){
-    const {userInfo} = useContext(AuthContext)
+    const {
+        data: userInfo,
+        error: userError,
+        isLoading: userIsLoading,
+        isValidating: userIsValidating,
+        mutate: userRevalidate
+    } = WhoIam()
 
     const {
         data: profile,

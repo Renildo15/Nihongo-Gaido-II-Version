@@ -13,12 +13,13 @@ from .views.text_translate_views import (text_translate_detail,
                                          text_translate_list)
 from .views.text_views import text_detail, text_list
 from .views.text_writing_views import text_writing_detail, text_writing_list
-from .views.user_views import user_detail, user_list
+from .views.user_views import user_detail, user_list, whoami
 from .views.word_views import word_detail, word_list
 
 urlpatterns = [
     path("grammar/", grammar_list, name="grammar_list_create"),
     path("grammar/<int:pk>/", grammar_detail, name="grammar_detail"),
+    path("whoami", whoami, name="whoami"),
     path("user/", user_list, name="user_list_create"),
     path("user/<int:pk>/", user_detail, name="user_detail"),
     path("profile/<int:user_id>", profile_list, name="profile_list"),
