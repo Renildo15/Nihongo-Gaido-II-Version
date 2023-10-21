@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect, ChangeEvent} from "react";
+import React, {useState, useEffect, ChangeEvent} from "react";
 import { 
     Modal, 
     ModalBackdrop, 
@@ -31,8 +31,7 @@ import {
     ToastDescription
 } from "@gluestack-ui/themed";
 
-import { useProfile, updateProfile } from "@/utils/api/user";
-import {AuthContext} from "@/context/AuthContext";
+import { useProfile, updateProfile, WhoIam } from "@/utils/api/user";
 import { nameIsValid, usernameIsValid, emailIsValid, dateBirthIsValid, removePhoneFormatting } from "@/utils/validations";
 import InputMask from 'react-input-mask';
 import DatePicker,{ registerLocale }  from "react-datepicker";
@@ -50,13 +49,18 @@ interface ModalProfileProps {
 
 export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
 
-    const {userInfo} = useContext(AuthContext)
+    const {
+        data: userInfo,
+        error: userError
+    } = WhoIam()
 
     const {
         data: originalProfile,
         error: originalProfileError,
         mutate: originalProfileMutate,
     } = useProfile(userInfo?.id)
+
+    console.log("Original Profile", originalProfile)
 
     const [nome, setNome] = useState(originalProfile?.user.first_name || "")
     const [sobrenome, setSobrenome] = useState(originalProfile?.user.last_name || "")
