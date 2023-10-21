@@ -21,8 +21,6 @@ export default function ProfileInfo(){
         mutate: profileMutate,
     } = useProfile(userInfo?.id)
 
-    console.log("Avatar URL: ", profile?.avatar);
-
     if(profileIsLoading || profileIsValidating) {
         return(
             <Box justifyContent="center" alignItems="center" w={"100%"} >
@@ -43,23 +41,13 @@ export default function ProfileInfo(){
           <VStack borderWidth={1} w={800} h={400} borderRadius={9} borderColor="#D02C23" py={5} px={8} space="lg">
             <HStack w={210} alignItems="flex-end" justifyContent="space-between" p={5}>
                 <Box style={{ width: 100, height: 100, borderRadius: 50, overflow: 'hidden' }}>
-                {profile?.avatar ? (
-                    <Image
-                        src={`http://localhost:8000/${profile.avatar}`}
+                <Image
+                        src={`http://127.0.0.1:8000${profile?.avatar}`}
                         alt="Avatar"
                         width={100}
                         height={100}
                         objectFit="cover"
                     />
-                    ) : (
-                    <Image
-                        src={Default}
-                        alt="Default Avatar"
-                        width={100}
-                        height={100}
-                        objectFit="cover"
-                    />
-                )}
                 </Box>
                 <Text color="#D02C23" fontWeight="bold">
                     {profile?.user.username}

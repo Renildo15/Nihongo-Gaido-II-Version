@@ -60,7 +60,6 @@ export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
         mutate: originalProfileMutate,
     } = useProfile(userInfo?.id)
 
-    console.log("Original Profile", originalProfile)
 
     const [nome, setNome] = useState(originalProfile?.user.first_name || "")
     const [sobrenome, setSobrenome] = useState(originalProfile?.user.last_name || "")
