@@ -1,14 +1,21 @@
 from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny, BasePermission
 from rest_framework.response import Response
 
 from core.serializers import UserCreateSerializer, UserSerializer
 
+class IsAuthenticatedOrAllowAny(BasePermission):
+    def has_permission(self, request, view):
+        if request.method == "GET":
+            return IsAuthenticated.has_permission(self, request, view)
+        elif request.method == "POST":
+            return True
+        return False
 
 @api_view(["GET"])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticatedOrAllowAny])
 def whoami(request):
     if request.method == "GET" and request.user.is_authenticated:
         user = request.user
@@ -22,7 +29,7 @@ def whoami(request):
 
 
 @api_view(["GET", "POST"])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def user_list(request):
     if request.method == "GET":
         users = User.objects.all()
