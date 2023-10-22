@@ -18,7 +18,8 @@ import { Button,
         useToast,
         Toast,
         ToastTitle,
-        ToastDescription
+        ToastDescription,
+        Pressable
     } from '@gluestack-ui/themed';
 import Image from "next/image";
 import Logo from "../../public/logo.png";
@@ -180,6 +181,11 @@ export default function Login() {
                             <FormControl.Error>
                                 Senha é obrigatório
                             </FormControl.Error>
+                        </VStack>
+                        <VStack space="md" mb="10px">
+                            <Pressable onPress={() => router.push('/register')}>
+                                <ButtonText color="$red600">Não tem conta? Registre-se</ButtonText>
+                            </Pressable>
                         </VStack>
                         <Button
                             onPress={login}
