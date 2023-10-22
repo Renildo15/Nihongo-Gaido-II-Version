@@ -34,6 +34,7 @@
   },
   "devDependencies": {
     "@types/cookies": "^0.7.8",
-    "@types/js-cookie": "^3.0.4"
+    "@types/js-cookie": "^3.0.4",
+    "@types/react-datepicker": "^4.19.1"
   }
 }
