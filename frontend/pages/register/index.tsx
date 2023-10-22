@@ -26,6 +26,12 @@ import Image from "next/image";
 import Logo from "../../public/logo.png";
 import { GetServerSidePropsContext } from "next";
 import Cookies from "cookies";
+import { 
+    nameIsValid, 
+    usernameIsValid, 
+    emailIsValid,
+    getPasswordValidationErrorMessage
+} from "@/utils/validations";
 
 export async function getServerSideProps({req, res}: GetServerSidePropsContext) {
     const cookies = new Cookies(req, res)
@@ -47,10 +53,62 @@ export async function getServerSideProps({req, res}: GetServerSidePropsContext) 
 export default function Register () {
     const [showPassword, setShowPassword] = useState(false)
 
+    const [nome, setNome] = useState("")
+    const [sobrenome, setSobrenome] = useState("")
+    const [username, setUsername] = useState("")
+    const [email, setEmail] = useState("")
+    const [senha, setSenha] = useState("")
+    const [confirmarSenha, setConfirmarSenha] = useState("")
+
+    const [isNomeValido, setIsNomeValido] = useState(true)
+    const [isSobrenomeValido, setIsSobrenomeValido] = useState(true)
+    const [isUsernameValido, setIsUsernameValido] = useState(true)
+    const [isEmailValido, setIsEmailValido] = useState(true)
+    const [isSenhaValida, setIsSenhaValida] = useState(true)
+    const [isConfirmarSenhaValida, setIsConfirmarSenhaValida] = useState(true)
+
+    const [mensagemErroSenha, setMensagemErroSenha] = useState("")
+
     const handleState = () => {
         setShowPassword((showState) => {
             return !showState
         })
+    }
+
+    const handleChangeName = (text: string) => {
+        setNome(text)
+        setIsNomeValido(nameIsValid(text))
+    }
+
+    const handleChangeLastName = (text: string) => {
+        setSobrenome(text)
+        setIsSobrenomeValido(nameIsValid(text))
+    }
+
+    const handleChangeUsername = (text: string) => {
+        setUsername(text)
+        setIsUsernameValido(usernameIsValid(text))
+    }
+
+    const handleChangeEmail = (text: string) => {
+        setEmail(text)
+        setIsEmailValido(emailIsValid(text))
+    }
+
+    const handleChangeSenha = (text: string) => {
+        setSenha(text)
+        setIsSenhaValida(getPasswordValidationErrorMessage(text) === "")
+        setMensagemErroSenha(getPasswordValidationErrorMessage(text))
+    }
+
+    const handleChangeConfirmarSenha = (text: string) => {
+        setConfirmarSenha(text)
+        setIsConfirmarSenhaValida(getPasswordValidationErrorMessage(text) === "")
+        setMensagemErroSenha(getPasswordValidationErrorMessage(text))
+        if (text !== senha) {
+            setIsConfirmarSenhaValida(false)
+            setMensagemErroSenha("As senhas não coincidem.")
+        }
     }
     return (
         <VStack
@@ -88,7 +146,7 @@ export default function Register () {
                         </Text>
                     </VStack>
                     <VStack space={'md'}>
-                        <FormControl isRequired>
+                        <FormControl isRequired isInvalid={!isNomeValido}>
                             <Input
                                 sx={{
                                     ":focus": {
@@ -100,10 +158,18 @@ export default function Register () {
                                     type="text"
                                     color="$gray700" 
                                     placeholder="Nome"
+                                    value={nome}
+                                    onChangeText={handleChangeName}
                                 />
                             </Input>
+                            <FormControlError>
+                                <FormControlErrorIcon as={AlertCircleIcon} color="#D02C23" />
+                                <FormControlErrorText>
+                                    Informe um nome válido.
+                                </FormControlErrorText>
+                            </FormControlError>
                         </FormControl>
-                        <FormControl isRequired>
+                        <FormControl isRequired isInvalid={!isSobrenomeValido}>
                             <Input
                                 sx={{
                                     ":focus": {
@@ -115,10 +181,18 @@ export default function Register () {
                                     type="text"
                                     color="$gray700" 
                                     placeholder="Sobrenome"
+                                    value={sobrenome}
+                                    onChangeText={handleChangeLastName}
                                 />
                             </Input>
+                            <FormControlError>
+                                <FormControlErrorIcon as={AlertCircleIcon} color="#D02C23" />
+                                <FormControlErrorText>
+                                    Informe um sobrenome válido.
+                                </FormControlErrorText>
+                            </FormControlError>
                         </FormControl>
-                        <FormControl isRequired>
+                        <FormControl isRequired isInvalid={!isUsernameValido}>
                             <Input
                                 sx={{
                                     ":focus": {
@@ -130,10 +204,18 @@ export default function Register () {
                                     type="text"
                                     color="$gray700" 
                                     placeholder="Username"
+                                    value={username}
+                                    onChangeText={handleChangeUsername}
                                 />
                             </Input>
+                            <FormControlError>
+                                <FormControlErrorIcon as={AlertCircleIcon} color="#D02C23" />
+                                <FormControlErrorText>
+                                    Informe um username válido.
+                                </FormControlErrorText>
+                            </FormControlError>
                         </FormControl>
-                        <FormControl isRequired>
+                        <FormControl isRequired isInvalid={!isEmailValido}>
                             <Input
                                 sx={{
                                     ":focus": {
@@ -142,14 +224,21 @@ export default function Register () {
                                 }}
                             >
                                 <InputInput
-                                    type="email"
+                                    type="text"
                                     color="$gray700" 
                                     placeholder="Email"
+                                    value={email}
+                                    onChangeText={handleChangeEmail}
                                 />
-                                
                             </Input>
+                            <FormControlError>
+                                <FormControlErrorIcon as={AlertCircleIcon} color="#D02C23" />
+                                <FormControlErrorText>
+                                    Informe um email válido.
+                                </FormControlErrorText>
+                            </FormControlError>
                         </FormControl>
-                        <FormControl isRequired>
+                        <FormControl isRequired isInvalid={!isSenhaValida}>
                             <Input
                                 sx={{
                                     ":focus": {
@@ -161,6 +250,8 @@ export default function Register () {
                                     type={showPassword ? "text" : "password"}
                                     color="$gray700" 
                                     placeholder="Senha"
+                                    value={senha}
+                                    onChangeText={handleChangeSenha}
                                 />
                                 <InputIcon 
                                     pr="$3" onPress={handleState}
@@ -178,8 +269,14 @@ export default function Register () {
                                     />
                                 </InputIcon>
                             </Input>
+                            <FormControlError>
+                                <FormControlErrorIcon as={AlertCircleIcon} color="#D02C23" />
+                                <FormControlErrorText>
+                                    {mensagemErroSenha}
+                                </FormControlErrorText>
+                            </FormControlError>
                         </FormControl>
-                        <FormControl isRequired>
+                        <FormControl isRequired isInvalid={!isConfirmarSenhaValida}>
                             <Input
                                 sx={{
                                     ":focus": {
@@ -191,6 +288,8 @@ export default function Register () {
                                     type={showPassword ? "text" : "password"}
                                     color="$gray700" 
                                     placeholder="Confirmar Senha"
+                                    value={confirmarSenha}
+                                    onChangeText={handleChangeConfirmarSenha}
                                 />
                                 <InputIcon 
                                     pr="$3" onPress={handleState}
@@ -209,6 +308,12 @@ export default function Register () {
                                 </InputIcon>
                                 
                             </Input>
+                            <FormControlError>
+                                <FormControlErrorIcon as={AlertCircleIcon} color="#D02C23" />
+                                <FormControlErrorText>
+                                    {mensagemErroSenha}
+                                </FormControlErrorText>
+                            </FormControlError>
                         </FormControl>
                     </VStack>
                     <ButtonGroup>
@@ -227,6 +332,14 @@ export default function Register () {
                                   bg: "$red800",
                                 },
                             }}
+                            isDisabled={
+                                !isNomeValido ||
+                                !isSobrenomeValido ||
+                                !isUsernameValido ||
+                                !isEmailValido ||
+                                !isSenhaValida ||
+                                !isConfirmarSenhaValida
+                            }
                         >
                             <ButtonText>
                                 Registrar

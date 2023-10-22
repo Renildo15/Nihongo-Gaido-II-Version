@@ -11,7 +11,7 @@ import {
     VStack,
     Button,
     ButtonText,
-    ButtionSpinner,
+    ButtonSpinner,
     ModalFooter,
     CloseIcon,
     FormControl,
