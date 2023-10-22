@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { 
     VStack, 
-    HStack, 
+    useToast, 
     Text,
     FormControl,
-    FormControlLabelText,
     FormControlError,
     FormControlErrorText,
     FormControlErrorIcon,
@@ -20,6 +19,8 @@ import {
     Icon,
     EyeIcon,
     EyeOffIcon,
+    Toast,
+    ToastTitle,
 } from "@gluestack-ui/themed";
 import Head from "next/head";
 import Image from "next/image";
@@ -32,6 +33,8 @@ import {
     emailIsValid,
     getPasswordValidationErrorMessage
 } from "@/utils/validations";
+import { useRegister, IUserCreate } from "@/utils/api/user";
+import { useRouter } from "next/router";
 
 export async function getServerSideProps({req, res}: GetServerSidePropsContext) {
     const cookies = new Cookies(req, res)
@@ -68,6 +71,11 @@ export default function Register () {
     const [isConfirmarSenhaValida, setIsConfirmarSenhaValida] = useState(true)
 
     const [mensagemErroSenha, setMensagemErroSenha] = useState("")
+
+    const [saving, setSaving] = useState(false)
+
+    const router = useRouter()
+    const toast = useToast()
 
     const handleState = () => {
         setShowPassword((showState) => {
@@ -108,6 +116,67 @@ export default function Register () {
         if (text !== senha) {
             setIsConfirmarSenhaValida(false)
             setMensagemErroSenha("As senhas não coincidem.")
+        }
+    }
+
+    async function register (){
+        setSaving(true)
+
+        try{
+            const user: IUserCreate = {
+                first_name: nome,
+                last_name: sobrenome,
+                username: username,
+                email: email,
+                password: senha
+            }
+
+            const userRegistered = await useRegister(user)
+
+            if (userRegistered) {
+                toast.show({
+                    placement: "top",
+                    render: ({ id }) => {
+                        return (
+                            <Toast id={id} action="attention" variant="solid" bg="$green600">
+                                <VStack space="xs">
+                                    <ToastTitle color="$white">Registro criado com sucesso!</ToastTitle>
+                                </VStack>
+                            </Toast>
+                        )
+                    }
+                })
+                router.push('/login')
+                setSaving(false)
+            } else {
+                toast.show({
+                    placement: "top",
+                    render: ({ id }) => {
+                        return (
+                            <Toast id={id} action="attention" variant="solid" bg="$red600">
+                                <VStack space="xs">
+                                    <ToastTitle color="$white">Erro ao criar registro.</ToastTitle>
+                                </VStack>
+                            </Toast>
+                        )
+                    }
+                })
+                setSaving(false)
+            }
+        } catch (err) {
+            toast.show({
+                placement: "top",
+                render: ({ id }) => {
+                    return (
+                        <Toast id={id} action="attention" variant="solid" bg="$red600">
+                            <VStack space="xs">
+                                <ToastTitle color="$white">Erro ao criar registro.</ToastTitle>
+                            </VStack>
+                        </Toast>
+                    )
+                }
+            })
+            setSaving(false)
         }
     }
     return (
@@ -318,6 +387,7 @@ export default function Register () {
                     </VStack>
                     <ButtonGroup>
                         <Button
+                            onPress={register}
                             variant="solid"
                             colorScheme="red"
                             size="lg"
@@ -341,9 +411,16 @@ export default function Register () {
                                 !isConfirmarSenhaValida
                             }
                         >
-                            <ButtonText>
-                                Registrar
-                            </ButtonText>
+                            {saving
+                                ?   (
+                                    <ButtonSpinner />
+                                )   
+                                :   (
+                                    <ButtonText>
+                                        Registrar
+                                    </ButtonText>
+                                )
+                            }
                         </Button>
                     </ButtonGroup>
                 </VStack>
