@@ -12,6 +12,14 @@ export interface IUser{
     is_active: boolean;
 }
 
+export interface IUserCreate{
+    first_name: string;
+    last_name: string;
+    username: string;
+    email: string;
+    password: string;
+}
+
 export interface IProfile{
     id: number;
     user: IUser;
@@ -67,6 +75,33 @@ export async function doLogin(username: string, password: string){
 
         return response.data?.user;
     } catch(err){
+        console.log(err);
+    }
+}
+
+export async function useRegister (user: IUserCreate) {
+    interface IResponse{
+        message: string;
+        user: IUser;
+    }
+
+    try{
+        const response = await axios.post<IResponse>('/api/user', 
+            {
+                first_name: user.first_name,
+                last_name: user.last_name,
+                username: user.username,
+                email: user.email,
+                password: user.password
+            }
+        );
+
+        if(response.status < 200 || response.status >= 300){
+            return
+        }
+
+        return response.data?.user
+    } catch(err) {
         console.log(err);
     }
 }
