@@ -6,6 +6,7 @@ from rest_framework.response import Response
 
 from core.serializers import UserCreateSerializer, UserSerializer
 
+
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def whoami(request):
