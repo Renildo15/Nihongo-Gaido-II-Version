@@ -75,7 +75,7 @@ export async function doLogin(username: string, password: string){
 
         return response.data?.user;
     } catch(err){
-        console.log(err);
+        throw err;
     }
 }
 
