@@ -65,33 +65,37 @@ export default function Login() {
             try{
                 const user = await doLogin(userName, password)
 
+                if(!user) {
+                    throw new Error("Verifique seu usuário e senha e tente novamente")
+                }
+
                 router.push('/home')
                 toast.show({
                     placement: "top",
                     render: ({ id }) => {
                         return (
-                            <Toast id={id} action="attention" variant="solid" bg="$green600">
+                            <Toast id={id} bg="$green600">
                             <VStack space="xs">
                                 <ToastTitle color="$white">Login efetuado com sucesso</ToastTitle>
                                 <ToastDescription color="$white">
-                                Seja bem vindo {user?.first_name}
+                                    Seja bem vindo {user?.first_name}
                                 </ToastDescription>
                             </VStack>
                             </Toast>
                         )
                     }
                 })
-            } catch (err) {
+            } catch (err: any) {
                 if ( err instanceof AxiosError || err instanceof Error) {
                     toast.show({
                         placement: "top",
                         render: ({ id }) => {
                           return (
-                            <Toast id={id} action="attention" variant="solid" bg="$red600">
+                            <Toast id={id} bg="$red600">
                               <VStack space="xs">
                                 <ToastTitle color="$white">Usuário não encontrado</ToastTitle>
                                 <ToastDescription color="$white">
-                                  Verifique seu usuário e senha e tente novamente
+                                  {err.message}
                                 </ToastDescription>
                               </VStack>
                             </Toast>
