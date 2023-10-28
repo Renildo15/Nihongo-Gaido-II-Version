@@ -119,66 +119,63 @@ export default function Register () {
         }
     }
 
-    async function register (){
-        setSaving(true)
-
-        try{
+    async function register() {
+        setSaving(true);
+    
+        try {
             const user: IUserCreate = {
                 first_name: nome,
                 last_name: sobrenome,
                 username: username,
                 email: email,
-                password: senha
-            }
-
-            const userRegistered = await useRegister(user)
-
-            if (userRegistered) {
-                toast.show({
-                    placement: "top",
-                    render: ({ id }) => {
-                        return (
-                            <Toast id={id} action="attention" variant="solid" bg="$green600">
-                                <VStack space="xs">
-                                    <ToastTitle color="$white">Registro criado com sucesso!</ToastTitle>
-                                </VStack>
-                            </Toast>
-                        )
-                    }
-                })
-                router.push('/login')
-                setSaving(false)
-            } else {
-                toast.show({
-                    placement: "top",
-                    render: ({ id }) => {
-                        return (
-                            <Toast id={id} action="attention" variant="solid" bg="$red600">
-                                <VStack space="xs">
-                                    <ToastTitle color="$white">Erro ao criar registro.</ToastTitle>
-                                </VStack>
-                            </Toast>
-                        )
-                    }
-                })
-                setSaving(false)
-            }
-        } catch (err) {
+                password: senha,
+            };
+    
+            const userRegistered = await useRegister(user);
+    
             toast.show({
                 placement: "top",
                 render: ({ id }) => {
                     return (
-                        <Toast id={id} action="attention" variant="solid" bg="$red600">
+                        <Toast
+                            id={id}
+                            bg={userRegistered ? "$green600" : "$red600"}
+                        >
                             <VStack space="xs">
-                                <ToastTitle color="$white">Erro ao criar registro.</ToastTitle>
+                                <ToastTitle color="$white">
+                                    {userRegistered
+                                        ? "Registro criado com sucesso!"
+                                        : "Erro ao criar registro: "}
+                                </ToastTitle>
                             </VStack>
                         </Toast>
-                    )
-                }
-            })
-            setSaving(false)
+                    );
+                },
+            });
+    
+            if (userRegistered) {
+                router.push('/login');
+            }
+        } catch (err: any) {
+            toast.show({
+                placement: "top",
+                render: ({ id }) => {
+                    return (
+                        <Toast id={id}  bg="$red600">
+                            <VStack space="xs">
+                                <ToastTitle color="$white">
+                                    Erro ao criar registro: {err.response.data.username[0]}
+                                </ToastTitle>
+                            </VStack>
+                        </Toast>
+                    );
+                },
+            });
+        } finally {
+            setSaving(false);
         }
     }
+   
     return (
         <VStack
             maxWidth={'100vw'} 
