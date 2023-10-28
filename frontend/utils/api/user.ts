@@ -102,7 +102,7 @@ export async function useRegister (user: IUserCreate) {
 
         return response.data?.user
     } catch(err) {
-        console.log(err);
+        throw err;
     }
 }
 

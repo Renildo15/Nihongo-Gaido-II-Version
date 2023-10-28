@@ -120,11 +120,6 @@ export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
         setIsEmailValido(emailIsValid(email));
     }
 
-    const handleDateBirthChange = (dateBirth: string) => {
-        setDataNascimento(dateBirth);
-        setIsDataNascimentoValido(dateBirthIsValid(dateBirth));
-    }
-
     const handlePhoneChange = (newPhone: string) => {
         const value = newPhone.replace(/\D/g, '')
     
