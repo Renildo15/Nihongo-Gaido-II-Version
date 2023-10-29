@@ -37,6 +37,7 @@ export function Heading({title}: IHeadingProps){
             <HStack 
                 justifyContent="space-between"
                 alignItems="center"
+                flexDirection={'row'}
             >   
                 <Image src={ArrowLeft} alt="ArrowLeft" />
                 <Text
