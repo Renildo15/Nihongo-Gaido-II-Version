@@ -11,11 +11,7 @@ import {
 } from "@gluestack-ui/themed";
 import Image from "next/image";
 import Logo from "../../public/logo.png";
-import Home from "../../public/home.svg";
-import Word from "../../public/word.svg";
-import Grammar from "../../public/grammar.svg";
-import Text_Icon from "../../public/text.svg";
-import { MdHome, MdAccountCircle, MdLogout } from 'react-icons/md'
+import { MdHome, MdAccountCircle, MdLogout, MdBook, MdTextSnippet, MdTranslate } from 'react-icons/md'
 import { useRouter } from "next/router";
 import axios from "axios";
 
@@ -45,6 +41,9 @@ export function MenuLateral() {
             </Pressable>
             <Text fontSize={'18px'} fontWeight={'600'} color={'white'}>Nihongo Gaido</Text>
         </Box>
+
+        <Divider bgColor="#fff" width={"100%"} h={"1px"}/>
+
         <VStack w={'100%'} h={'480px'} alignItems={'center'} justifyContent={'space-around'}>
             <Box justifyContent={'flex-start'} w={'65%'} h={'28%'} p={'10px'} >
                 <Button onPress={() => router.push('/home')}>
@@ -55,23 +54,24 @@ export function MenuLateral() {
                 </Button>
                 <Button mt={'10px'} onPress={() => router.push('/grammar')}>
                     <HStack flexDirection={'row'} alignItems={'center'}>
-                        <Image src={Grammar} alt="Home" width={20} height={20} />
+                        <MdBook size={20} color={'white'} />
                         <Text ml ={'2px'} fontSize={'16px'} fontWeight={'400'} color={'white'}>Gramática</Text>
                     </HStack>
                 </Button>
                 <Button mt={'10px'} onPress={() => router.push('/vocabulary')}>
                     <HStack flexDirection={'row'} alignItems={'center'}>
-                        <Image src={Word} alt="Home" width={20} height={20} />
+                        <MdTranslate size={20} color={'white'} />
                         <Text ml ={'2px'} fontSize={'16px'} fontWeight={'400'} color={'white'}>Vocabulário</Text>
                     </HStack>
                 </Button>
                 <Button mt={'10px'} onPress={() => router.push('/text')}>
                     <HStack flexDirection={'row'} alignItems={'center'}>
-                        <Image src={Text_Icon} alt="Home" width={20} height={20} />
+                        <MdTextSnippet size={20} color={'white'} />
                         <Text ml ={'2px'} fontSize={'16px'} fontWeight={'400'} color={'white'}>Texto</Text>
                     </HStack>
                 </Button> 
             </Box>
+             
             <Box justifyContent={'flex-start'} w={'65%'} h={'28%'} p={'10px'} >
                 <Button onPress={() => router.push('//profile')}>
                         <HStack flexDirection={'row'} alignItems={'center'}>
