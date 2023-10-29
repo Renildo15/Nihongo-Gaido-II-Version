@@ -1,245 +1,93 @@
-import React from "react";
-import { Button, HStack, VStack, Pressable, Text, Divider } from "@gluestack-ui/themed";
-import Image from "next/image";
-import Logo from "../../public/logo.png"
-import Home from "../../public/home.svg"
-import Word from "../../public/word.svg"
-import Grammar from "../../public/grammar.svg"
-import Text_Icon from "../../public/text.svg"
-import Profile from "../../public/profile.svg"
-import logout_icon from "../../public/logout.svg"
+import { Box } from "@gluestack-ui/themed";
 
+import React from "react";
+import {
+  Button,
+  HStack,
+  VStack,
+  Pressable,
+  Text,
+  Divider,
+} from "@gluestack-ui/themed";
+import Image from "next/image";
+import Logo from "../../public/logo.png";
+import Home from "../../public/home.svg";
+import Word from "../../public/word.svg";
+import Grammar from "../../public/grammar.svg";
+import Text_Icon from "../../public/text.svg";
+import { MdHome, MdAccountCircle, MdLogout } from 'react-icons/md'
 import { useRouter } from "next/router";
 import axios from "axios";
 
-export function MenuLateral(){
-    const router = useRouter();
-    const logout = () => {
-        axios.post("/api/auth/logout").catch(() => router.push("/login"))
-    } 
-    return(
-        <HStack
-            w={"250px"}
-            bg = "#D02C23"
-            h={"100vh"}
-            justifyContent="center"
-            alignItems="flex-start"
+export function MenuLateral() {
+  const router = useRouter();
+  const logout = () => {
+    axios.post("/api/auth/logout").catch(() => router.push("/login"));
+  };
+  return (
+    <VStack h={'100vh'} w={'235px'} bg={'#D02C23'}>
+      <VStack
+        sx={{
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Box
+          w={"100%"}
+          p={'15px'}
+          sx={{
+              justifyContent: "center",
+              alignItems: "center",
+          }} 
         >
-            <VStack
-                width={"100%"}
-                h={"100%"}
-            >
-                <Pressable
-                    justifyContent="center"
-                    alignItems="center"
-                    p="16px"
-                >
-                    <Image
-                        src={Logo}
-                        alt="Logo"
-                        width={90}
-                        height={90}
-                        priority
-                    />
-                    <Text
-                        color="white"
-                        fontWeight="bold"
-                        fontFamily="Inter"
-                        fontSize={24}
-                        mt={4}
-                    >
-                        Nihongo Gaido
-                    </Text>
-                </Pressable>
-                <Divider mt={9} bgColor="#fff" width={"100%"} h={"3px"}/>
-
-                <VStack
-                    h={"473px"}
-                    justifyContent="space-around"
-                    alignItems="center"
-                    space="10px"
-                >
-                    <VStack
-                        width={"50%"}    
-                    > 
-                        <Button
-                            variant="link"
-                            flexDirection="column"
-                            alignItems="flex-start"
-                            w={"100%"}
-                            gap={20}
-                            onPress={() => router.push("/home")}
-                            isPressed={router.pathname === "/home"}
-                        >
-                                <HStack>
-                                    <Image
-                                        src={Home}
-                                        alt="Home"
-                                        width={20}
-                                        height={16}
-                                        priority
-                                    />
-                                    <Text
-                                        color="white"
-                                        fontWeight="bold"
-                                        fontFamily="Inter"
-                                        fontSize={16}
-                                        ml={4}
-                                    >
-                                        Home
-                                    </Text>
-                                </HStack>
-                        </Button>
-
-                        <Button
-                            variant="link"
-                            flexDirection="column"
-                            justifyContent="center"
-                            alignItems="flex-start"
-                            w={"100%"}
-                        >
-                                <HStack>
-                                    <Image
-                                        src={Grammar}
-                                        alt="Grammar"
-                                        width={20}
-                                        height={16}
-                                        priority
-                                    />
-                                    <Text
-                                        color="white"
-                                        fontWeight="bold"
-                                        fontFamily="Inter"
-                                        fontSize={16}
-                                        ml={4}
-                                    >
-                                        Gramática
-                                    </Text>
-                                </HStack>
-                        </Button>
-
-                        <Button
-                            variant="link"
-                            flexDirection="column"
-                            justifyContent="center"
-                            alignItems="flex-start"
-                            w={"100%"}
-                            gap={20}
-                            
-                        >
-                                <HStack>
-                                    <Image
-                                        src={Word}
-                                        alt="Palavras"
-                                        width={30}
-                                        height={25}
-                                        priority
-                                    />
-                                    <Text
-                                        color="white"
-                                        fontWeight="bold"
-                                        fontFamily="Inter"
-                                        fontSize={16}
-                                        ml={4}
-                                    >
-                                        Palavras
-                                    </Text>
-                                </HStack>
-                        </Button>
-
-                        <Button
-                            variant="link"
-                            flexDirection="column"
-                            justifyContent="center"
-                            alignItems="flex-start"
-                            w={"100%"}
-                            gap={20}
-                            
-                        >
-                                <HStack>
-                                    <Image
-                                        src={Text_Icon}
-                                        alt="Texto"
-                                        width={26}
-                                        height={26}
-                                        priority
-                                    />
-                                    <Text
-                                        color="white"
-                                        fontWeight="bold"
-                                        fontFamily="Inter"
-                                        fontSize={16}
-                                        ml={4}
-                                    >
-                                        Texto
-                                    </Text>
-                                </HStack>
-                        </Button>
-                    </VStack>
-
-                    <VStack
-                        width={"50%"}
-                    > 
-                        <Button
-                            variant="link"
-                            flexDirection="column"
-                            alignItems="flex-start"
-                            w={"100%"}
-                            onPress={() => router.push('/profile')}
-                            isPressed={router.asPath.startsWith('/profile')}
-                        >
-                                <HStack>
-                                    <Image
-                                        src={Profile}
-                                        alt="Profile"
-                                        width={22}
-                                        height={24}
-                                        priority
-                                    />
-                                    <Text
-                                        color="white"
-                                        fontWeight="bold"
-                                        fontFamily="Inter"
-                                        fontSize={16}
-                                        ml={4}
-                                    >
-                                        Perfil
-                                    </Text>
-                                </HStack>
-                        </Button>
-
-                        <Button
-                            variant="link"
-                            flexDirection="column"
-                            justifyContent="center"
-                            alignItems="flex-start"
-                            w={"100%"}
-                            gap={20}
-                            onPress={() => logout()}
-                        >
-                            <HStack>
-                                <Image
-                                    src={logout_icon}
-                                    alt="Logout"
-                                    width={22}
-                                    height={21}
-                                    priority
-                                />
-                                <Text
-                                    color="white"
-                                    fontWeight="bold"
-                                    fontFamily="Inter"
-                                    fontSize={16}
-                                    ml={4}
-                                >
-                                    Sair
-                                </Text>
-                            </HStack>
-                        </Button>
-                    </VStack>
-                </VStack>
-            </VStack>
-           
-        </HStack>
-    )
+            <Pressable onPress={() => router.push('/home')}>
+                <Image src={Logo} alt="Logo" width={100} height={100} />
+            </Pressable>
+            <Text fontSize={'18px'} fontWeight={'600'} color={'white'}>Nihongo Gaido</Text>
+        </Box>
+        <VStack w={'100%'} h={'480px'} alignItems={'center'} justifyContent={'space-around'}>
+            <Box justifyContent={'flex-start'} w={'65%'} h={'28%'} p={'10px'} >
+                <Button onPress={() => router.push('/home')}>
+                    <HStack flexDirection={'row'} alignItems={'center'}>
+                        <MdHome size={20} color={'white'} />
+                        <Text ml ={'2px'} fontSize={'16px'} fontWeight={'400'} color={'white'}>Home</Text>
+                    </HStack>
+                </Button>
+                <Button mt={'10px'} onPress={() => router.push('/grammar')}>
+                    <HStack flexDirection={'row'} alignItems={'center'}>
+                        <Image src={Grammar} alt="Home" width={20} height={20} />
+                        <Text ml ={'2px'} fontSize={'16px'} fontWeight={'400'} color={'white'}>Gramática</Text>
+                    </HStack>
+                </Button>
+                <Button mt={'10px'} onPress={() => router.push('/vocabulary')}>
+                    <HStack flexDirection={'row'} alignItems={'center'}>
+                        <Image src={Word} alt="Home" width={20} height={20} />
+                        <Text ml ={'2px'} fontSize={'16px'} fontWeight={'400'} color={'white'}>Vocabulário</Text>
+                    </HStack>
+                </Button>
+                <Button mt={'10px'} onPress={() => router.push('/text')}>
+                    <HStack flexDirection={'row'} alignItems={'center'}>
+                        <Image src={Text_Icon} alt="Home" width={20} height={20} />
+                        <Text ml ={'2px'} fontSize={'16px'} fontWeight={'400'} color={'white'}>Texto</Text>
+                    </HStack>
+                </Button> 
+            </Box>
+            <Box justifyContent={'flex-start'} w={'65%'} h={'28%'} p={'10px'} >
+                <Button onPress={() => router.push('//profile')}>
+                        <HStack flexDirection={'row'} alignItems={'center'}>
+                            <MdAccountCircle size={20} color={'white'} />
+                            <Text ml ={'2px'} fontSize={'16px'} fontWeight={'400'} color={'white'}>Perfil</Text>
+                        </HStack>
+                </Button>
+                <Button mt={'10px'} onPress={logout}>
+                    <HStack flexDirection={'row'} alignItems={'center'}>
+                        <MdLogout size={20} color={'white'} />
+                        <Text ml ={'2px'} fontSize={'16px'} fontWeight={'400'} color={'white'}>Sair</Text>
+                    </HStack>
+                </Button>
+            </Box>
+        </VStack>
+      </VStack>
+    </VStack>
+  );
 }
