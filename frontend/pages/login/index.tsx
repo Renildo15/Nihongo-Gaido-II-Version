@@ -144,7 +144,7 @@ export default function Login() {
                                     type="text" 
                                     placeholder="Username" 
                                     color="$gray700" 
-                                    onChangeText={(text) => setUserName(text)}
+                                    onChangeText={(text: string) => setUserName(text)}
                                 />
                             </Input>
                             <FormControl.Error>
@@ -163,7 +163,7 @@ export default function Login() {
                                     type={showPassword ? "text" : "password"} 
                                     placeholder="Senha" 
                                     color="$gray700" 
-                                    onChangeText={(text) => setPassword(text)}
+                                    onChangeText={(text: string) => setPassword(text)}
                                     
                                 />
                                 <InputIcon 

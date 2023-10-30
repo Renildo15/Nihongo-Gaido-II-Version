@@ -1,7 +1,7 @@
 import axios from "axios";
 import useSWR from "swr";
 
-const fetcchSimple = (url: string) => axios.get(url).then((res) => res.data);
+export const fetcchSimple = (url: string) => axios.get(url).then((res) => res.data);
 
 export interface IUser{
     id: number;
