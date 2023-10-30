@@ -13,16 +13,16 @@ type Props = {
 
 export const HomeDefaultPage: FunctionComponent<Props> = ({children, title}) => {
     return(
-        <VStack maxWidth={"1116px"}>
+        <VStack maxWidth={"1900px"}>
             <Head>
                 <title>{title}</title>
             </Head>
-            <HStack  width="auto">
+            <HStack flexDirection={'row'} width={'100%'}>
                 <MenuLateral />
-                <VStack w={"100%"}>
-                    <Heading title={title}/>
-                    <Box>{children}</Box>
-                </VStack>
+                <Box width={'1131px'}>
+                    <Heading title={title} />
+                    {children}
+                </Box>
             </HStack>
         </VStack>
     )

@@ -38,9 +38,9 @@ export default function ProfileInfo(){
     }
     return(
         <Box justifyContent="center" alignItems="center" w={"100%"} >
-          <VStack borderWidth={1} w={800} h={400} borderRadius={9} borderColor="#D02C23" py={5} px={8} space="lg">
-            <HStack w={210} alignItems="flex-end" justifyContent="space-between" p={5}>
-                <Box style={{ width: 100, height: 100, borderRadius: 50, overflow: 'hidden' }}>
+          <VStack justifyContent={'space-between'} w={'600px'} h={'300px'} borderWidth={1} borderRadius={9} borderColor="#D02C23" py={5} px={8} space={'lg'}>
+            <HStack flexDirection={'row'} w={210} alignItems="flex-end" justifyContent="space-between" p={5}>
+                <Box borderColor={"#D02C23"} borderWidth={'3px'} style={{ width: 100, height: 100, borderRadius: 50, overflow: 'hidden' }}>
                     {profile?.avatar 
                         ? (
                             <Image
@@ -66,38 +66,49 @@ export default function ProfileInfo(){
                     {profile?.user.username}
                 </Text>
             </HStack>
-            <VStack p={5} gap={40} space="md">
+            <VStack p={5}>
                 <Text color="#D02C23">
                     <Text color="#D02C23" fontWeight="bold">Nome: </Text>
                     {profile?.user.first_name}
                 </Text>
-                <Text color="#D02C23">
+                <Text color="#D02C23" mt={'4px'}>
                     <Text color="#D02C23" fontWeight="bold">Sobrenome: </Text>
                     {profile?.user.last_name}
                 </Text>
-                <Text color="#D02C23">
+                <Text color="#D02C23" mt={'4px'}>
                     <Text color="#D02C23" fontWeight="bold">Username: </Text>
                     {profile?.user.username}
                 </Text>
-                <Text color="#D02C23">
+                <Text color="#D02C23" mt={'4px'}>
                     <Text color="#D02C23" fontWeight="bold">Email: </Text>
                     {profile?.user.email}
                 </Text>
-                <Text color="#D02C23">
+                <Text color="#D02C23" mt={'4px'}>
                     <Text color="#D02C23" fontWeight="bold">Telefone: </Text>
                     {applyPhoneMask(profile?.phone)}
                 </Text>
-                <Text color="#D02C23">
+                <Text color="#D02C23" mt={'4px'}>
                     <Text color="#D02C23" fontWeight="bold">Data de Nascimento: </Text>
                     {profile?.date_of_birth ? format(new Date(profile.date_of_birth), 'dd-MM-yyyy') : 'Data não disponível'}
                 </Text>  
             </VStack>
-            <HStack justifyContent="flex-end">
-                <Button
+            <HStack justifyContent="flex-end" flexDirection={'row'}>
+                {/* <Button
                     onPress={() => setIsOpen(true)}
-                    bg="#D02C23"
-                    w={70}
-                    h={30}
+                    size="md"
+                    variant="solid"
+                    action="primary"
+                    isDisabled={false}
+                    isFocusVisible={false}
+                >
+                    <ButtonText color="#white">Editar</ButtonText>
+                </Button> */}
+                <Button
+                    bg={'#D02C23'}
+                    p={'10px'}
+                    w={'100px'}
+                    borderRadius={"5px"}
+                    onPress={() => setIsOpen(true)}
                     sx={{
                         ":hover": {
                           bg: "$red700",
@@ -107,7 +118,14 @@ export default function ProfileInfo(){
                         },
                       }}
                 >
-                    <ButtonText color="#white">Editar</ButtonText>
+                    <ButtonText 
+                        fontFamily={'Inter'} 
+                        fontSize={'16px'} 
+                        color={'white'} 
+                        textAlign={'center'}
+                    >
+                        Editar
+                    </ButtonText>
                 </Button>
             </HStack>
             <ModalProfile isOpen={isOpen} onClose={() => setIsOpen(false)} />
