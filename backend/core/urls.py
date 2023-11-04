@@ -17,7 +17,7 @@ from .views.user_views import user_detail, user_list, whoami
 from .views.word_views import word_detail, word_list
 
 urlpatterns = [
-    path("grammar/", grammar_list, name="grammar_list_create"),
+    path("grammar", grammar_list, name="grammar_list_create"),
     path("grammar/<int:pk>/", grammar_detail, name="grammar_detail"),
     path("whoami", whoami, name="whoami"),
     path("user", user_list, name="user_list_create"),
