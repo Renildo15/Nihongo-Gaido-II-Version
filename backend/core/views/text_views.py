@@ -6,15 +6,16 @@ from rest_framework.response import Response
 from core.models import Text
 from core.serializers import TextCreateSerializer, TextSerializer
 from core.utils.paginationn import CustomPagination
+from core.filters import TextFilter
 
 @api_view(["GET", "POST"])
 @permission_classes([IsAuthenticated])
 def text_list(request):
     if request.method == "GET":
         texts = Text.objects.filter(created_by=request.user)
-
+        filter = TextFilter(request.GET, queryset=texts)
         paginator = CustomPagination()
-        result_page = paginator.paginate_queryset(texts, request)
+        result_page = paginator.paginate_queryset(filter.qs, request)
         serializer = TextSerializer(result_page, many=True)
 
         return paginator.get_paginated_response(serializer.data)
@@ -30,7 +31,8 @@ def text_list(request):
             return Response(data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+    else:
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 @api_view(["GET", "PATCH", "DELETE"])
 @permission_classes([IsAuthenticated])
