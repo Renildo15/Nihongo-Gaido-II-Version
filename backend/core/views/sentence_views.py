@@ -5,6 +5,7 @@ from rest_framework.response import Response
 
 from core.models import Sentence
 from core.serializers import SentenceCreateSerializer, SentenceListSerializer
+from core.utils.paginationn import CustomPagination
 
 
 @api_view(["GET", "POST"])
@@ -13,11 +14,11 @@ def sentence_list(request):
     if request.method == "GET":
         sentences = Sentence.objects.filter(created_by=request.user)
 
-        serializer = SentenceListSerializer(instance=sentences, many=True)
+        paginator = CustomPagination()
+        result_page = paginator.paginate_queryset(sentences, request)
+        serializer = SentenceListSerializer(instance=result_page, many=True)
 
-        data = {"sentences": serializer.data}
-
-        return Response(data)
+        return paginator.get_paginated_response(serializer.data)
     elif request.method == "POST":
         serializer = SentenceCreateSerializer(data=request.data)
 

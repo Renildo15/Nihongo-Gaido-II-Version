@@ -6,6 +6,7 @@ from rest_framework.response import Response
 
 from core.models import Category
 from core.serializers import CategoryCreateSerializer, CategorySerializer
+from core.utils.paginationn import CustomPagination
 
 
 @api_view(["GET", "POST"])
@@ -15,11 +16,12 @@ def category_list(request):
         categories = Category.objects.filter(
             Q(is_created_by_user=False) | Q(created_by=request.user)
         )
-        serializer = CategorySerializer(categories, many=True)
 
-        data = {"categories": serializer.data}
+        paginator = CustomPagination()
+        result_page = paginator.paginate_queryset(categories, request)
+        serializer = CategorySerializer(result_page, many=True)
 
-        return Response(data)
+        return paginator.get_paginated_response(serializer.data)
     elif request.method == "POST":
         serializer = CategoryCreateSerializer(data=request.data)
 

@@ -5,6 +5,7 @@ from rest_framework.response import Response
 
 from core.models import Example, Word
 from core.serializers import ExampleCreateSerializer, ExampleSerializer
+from core.utils.paginationn import CustomPagination
 
 
 @api_view(["GET", "POST"])
@@ -17,11 +18,12 @@ def example_list(request, word_id):
 
     if request.method == "GET":
         examples = Example.objects.filter(created_by=request.user, word=word)
-        serializer = ExampleSerializer(examples, many=True)
 
-        data = {"examples": serializer.data}
+        paginator = CustomPagination()
+        result_page = paginator.paginate_queryset(examples, request)
+        serializer = ExampleSerializer(result_page, many=True)
 
-        return Response(data)
+        return paginator.get_paginated_response(serializer.data)
     elif request.method == "POST":
         serializer = ExampleCreateSerializer(data=request.data)
 
