@@ -5,6 +5,7 @@ from rest_framework.response import Response
 
 from core.models import TextWriting
 from core.serializers import TextWritingCreateSerializer, TextWritingSerializer
+from core.utils.paginationn import CustomPagination
 
 
 @api_view(["GET", "POST"])
@@ -12,11 +13,12 @@ from core.serializers import TextWritingCreateSerializer, TextWritingSerializer
 def text_writing_list(request):
     if request.method == "GET":
         text_writings = TextWriting.objects.filter(created_by=request.user)
-        serializer = TextWritingSerializer(text_writings, many=True)
 
-        data = {"text_writings": serializer.data}
+        paginator = CustomPagination()
+        result_page = paginator.paginate_queryset(text_writings, request)
+        serializer = TextWritingSerializer(result_page, many=True)
 
-        return Response(data)
+        return paginator.get_paginated_response(serializer.data)
 
     elif request.method == "POST":
         serializer = TextWritingCreateSerializer(data=request.data)

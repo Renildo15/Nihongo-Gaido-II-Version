@@ -5,6 +5,7 @@ from rest_framework.response import Response
 
 from core.models import Conjugation, Word
 from core.serializers import ConjugationCreateSerializer, ConjugationSerializer
+from core.utils.paginationn import CustomPagination
 
 
 @api_view(["GET", "POST"])
@@ -17,11 +18,12 @@ def conjugation_list(request, word_id):
 
     if request.method == "GET":
         conjugation = Conjugation.objects.get(created_by=request.user, word=word)
-
-        serializer = ConjugationSerializer(conjugation)
-        data = {"word": serializer.data}
-
-        return Response(data)
+        
+        paginator = CustomPagination()  
+        result_page = paginator.paginate_queryset(conjugation, request)
+        serializer = ConjugationSerializer(result_page)
+        
+        return paginator.get_paginated_response(serializer.data)
 
     elif request.method == "POST":
         serializer = ConjugationCreateSerializer(data=request.data)

@@ -5,18 +5,19 @@ from rest_framework.response import Response
 
 from core.models import Text
 from core.serializers import TextCreateSerializer, TextSerializer
-
+from core.utils.paginationn import CustomPagination
 
 @api_view(["GET", "POST"])
 @permission_classes([IsAuthenticated])
 def text_list(request):
     if request.method == "GET":
         texts = Text.objects.filter(created_by=request.user)
-        serializer = TextSerializer(texts, many=True)
 
-        data = {"texts": serializer.data}
+        paginator = CustomPagination()
+        result_page = paginator.paginate_queryset(texts, request)
+        serializer = TextSerializer(result_page, many=True)
 
-        return Response(data)
+        return paginator.get_paginated_response(serializer.data)
 
     elif request.method == "POST":
         serializer = TextCreateSerializer(data=request.data)
