@@ -1,8 +1,9 @@
 import React from "react";
-import { Box, HStack, Text } from "native-base";
+import { Box, HStack, Text, Pressable } from "native-base";
 import { MdArrowBack } from "react-icons/md";
 import Default from "../../public/images/default.jpg"
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useProfile, WhoIam } from "../../utils/api/user";
 interface IHeadingProps {
     title: string;
@@ -25,6 +26,8 @@ export function Heading({title}: IHeadingProps){
         mutate: profileMutate,
     } = useProfile(userInfo?.id)
 
+    const router = useRouter()
+
     return(
         <Box
             bg="#D02C23"
@@ -45,12 +48,14 @@ export function Heading({title}: IHeadingProps){
                 >
                     {title}
                 </Text>
-                <HStack
+                <Pressable
                     alignItems="center"
                     justifyContent="space-between"
+                    flexDirection={'row'}
                     w={140}
+                    onPress={() => router.push('/profile')}
                 >
-                <Box style={{ borderRadius: 50, overflow: 'hidden' }}>
+                    <Box style={{ borderRadius: 50, overflow: 'hidden' }}>
                     {profile?.avatar 
                             ? (
                                 <Image
@@ -78,7 +83,7 @@ export function Heading({title}: IHeadingProps){
                     >
                         {userInfo?.username}
                     </Text>
-                </HStack>
+                </Pressable>
             </HStack>
         </Box>
     )
