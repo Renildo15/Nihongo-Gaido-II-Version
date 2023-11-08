@@ -19,22 +19,22 @@ import {
     Pressable
 } from "native-base";
 import { MdRemoveRedEye } from 'react-icons/md'
-// export async function getServerSideProps({req, res}: GetServerSidePropsContext) {
-//     const cookies = new Cookies(req, res)
+export async function getServerSideProps({req, res}: GetServerSidePropsContext) {
+    const cookies = new Cookies(req, res)
 
-//     if(cookies.get('auth-token')) {
-//         return {
-//             redirect: {
-//                 destination: '/home',
-//                 permanent: false,
-//             }
-//         }
-//     }
+    if(cookies.get('auth-token')) {
+        return {
+            redirect: {
+                destination: '/home',
+                permanent: false,
+            }
+        }
+    }
 
-//     return {
-//         props: {}
-//     }
-// }
+    return {
+        props: {}
+    }
+}
 
 export default function Login() {
 
@@ -50,6 +50,43 @@ export default function Login() {
         setShowPassword((showState) => {
             return !showState
         })
+    }
+
+    const login = async () => {
+        setSendingLogin(true)
+        if (userName && password) {
+            try {
+                const user = await doLogin(userName, password)
+
+                if(!user) throw new Error('Please, verify your credentials')
+
+                router.push('/home')
+                toast.show({
+                    title: 'Welcome',
+                    description: `Welcome ${user.first_name}`,
+                    placement: 'top',
+                    duration: 2000
+                })
+            } catch (error) {
+                if ( error instanceof AxiosError || error instanceof Error) {
+                    toast.show({
+                        title: 'Error',
+                        description: error.message,
+                        placement: 'top',
+                        duration: 2000
+                    })
+                } else {
+                    toast.show({
+                        title: 'Error',
+                        description: 'Something went wrong',
+                        placement: 'top',
+                        duration: 2000
+                    })
+                }
+            } finally {
+                setSendingLogin(false)
+            }
+        }
     }
 
     return (
@@ -139,7 +176,13 @@ export default function Login() {
                     </Column>
                 </Column>
                 <Column w={'40%'} justifyContent={'flex-end'} alignItems={'flex-end'}> 
-                    <Button w={'90px'} bg={'#D02C23'} _hover={{bg: '#ae251e'}}>
+                    <Button 
+                        w={'90px'} 
+                        bg={'#D02C23'} 
+                        _hover={{bg: '#ae251e'}}
+                        onPress={login}
+                        isLoading={sendingLogin}
+                    >
                         Login
                     </Button>
                 </Column>
