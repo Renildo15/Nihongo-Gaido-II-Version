@@ -79,7 +79,7 @@ export async function doLogin(username: string, password: string){
     }
 }
 
-export async function useRegister (user: IUserCreate) {
+export async function doRegister (user: IUserCreate) {
     interface IResponse{
         message: string;
         user: IUser;
