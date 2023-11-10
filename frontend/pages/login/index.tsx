@@ -154,14 +154,16 @@ export default function Login() {
                     </FormControl>
                 </Column>
                 <Column space={'8px'} width={'40%'} mt={'8px'}>
-                <Column width={'100%'}>
+                    <Column width={'100%'}>
                         <Row>
                             <Text mr={'6px'}>
                                 Don t have an account? 
                             </Text>
-                            <Text fontWeight={'600'} color={'#D02C23'} onPress={() => router.push('/register')}>
-                                Register
-                            </Text>
+                            <Pressable onPress={() => router.push('/register')}>
+                                <Text fontWeight={'600'} color={'#D02C23'} onPress={() => router.push('/register')}>
+                                    Register
+                                </Text>
+                            </Pressable>
                         </Row>
                     </Column >
                     <Column width={'100%'}>
