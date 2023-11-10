@@ -47,19 +47,19 @@ export function LateralMenu() {
                     <Pressable mt={'10px'} onPress={() => router.push('/grammar')}>
                         <HStack flexDirection={'row'} alignItems={'center'}>
                             <MdBook size={20} color={'white'} />
-                            <Text ml ={'2px'} fontSize={'16px'} fontWeight={'400'} color={'white'}>Gramática</Text>
+                            <Text ml ={'2px'} fontSize={'16px'} fontWeight={'400'} color={'white'}>Grammar</Text>
                         </HStack>
                     </Pressable>
                     <Pressable mt={'10px'} onPress={() => router.push('/vocabulary')}>
                         <HStack flexDirection={'row'} alignItems={'center'}>
                             <MdTranslate size={20} color={'white'} />
-                            <Text ml ={'2px'} fontSize={'16px'} fontWeight={'400'} color={'white'}>Vocabulário</Text>
+                            <Text ml ={'2px'} fontSize={'16px'} fontWeight={'400'} color={'white'}>Vocabulary</Text>
                         </HStack>
                     </Pressable>
                     <Pressable mt={'10px'} onPress={() => router.push('/text')}>
                         <HStack flexDirection={'row'} alignItems={'center'}>
                             <MdTextSnippet size={20} color={'white'} />
-                            <Text ml ={'2px'} fontSize={'16px'} fontWeight={'400'} color={'white'}>Texto</Text>
+                            <Text ml ={'2px'} fontSize={'16px'} fontWeight={'400'} color={'white'}>Text</Text>
                         </HStack>
                     </Pressable> 
                 </Box>
@@ -67,13 +67,13 @@ export function LateralMenu() {
                     <Pressable onPress={() => router.push('//profile')}>
                         <HStack flexDirection={'row'} alignItems={'center'}>
                             <MdAccountCircle size={20} color={'white'} />
-                            <Text ml ={'2px'} fontSize={'16px'} fontWeight={'400'} color={'white'}>Perfil</Text>
+                            <Text ml ={'2px'} fontSize={'16px'} fontWeight={'400'} color={'white'}>Profile</Text>
                         </HStack>
                     </Pressable>
                     <Pressable mt={'10px'} onPress={logout}>
                         <HStack flexDirection={'row'} alignItems={'center'}>
                             <MdLogout size={20} color={'white'} />
-                            <Text ml ={'2px'} fontSize={'16px'} fontWeight={'400'} color={'white'}>Sair</Text>
+                            <Text ml ={'2px'} fontSize={'16px'} fontWeight={'400'} color={'white'}>Logout</Text>
                         </HStack>
                     </Pressable>
                 </Box>

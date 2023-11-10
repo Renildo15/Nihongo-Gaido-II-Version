@@ -13,7 +13,7 @@ type Props = {
 
 export const BaseLayout: FunctionComponent<Props> = ({children, title}) => {
     return(
-        <VStack maxW={'1900px'}>
+        <VStack maxW={'1900px'} bg={'#f2f2f2'}>
             <Head>
                 <title>{title}</title>
             </Head>
