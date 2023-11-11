@@ -1,5 +1,5 @@
 import React, {FunctionComponent} from "react";
-import { Box, VStack, HStack } from "native-base";
+import { VStack, HStack } from "native-base";
 
 import Head from "next/head";
 
@@ -19,10 +19,10 @@ export const BaseLayout: FunctionComponent<Props> = ({children, title}) => {
             </Head>
             <HStack flexDirection={'row'}  w={'100%'}>
                 <LateralMenu />
-                <Box w={'82.8%'}>
+                <VStack w={'82.8%'} space={'80px'}>
                     <Heading title={title} />
                     {children}
-                </Box>
+                </VStack>
             </HStack>
         </VStack>
     )
