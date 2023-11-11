@@ -5,8 +5,11 @@ import { applyPhoneMask } from "../../utils/validation";
 import Image from "next/image";
 import Default from "../../public/images/default.jpg";
 import format from "date-fns/format";
+import ModalProfile from "./ModalProfile";
 
 export default function ProfileInfo() {
+
+    const [modalVisible, setModalVisible] = useState(false);
     const {
         data: userInfo,
         error: userInfoError
@@ -104,10 +107,12 @@ export default function ProfileInfo() {
                         bg={'#D02C23'}
                         _hover={{bg: '#ae251e'}}
                         _pressed={{bg: '#ae251e'}}
+                        onPress={() => setModalVisible(true)}
                     >
                         Change profile
                     </Button>
                 </Row>
+                <ModalProfile isOpen={modalVisible} onClose={() => setModalVisible(false)} />
             </Column>
         </Box>
     )

@@ -128,7 +128,7 @@ export function useProfile(userId: number | undefined){
     }
 }
 
-export async function updateProfile (userId: number, {avatar, date_of_birth, email, first_name, last_name, phone, username}: IProfileUpdate) {
+export async function updateProfile (userId: number | undefined, {avatar, date_of_birth, email, first_name, last_name, phone, username}: IProfileUpdate) {
     interface IUpdateResponse{
         profile: IProfile;
     }
