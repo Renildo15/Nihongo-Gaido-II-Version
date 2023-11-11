@@ -1,7 +1,6 @@
 import React from "react";
 import { GetServerSidePropsContext } from "next";
-import Cookies from "cookies";
-import { Box, Text } from "@gluestack-ui/themed";
+import Cookies from "cookies";  
 
 export async function getServerSideProps({ req, res}: GetServerSidePropsContext) {
   const cookies = new Cookies(req, res)

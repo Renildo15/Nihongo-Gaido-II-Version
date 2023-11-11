@@ -1,20 +1,20 @@
 import React from "react";
 import { GetServerSidePropsContext } from "next";
-import { redirectIfNoCredentials } from "@/utils";
+import { redirectIfNoCredentials } from "../../utils";
 
-import { HomeDefaultPage } from "@/components/home/HomeDefaultPage";
+import { BaseLayout } from "../../components/home/BaseLayout";
 
 
 export async function getServerSideProps({req, res}: GetServerSidePropsContext) {
-  return redirectIfNoCredentials({req, res});
+    return redirectIfNoCredentials({req, res});
 }
 
 export default function Home() {
 
-  return (
-    <HomeDefaultPage title="Home">
-       
-    </HomeDefaultPage>
+    return (
+        <BaseLayout title="Home">
         
-  );
+        </BaseLayout>
+            
+    );
 }

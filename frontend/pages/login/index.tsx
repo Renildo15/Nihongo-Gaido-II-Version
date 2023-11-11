@@ -1,35 +1,27 @@
-import React,{ useState } from "react"
+import React, { useState } from "react";
 import { GetServerSidePropsContext } from "next";
 import Cookies from "cookies";
-import Head from "next/head"
-import { Button, 
-        Box, 
-        VStack, 
-        Center,
-        FormControl, 
-        Input,
-        InputInput,
-        InputIcon,
-        Icon,
-        ButtonText,
-        EyeIcon,
-        EyeOffIcon,
-        ButtonSpinner,
-        useToast,
-        Toast,
-        ToastTitle,
-        ToastDescription,
-        Pressable
-    } from '@gluestack-ui/themed';
+import Head from "next/head";
 import Image from "next/image";
-import Logo from "../../public/logo.png";
-import { useRouter } from "next/router";
+import { useRouter } from "next/dist/client/router";
 import { AxiosError } from "axios";
-import { doLogin } from "@/utils/api/user";
-
+import { doLogin } from "../../utils/api/user";
+import Logo from "../../public/images/logo.png"
+import { 
+    useToast,
+    Center,
+    Column,
+    Row,
+    FormControl,
+    Input,
+    Text,
+    Button,
+    Pressable
+} from "native-base";
+import { MdRemoveRedEye } from 'react-icons/md'
 export async function getServerSideProps({req, res}: GetServerSidePropsContext) {
     const cookies = new Cookies(req, res)
-   
+
     if(cookies.get('auth-token')) {
         return {
             redirect: {
@@ -45,6 +37,7 @@ export async function getServerSideProps({req, res}: GetServerSidePropsContext) 
 }
 
 export default function Login() {
+
     const [userName, setUserName] = useState("")
     const [password, setPassword] = useState("")
     const [sendingLogin, setSendingLogin] = useState(false)
@@ -52,6 +45,7 @@ export default function Login() {
 
     const router = useRouter()
     const toast = useToast()
+    
     const handleState = () => {
         setShowPassword((showState) => {
             return !showState
@@ -59,160 +53,142 @@ export default function Login() {
     }
 
     const login = async () => {
-        
-        if(userName && password){
-            setSendingLogin(true)
-            try{
+        setSendingLogin(true)
+        if (userName && password) {
+            try {
                 const user = await doLogin(userName, password)
 
-                if(!user) {
-                    throw new Error("Verifique seu usuário e senha e tente novamente")
-                }
+                if(!user) throw new Error('Please, verify your credentials')
 
                 router.push('/home')
                 toast.show({
-                    placement: "top",
-                    render: ({ id }) => {
-                        return (
-                            <Toast id={id} bg="$green600">
-                            <VStack space="xs">
-                                <ToastTitle color="$white">Login efetuado com sucesso</ToastTitle>
-                                <ToastDescription color="$white">
-                                    Seja bem vindo {user?.first_name}
-                                </ToastDescription>
-                            </VStack>
-                            </Toast>
-                        )
-                    }
+                    title: 'Welcome',
+                    description: `Welcome ${user.first_name}`,
+                    placement: 'top',
+                    duration: 2000
                 })
-            } catch (err: any) {
-                if ( err instanceof AxiosError || err instanceof Error) {
+            } catch (error) {
+                if ( error instanceof AxiosError || error instanceof Error) {
                     toast.show({
-                        placement: "top",
-                        render: ({ id }) => {
-                          return (
-                            <Toast id={id} bg="$red600">
-                              <VStack space="xs">
-                                <ToastTitle color="$white">Usuário não encontrado</ToastTitle>
-                                <ToastDescription color="$white">
-                                  {err.message}
-                                </ToastDescription>
-                              </VStack>
-                            </Toast>
-                          )
-                        },
-                      })
+                        title: 'Error',
+                        description: error.message,
+                        placement: 'top',
+                        duration: 2000
+                    })
                 } else {
-                  console.error(err)
+                    toast.show({
+                        title: 'Error',
+                        description: 'Something went wrong',
+                        placement: 'top',
+                        duration: 2000
+                    })
                 }
-              } finally {
+            } finally {
                 setSendingLogin(false)
             }
         }
     }
-    
+
     return (
-       <Center>
+        <Center borderWidth={1} h={'100vh'} bg={'#f2f2f2'}>
             <Head>
                 <title>
                     Nihongo Gaido - Login
                 </title>
             </Head>
-            <Box display="flex" justifyContent="center" alignItems="center" >
-                <FormControl 
-                    mt="130px" 
-                    isRequired>
-                    <VStack space="md" justifyContent="center" alignItems="center" mb="20px">
-                        <Image
-                            src={Logo}
-                            alt="Logo Teze"
-                            width={150}
-                            height={150}
-                            priority
+            <Column 
+                borderRadius={'5px'} 
+                shadow={3} 
+                p={6} 
+                borderWidth={1} 
+                w={'60%'} 
+                justifyContent={'center'} 
+                alignItems={'center'} 
+                borderColor={'#D02C23'}
+                bg={'#fff'}
+            >
+                <Column justifyContent={'center'} alignItems={'center'}>
+                    <Image
+                        src={Logo}
+                        alt="Logo"
+                        width={150}
+                        height={150}
+                        priority
+                    />
+                    <Text fontSize={'18px'} fontWeight={'600'} color={'#D02C23'}>
+                        Nihongo Gaido
+                    </Text>
+                </Column>
+                <Column width={'40%'} space={'8px'}>
+                    <FormControl>
+                        <FormControl.Label _text={{color:'#D02C23', fontWeight: '600'}}>
+                            Username
+                        </FormControl.Label>
+                        <Input
+                            value={userName}
+                            onChangeText={(text) => setUserName(text)}
+                            placeholder="Username"
+                            shadow={1}
+                            _focus={{borderColor: '#D02C23'}}
+                            _hover={{borderColor: '#D02C23'}}
+                            focusOutlineColor={'#D02C23'}
                         />
-                    </VStack>
-                    <VStack space="md" width="400px">
-                        <VStack space="md" mb="10px">
-                            <Input
-                                sx={{
-                                    ":focus": {
-                                        borderColor: "$red600",
-                                    }
-                                }}
-                            >
-                                <InputInput 
-                                    type="text" 
-                                    placeholder="Username" 
-                                    color="$gray700" 
-                                    onChangeText={(text: string) => setUserName(text)}
-                                />
-                            </Input>
-                            <FormControl.Error>
-                                Username é obrigatório
-                            </FormControl.Error>
-                        </VStack>
-                        <VStack space="md" mb="10px">
-                            <Input
-                                sx={{
-                                    ":focus": {
-                                        borderColor: "$red600",
-                                    }
-                                }}
-                            >
-                                <InputInput 
-                                    type={showPassword ? "text" : "password"} 
-                                    placeholder="Senha" 
-                                    color="$gray700" 
-                                    onChangeText={(text: string) => setPassword(text)}
-                                    
-                                />
-                                <InputIcon 
-                                    pr="$3" onPress={handleState}
-                                    borderColor="none"
-                                    sx={{
-                                        ":focus": {
-                                            borderColor: "$red600",
-                                        }
-                                    }}
-                                >
-                            
-                                <Icon
-                                    as={showPassword ? EyeIcon : EyeOffIcon}
-                                    color="$red500"
-                                />
-                                </InputIcon>
-                            </Input>
-                            <FormControl.Error>
-                                Senha é obrigatório
-                            </FormControl.Error>
-                        </VStack>
-                        <VStack space="md" mb="10px">
+                    </FormControl>
+                    <FormControl>
+                        <FormControl.Label _text={{color:'#D02C23', fontWeight: '600'}}>Password</FormControl.Label>
+                        <Input
+                            value={password}
+                            onChangeText={(text) => setPassword(text)}
+                            type={showPassword ? 'text' : 'password'}
+                            placeholder="Password"
+                            shadow={1}
+                            _focus={{borderColor: '#D02C23'}}
+                            _hover={{borderColor: '#D02C23'}}
+                            focusOutlineColor={'#D02C23'}
+                            InputRightElement={
+                                <Pressable onPress={handleState} >
+                                    <MdRemoveRedEye size={20}  color="#D02C23"/>
+                                </Pressable>
+                            }
+                        />
+                    </FormControl>
+                </Column>
+                <Column space={'8px'} width={'40%'} mt={'8px'}>
+                    <Column width={'100%'}>
+                        <Row>
+                            <Text mr={'6px'}>
+                                Don t have an account? 
+                            </Text>
                             <Pressable onPress={() => router.push('/register')}>
-                                <ButtonText color="$red600">Não tem conta? Registre-se</ButtonText>
+                                <Text fontWeight={'600'} color={'#D02C23'} onPress={() => router.push('/register')}>
+                                    Register
+                                </Text>
                             </Pressable>
-                        </VStack>
-                        <Button
-                            onPress={login}
-                            ml="auto"
-                            bg="$red600"
-                            sx={{
-                                ":hover": {
-                                  bg: "$red700",
-                                },
-                                ":active": {
-                                  bg: "$red800",
-                                },
-                              }}
-                        >
-                            {sendingLogin ? (
-                                <ButtonSpinner />
-                            ): (
-                                <ButtonText color="$white">Entrar</ButtonText>
-                            )}
-                        </Button>
-                    </VStack>
-                </FormControl>
-            </Box>
-       </Center>
+                        </Row>
+                    </Column >
+                    <Column width={'100%'}>
+                        <Row>
+                            <Text mr={'6px'}>
+                                Forgot your password? 
+                            </Text>
+                            <Text fontWeight={'600'} color={'#D02C23'} onPress={() => router.push('/forgot-password')}>
+                                Reset
+                            </Text>
+                        </Row>
+                    </Column>
+                </Column>
+                <Column w={'40%'} justifyContent={'flex-end'} alignItems={'flex-end'}> 
+                    <Button 
+                        w={'90px'} 
+                        bg={'#D02C23'} 
+                        _hover={{bg: '#ae251e'}}
+                        onPress={login}
+                        isLoading={sendingLogin}
+                    >
+                        Login
+                    </Button>
+                </Column>
+            </Column>
+        </Center>
     )
 }

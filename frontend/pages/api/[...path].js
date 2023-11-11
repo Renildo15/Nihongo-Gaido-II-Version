@@ -3,7 +3,7 @@ import Cookies from 'cookies';
 import url from 'url';
 
 const API_URL = process.env.API_URL
-
+console.log(API_URL)
 const proxy = httpProxy.createProxyServer()
 
 export const config = {

@@ -1,135 +1,119 @@
-import React,{ useState } from "react";
-import { useProfile, WhoIam } from "@/utils/api/user";
-import { Box, VStack, HStack, Text, Button, ButtonText, Spinner } from "@gluestack-ui/themed";
-import { applyPhoneMask } from "@/utils/validations";
+import React, { useState } from "react";
+import { useProfile, WhoIam } from "../../utils/api/user";
+import { Box, Row, Column, Text, Button, Spinner } from "native-base";
+import { applyPhoneMask } from "../../utils/validation";
 import Image from "next/image";
-import Default from "../../public/default.jpg"
+import Default from "../../public/images/default.jpg";
+import format from "date-fns/format";
 import ModalProfile from "./ModalProfile";
-import { format } from 'date-fns'
 
-export default function ProfileInfo(){
-    const [isOpen, setIsOpen] = useState(false)
+export default function ProfileInfo() {
+
+    const [modalVisible, setModalVisible] = useState(false);
     const {
         data: userInfo,
-        error: userError
-    } = WhoIam()
+        error: userInfoError
+    } = WhoIam();
+
     const {
         data: profile,
         error: profileError,
-        isLoading: profileIsLoading,
-        isValidating: profileIsValidating,
-        mutate: profileMutate,
-    } = useProfile(userInfo?.id)
+        isLoading: profileLoading,
+        isValidating: profileValidating,
+        mutate: mutateProfile
+    } = useProfile(userInfo?.id );
 
-    if(profileIsLoading || profileIsValidating) {
-        return(
-            <Box justifyContent="center" alignItems="center" w={"100%"} >
-                <Spinner size="large" color="$primary400" />
-            </Box>
-        )
+    if(profileLoading || profileValidating) {
+        <Box justifyContent={'center'} alignItems={'center'}>
+            <Spinner color={'#D02C23'}/>
+        </Box>
     }
 
-    if (userError) {
-        return (
-            <Box justifyContent="center" alignItems="center" w={"100%"} >
-                <Text color="#D02C23">Erro ao carregar perfil</Text>
-            </Box>
-        )
-    }
-    return(
+    if(userInfoError) {
         <Box justifyContent="center" alignItems="center" w={"100%"} >
-          <VStack justifyContent={'space-between'} w={'600px'} h={'300px'} borderWidth={1} borderRadius={9} borderColor="#D02C23" py={5} px={8} space={'lg'}>
-            <HStack flexDirection={'row'} w={210} alignItems="flex-end" justifyContent="space-between" p={5}>
-                <Box borderColor={"#D02C23"} borderWidth={'3px'} style={{ width: 100, height: 100, borderRadius: 50, overflow: 'hidden' }}>
-                    {profile?.avatar 
-                        ? (
-                            <Image
-                                src={`http://127.0.0.1:8000${profile.avatar}`}
-                                alt="Avatar"
-                                width={100}
-                                height={100}
-                                objectFit="cover"
-                            />
-                        )
-                    :   (
-                            <Image
-                                src={Default}
-                                alt="Avatar"
-                                width={100}
-                                height={100}
-                                objectFit="cover"
-                            />
-                        )   
-                    }
-                </Box>
-                <Text color="#D02C23" fontWeight="bold">
-                    {profile?.user.username}
-                </Text>
-            </HStack>
-            <VStack p={5}>
-                <Text color="#D02C23">
-                    <Text color="#D02C23" fontWeight="bold">Nome: </Text>
-                    {profile?.user.first_name}
-                </Text>
-                <Text color="#D02C23" mt={'4px'}>
-                    <Text color="#D02C23" fontWeight="bold">Sobrenome: </Text>
-                    {profile?.user.last_name}
-                </Text>
-                <Text color="#D02C23" mt={'4px'}>
-                    <Text color="#D02C23" fontWeight="bold">Username: </Text>
-                    {profile?.user.username}
-                </Text>
-                <Text color="#D02C23" mt={'4px'}>
-                    <Text color="#D02C23" fontWeight="bold">Email: </Text>
-                    {profile?.user.email}
-                </Text>
-                <Text color="#D02C23" mt={'4px'}>
-                    <Text color="#D02C23" fontWeight="bold">Telefone: </Text>
-                    {applyPhoneMask(profile?.phone)}
-                </Text>
-                <Text color="#D02C23" mt={'4px'}>
-                    <Text color="#D02C23" fontWeight="bold">Data de Nascimento: </Text>
-                    {profile?.date_of_birth ? format(new Date(profile.date_of_birth), 'dd-MM-yyyy') : 'Data não disponível'}
-                </Text>  
-            </VStack>
-            <HStack justifyContent="flex-end" flexDirection={'row'}>
-                {/* <Button
-                    onPress={() => setIsOpen(true)}
-                    size="md"
-                    variant="solid"
-                    action="primary"
-                    isDisabled={false}
-                    isFocusVisible={false}
-                >
-                    <ButtonText color="#white">Editar</ButtonText>
-                </Button> */}
-                <Button
-                    bg={'#D02C23'}
-                    p={'10px'}
-                    w={'100px'}
-                    borderRadius={"5px"}
-                    onPress={() => setIsOpen(true)}
-                    sx={{
-                        ":hover": {
-                          bg: "$red700",
-                        },
-                        ":active": {
-                          bg: "$red800",
-                        },
-                      }}
-                >
-                    <ButtonText 
-                        fontFamily={'Inter'} 
-                        fontSize={'16px'} 
-                        color={'white'} 
-                        textAlign={'center'}
+            <Text color="#D02C23">Error loading profile</Text>
+        </Box>
+    }
+
+    return (
+        <Box justifyContent={'center'} alignItems={'center'} w={'100%'}>
+            <Column 
+                justifyContent={'space-around'} 
+                w={'600px'} 
+                h={'400px'} 
+                borderWidth={1} 
+                borderRadius={9} 
+                borderColor="#D02C23" 
+                py={5} 
+                px={8} 
+                space={'1px'}
+                bg={'white'}
+            >
+                <Row w={210} alignItems="flex-end" justifyContent="space-between" p={5}>
+                    <Box borderColor={"#D02C23"} borderWidth={'3px'} style={{ width: 100, height: 100, borderRadius: 50, overflow: 'hidden' }}>
+                        {profile?.avatar 
+                            ? (
+                                <Image
+                                    src={`http://127.0.0.1:8000${profile.avatar}`}
+                                    alt="Avatar"
+                                    width={100}
+                                    height={100}
+                                    objectFit="cover"
+                                />
+                            )
+                        :   (
+                                <Image
+                                    src={Default}
+                                    alt="Avatar"
+                                    width={100}
+                                    height={100}
+                                    objectFit="cover"
+                                />
+                            )   
+                        }
+                    </Box>
+                    <Text color="#D02C23" fontWeight="bold">
+                        {profile?.user.username}
+                    </Text>
+                </Row>
+                <Column p={5} >
+                    <Text color="#D02C23">
+                        <Text color="#D02C23" fontWeight="bold">Nome: </Text>
+                        {profile?.user.first_name}
+                    </Text>
+                    <Text color="#D02C23" mt={'4px'}>
+                        <Text color="#D02C23" fontWeight="bold">Sobrenome: </Text>
+                        {profile?.user.last_name}
+                    </Text>
+                    <Text color="#D02C23" mt={'4px'}>
+                        <Text color="#D02C23" fontWeight="bold">Username: </Text>
+                        {profile?.user.username}
+                    </Text>
+                    <Text color="#D02C23" mt={'4px'}>
+                        <Text color="#D02C23" fontWeight="bold">Email: </Text>
+                        {profile?.user.email}
+                    </Text>
+                    <Text color="#D02C23" mt={'4px'}>
+                        <Text color="#D02C23" fontWeight="bold">Telefone: </Text>
+                        {applyPhoneMask(profile?.phone)}
+                    </Text>
+                    <Text color="#D02C23" mt={'4px'}>
+                        <Text color="#D02C23" fontWeight="bold">Data de Nascimento: </Text>
+                        {profile?.date_of_birth ? format(new Date(profile.date_of_birth), 'dd-MM-yyyy') : 'Data não disponível'}
+                    </Text>  
+                </Column>
+                <Row justifyContent={'flex-end'}>
+                    <Button
+                        bg={'#D02C23'}
+                        _hover={{bg: '#ae251e'}}
+                        _pressed={{bg: '#ae251e'}}
+                        onPress={() => setModalVisible(true)}
                     >
-                        Editar
-                    </ButtonText>
-                </Button>
-            </HStack>
-            <ModalProfile isOpen={isOpen} onClose={() => setIsOpen(false)} />
-          </VStack>
+                        Change profile
+                    </Button>
+                </Row>
+                <ModalProfile isOpen={modalVisible} onClose={() => setModalVisible(false)} />
+            </Column>
         </Box>
     )
 }

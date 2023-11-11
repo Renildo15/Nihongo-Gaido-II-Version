@@ -113,7 +113,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 class ProfileUpdateSerializer(serializers.Serializer):
     phone = serializers.CharField(max_length=20, required=False)
-    date_of_birth = serializers.DateField(required=False)
+    date_of_birth = serializers.DateField(required=False, format='%d/%m/%Y')
     avatar = serializers.ImageField(required=False)
     username = serializers.CharField(max_length=150, required=False)
     email = serializers.EmailField(required=False)

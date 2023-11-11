@@ -1,9 +1,9 @@
 import React, {FunctionComponent} from "react";
-import { Box, VStack, HStack } from "@gluestack-ui/themed";
+import { VStack, HStack } from "native-base";
 
 import Head from "next/head";
 
-import { MenuLateral } from "./MenuLateral";
+import { LateralMenu } from "./LateralMenu";
 import { Heading } from "./Heading";
 
 type Props = {
@@ -11,18 +11,18 @@ type Props = {
     title: string;
 }
 
-export const HomeDefaultPage: FunctionComponent<Props> = ({children, title}) => {
+export const BaseLayout: FunctionComponent<Props> = ({children, title}) => {
     return(
-        <VStack maxWidth={"1900px"}>
+        <VStack maxW={'1900px'} bg={'#f2f2f2'}>
             <Head>
                 <title>{title}</title>
             </Head>
-            <HStack flexDirection={'row'} width={'100%'}>
-                <MenuLateral />
-                <Box width={'1131px'}>
+            <HStack flexDirection={'row'}  w={'100%'}>
+                <LateralMenu />
+                <VStack w={'82.8%'} space={'80px'}>
                     <Heading title={title} />
                     {children}
-                </Box>
+                </VStack>
             </HStack>
         </VStack>
     )
