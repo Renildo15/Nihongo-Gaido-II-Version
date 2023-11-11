@@ -2,7 +2,7 @@ import axios from "axios";
 import useSWR from "swr";
 import { fetcchSimple } from "./user";
 
-interface GrammarList {
+export interface IGrammarList {
     id: number;
     grammar: string;
     structure: string;
@@ -15,7 +15,7 @@ interface GrammarList {
 
 export function useGrammars() {
     interface GrammarsResponse {
-        grammars: GrammarList[];
+        grammars: IGrammarList[];
     }
 
     const { 
