@@ -4,18 +4,17 @@ import { redirectIfNoCredentials } from "../../utils";
 
 import { BaseLayout } from "../../components/home/BaseLayout";
 import GrammarList from "../../components/grammar/GrammarList";
-import GrammarFilters from "../../components/grammar/GrammarFilters";
-
+import SearchGrammar, { IGrammarsFilters } from "../../components/grammar/SearchGrammar";
 export async function getServerSideProps({req, res}: GetServerSidePropsContext) {
     return redirectIfNoCredentials({req, res});
 }
 
 export default function Grammar() {
-
+    const [filters, setFilters] = React.useState<IGrammarsFilters>()
     return (
         <BaseLayout title="Grammar">
-            <GrammarFilters />
-            <GrammarList />
+            <SearchGrammar onFiltersChanged={setFilters} />
+            <GrammarList filters={filters} />
         </BaseLayout>
             
     );
