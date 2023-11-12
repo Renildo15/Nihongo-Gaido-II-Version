@@ -1,7 +1,7 @@
 import axios from "axios";
 import useSWR from "swr";
 
-const fetcchSimple = (url: string) => axios.get(url).then((res) => res.data);
+export const fetcchSimple = (url: string) => axios.get(url).then((res) => res.data);
 
 export interface IUser{
     id: number;
@@ -79,7 +79,7 @@ export async function doLogin(username: string, password: string){
     }
 }
 
-export async function useRegister (user: IUserCreate) {
+export async function doRegister (user: IUserCreate) {
     interface IResponse{
         message: string;
         user: IUser;
@@ -128,7 +128,7 @@ export function useProfile(userId: number | undefined){
     }
 }
 
-export async function updateProfile (userId: number, {avatar, date_of_birth, email, first_name, last_name, phone, username}: IProfileUpdate) {
+export async function updateProfile (userId: number | undefined, {avatar, date_of_birth, email, first_name, last_name, phone, username}: IProfileUpdate) {
     interface IUpdateResponse{
         profile: IProfile;
     }

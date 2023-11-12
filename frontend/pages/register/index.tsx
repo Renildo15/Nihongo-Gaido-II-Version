@@ -1,44 +1,31 @@
 import React, { useState } from "react";
-import { 
-    VStack, 
-    useToast, 
-    Text,
-    FormControl,
-    FormControlError,
-    FormControlErrorText,
-    FormControlErrorIcon,
-    AlertCircleIcon,
-    Input,
-    InputInput,
-    InputIcon,
-    ButtonGroup,
-    Button,
-    ButtonIcon,
-    ButtonSpinner,
-    ButtonText,
-    Icon,
-    EyeIcon,
-    EyeOffIcon,
-    Toast,
-    ToastTitle,
-} from "@gluestack-ui/themed";
-import Head from "next/head";
-import Image from "next/image";
-import Logo from "../../public/logo.png";
 import { GetServerSidePropsContext } from "next";
 import Cookies from "cookies";
+import Head from "next/head";
+import Image from "next/image";
+import { useRouter } from "next/dist/client/router";
+import { AxiosError } from "axios";
+import Logo from "../../public/images/logo.png"
 import { 
-    nameIsValid, 
-    usernameIsValid, 
-    emailIsValid,
-    getPasswordValidationErrorMessage
-} from "@/utils/validations";
-import { useRegister, IUserCreate } from "@/utils/api/user";
-import { useRouter } from "next/router";
+    useToast,
+    Center,
+    Column,
+    Row,
+    FormControl,
+    Input,
+    Text,
+    Button,
+    Pressable,
+    Toast
+} from "native-base";
+import { MdRemoveRedEye } from 'react-icons/md'
+import { IUserCreate, doRegister } from "../../utils/api/user";
+import { nameIsValid, usernameIsValid, getPasswordValidationErrorMessage, emailIsValid } from "../../utils/validation";
+
 
 export async function getServerSideProps({req, res}: GetServerSidePropsContext) {
     const cookies = new Cookies(req, res)
-   
+
     if(cookies.get('auth-token')) {
         return {
             redirect: {
@@ -53,24 +40,24 @@ export async function getServerSideProps({req, res}: GetServerSidePropsContext) 
     }
 }
 
-export default function Register () {
+export default function Register() {
     const [showPassword, setShowPassword] = useState(false)
 
-    const [nome, setNome] = useState("")
-    const [sobrenome, setSobrenome] = useState("")
+    const [firstName, setFirstName] = useState("")
+    const [lastName, setLastName] = useState("")
     const [username, setUsername] = useState("")
     const [email, setEmail] = useState("")
-    const [senha, setSenha] = useState("")
-    const [confirmarSenha, setConfirmarSenha] = useState("")
+    const [password, setPassword] = useState("")
+    const [confirmPassword, setConfirmPassword] = useState("")
 
-    const [isNomeValido, setIsNomeValido] = useState(true)
-    const [isSobrenomeValido, setIsSobrenomeValido] = useState(true)
-    const [isUsernameValido, setIsUsernameValido] = useState(true)
-    const [isEmailValido, setIsEmailValido] = useState(true)
-    const [isSenhaValida, setIsSenhaValida] = useState(true)
-    const [isConfirmarSenhaValida, setIsConfirmarSenhaValida] = useState(true)
+    const [isFirstNameValid, setIsFirstNameValid] = useState(true);
+    const [isLastNameValid, setIsLastNameValid] = useState(true);
+    const [isUsernameValid, setIsUsernameValid] = useState(true);
+    const [isEmailValid, setIsEmailValid] = useState(true);
+    const [isPasswordValid, setIsPasswordValid] = useState(true);
+    const [isConfirmPasswordValid, setIsConfirmPasswordValid] = useState(true);
 
-    const [mensagemErroSenha, setMensagemErroSenha] = useState("")
+    const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
 
     const [saving, setSaving] = useState(false)
 
@@ -84,344 +71,269 @@ export default function Register () {
     }
 
     const handleChangeName = (text: string) => {
-        setNome(text)
-        setIsNomeValido(nameIsValid(text))
+        setFirstName(text)
+        setIsFirstNameValid(nameIsValid(text))
     }
 
     const handleChangeLastName = (text: string) => {
-        setSobrenome(text)
-        setIsSobrenomeValido(nameIsValid(text))
+        setLastName(text)
+        setIsLastNameValid(nameIsValid(text))
     }
 
     const handleChangeUsername = (text: string) => {
         setUsername(text)
-        setIsUsernameValido(usernameIsValid(text))
+        setIsUsernameValid(usernameIsValid(text))
     }
 
     const handleChangeEmail = (text: string) => {
         setEmail(text)
-        setIsEmailValido(emailIsValid(text))
+        setIsEmailValid(emailIsValid(text))
     }
 
     const handleChangeSenha = (text: string) => {
-        setSenha(text)
-        setIsSenhaValida(getPasswordValidationErrorMessage(text) === "")
-        setMensagemErroSenha(getPasswordValidationErrorMessage(text))
+        setPassword(text)
+        setIsPasswordValid(getPasswordValidationErrorMessage(text) === "")
+        setPasswordErrorMessage(getPasswordValidationErrorMessage(text))
     }
 
     const handleChangeConfirmarSenha = (text: string) => {
-        setConfirmarSenha(text)
-        setIsConfirmarSenhaValida(getPasswordValidationErrorMessage(text) === "")
-        setMensagemErroSenha(getPasswordValidationErrorMessage(text))
-        if (text !== senha) {
-            setIsConfirmarSenhaValida(false)
-            setMensagemErroSenha("As senhas não coincidem.")
+        setConfirmPassword(text)
+        setIsConfirmPasswordValid(getPasswordValidationErrorMessage(text) === "")
+        setPasswordErrorMessage(getPasswordValidationErrorMessage(text))
+        if (text !== password) {
+            setIsConfirmPasswordValid(false)
+            setPasswordErrorMessage("As senhas não coincidem.")
         }
     }
 
-    async function register() {
+    const register = async () =>{
         setSaving(true);
     
         try {
             const user: IUserCreate = {
-                first_name: nome,
-                last_name: sobrenome,
+                first_name: firstName,
+                last_name: lastName,
                 username: username,
                 email: email,
-                password: senha,
+                password: password,
             };
     
-            const userRegistered = await useRegister(user);
+            const userRegistered = await doRegister(user);
+
+            if (!userRegistered) throw new Error('Something went wrong')
     
             toast.show({
-                placement: "top",
-                render: ({ id }) => {
-                    return (
-                        <Toast
-                            id={id}
-                            bg={userRegistered ? "$green600" : "$red600"}
-                        >
-                            <VStack space="xs">
-                                <ToastTitle color="$white">
-                                    {userRegistered
-                                        ? "Registro criado com sucesso!"
-                                        : "Erro ao criar registro: "}
-                                </ToastTitle>
-                            </VStack>
-                        </Toast>
-                    );
-                },
-            });
+                title: 'Registered',
+                description: `User ${userRegistered.username} registered successfully`,
+                placement: 'top',
+                duration: 2000
+            })
     
             if (userRegistered) {
                 router.push('/login');
             }
         } catch (err: any) {
-            toast.show({
-                placement: "top",
-                render: ({ id }) => {
-                    return (
-                        <Toast id={id}  bg="$red600">
-                            <VStack space="xs">
-                                <ToastTitle color="$white">
-                                    Erro ao criar registro: {err.response.data.username[0]}
-                                </ToastTitle>
-                            </VStack>
-                        </Toast>
-                    );
-                },
-            });
+            if (err instanceof AxiosError || err instanceof Error) {
+                toast.show({
+                    title: 'Error',
+                    description: err.message,
+                    placement: 'top',
+                    duration: 2000
+                })
+            } else {
+                toast.show({
+                    title: 'Error',
+                    description: 'Something went wrong',
+                    placement: 'top',
+                    duration: 2000
+                })
+            }
         } finally {
             setSaving(false);
         }
     }
-   
+
     return (
-        <VStack
-            maxWidth={'100vw'} 
-            h={'100vh'}
-            alignItems="center"
-            justifyContent="center"
-        >
-             <Head>
+        <Center borderWidth={1} h={'100vh'} bg={'#f2f2f2'}>
+            <Head>
                 <title>
-                    Nihongo Gaido - Registro
+                    Nihongo Gaido - Register
                 </title>
             </Head>
-            <VStack 
+            <Column
+                borderRadius={'5px'} 
+                shadow={3} 
+                p={6} 
                 borderWidth={1} 
-                width={'850px'} 
-                borderColor="$red600"
-                px={5}
-                py={10}
-                borderRadius={"$md"}
-                justifyContent="center" 
-                alignItems="center"
+                w={'60%'} 
+                justifyContent={'center'} 
+                alignItems={'center'} 
+                borderColor={'#D02C23'}
+                bg={'#fff'}
+                h={'80vh'}
             >
-                <VStack width={'60%'} space={'lg'}>
-                    <VStack justifyContent="center" alignItems="center">
-                        <Image
-                            src={Logo}
-                            alt="Logo Teze"
-                            width={150}
-                            height={150}
-                            priority
-                        />
-                        <Text fontFamily="Inter" color="$red600" fontSize={20} fontWeight="800">
-                            Nihongo Gaido - Registro
-                        </Text>
-                    </VStack>
-                    <VStack space={'md'}>
-                        <FormControl isRequired isInvalid={!isNomeValido}>
+                <Column justifyContent={'center'} alignItems={'center'}>
+                    <Image
+                        src={Logo}
+                        alt="Logo"
+                        width={150}
+                        height={150}
+                        priority
+                    />
+                    <Text fontSize={'18px'} fontWeight={'600'} color={'#D02C23'}>
+                        Nihongo Gaido
+                    </Text>
+                </Column>
+                <Row justifyContent={'space-between'} width={'80%'}>
+                    <Column width={'40%'} space={'8px'}>
+                        <FormControl isRequired isInvalid={!isFirstNameValid}>
+                            <FormControl.Label _text={{color:'#D02C23', fontWeight: '600'}}>
+                                First name
+                            </FormControl.Label>
                             <Input
-                                sx={{
-                                    ":focus": {
-                                        borderColor: "$red600",
-                                    }
-                                }}
-                            >
-                                <InputInput
-                                    type="text"
-                                    color="$gray700" 
-                                    placeholder="Nome"
-                                    value={nome}
-                                    onChangeText={handleChangeName}
-                                />
-                            </Input>
-                            <FormControlError>
-                                <FormControlErrorIcon as={AlertCircleIcon} color="#D02C23" />
-                                <FormControlErrorText>
-                                    Informe um nome válido.
-                                </FormControlErrorText>
-                            </FormControlError>
+                                value={firstName}
+                                onChangeText={handleChangeName}
+                                placeholder="First name"
+                                shadow={1}
+                                _focus={{borderColor: '#D02C23'}}
+                                _hover={{borderColor: '#D02C23'}}
+                                focusOutlineColor={'#D02C23'}
+                            />
+                            <FormControl.ErrorMessage>
+                                First name invalid
+                            </FormControl.ErrorMessage>
                         </FormControl>
-                        <FormControl isRequired isInvalid={!isSobrenomeValido}>
+                        <FormControl isRequired isInvalid={!isLastNameValid}>
+                            <FormControl.Label _text={{color:'#D02C23', fontWeight: '600'}}>Last name</FormControl.Label>
                             <Input
-                                sx={{
-                                    ":focus": {
-                                        borderColor: "$red600",
-                                    }
-                                }}
-                            >
-                                <InputInput
-                                    type="text"
-                                    color="$gray700" 
-                                    placeholder="Sobrenome"
-                                    value={sobrenome}
-                                    onChangeText={handleChangeLastName}
-                                />
-                            </Input>
-                            <FormControlError>
-                                <FormControlErrorIcon as={AlertCircleIcon} color="#D02C23" />
-                                <FormControlErrorText>
-                                    Informe um sobrenome válido.
-                                </FormControlErrorText>
-                            </FormControlError>
+                                value={lastName}
+                                onChangeText={handleChangeLastName}
+                                placeholder="Last name"
+                                shadow={1}
+                                _focus={{borderColor: '#D02C23'}}
+                                _hover={{borderColor: '#D02C23'}}
+                                focusOutlineColor={'#D02C23'}
+                            />
+                            <FormControl.ErrorMessage>
+                                Last name invalid
+                            </FormControl.ErrorMessage>
                         </FormControl>
-                        <FormControl isRequired isInvalid={!isUsernameValido}>
+                        <FormControl isRequired isInvalid={!isUsernameValid}>
+                            <FormControl.Label _text={{color:'#D02C23', fontWeight: '600'}}>Username</FormControl.Label>
                             <Input
-                                sx={{
-                                    ":focus": {
-                                        borderColor: "$red600",
-                                    }
-                                }}
-                            >
-                                <InputInput
-                                    type="text"
-                                    color="$gray700" 
-                                    placeholder="Username"
-                                    value={username}
-                                    onChangeText={handleChangeUsername}
-                                />
-                            </Input>
-                            <FormControlError>
-                                <FormControlErrorIcon as={AlertCircleIcon} color="#D02C23" />
-                                <FormControlErrorText>
-                                    Informe um username válido.
-                                </FormControlErrorText>
-                            </FormControlError>
+                                value={username}
+                                onChangeText={handleChangeUsername}
+                                placeholder="Username"
+                                shadow={1}
+                                _focus={{borderColor: '#D02C23'}}
+                                _hover={{borderColor: '#D02C23'}}
+                                focusOutlineColor={'#D02C23'}
+                            />
+                            <FormControl.ErrorMessage>
+                                Username invalid
+                            </FormControl.ErrorMessage>
                         </FormControl>
-                        <FormControl isRequired isInvalid={!isEmailValido}>
+                    </Column>
+                    <Column width={'40%'} space={'8px'}>
+                        <FormControl isRequired isInvalid={!isEmailValid}>
+                        <FormControl.Label _text={{color:'#D02C23', fontWeight: '600'}}>Email</FormControl.Label>
                             <Input
-                                sx={{
-                                    ":focus": {
-                                        borderColor: "$red600",
-                                    }
-                                }}
-                            >
-                                <InputInput
-                                    type="text"
-                                    color="$gray700" 
-                                    placeholder="Email"
-                                    value={email}
-                                    onChangeText={handleChangeEmail}
-                                />
-                            </Input>
-                            <FormControlError>
-                                <FormControlErrorIcon as={AlertCircleIcon} color="#D02C23" />
-                                <FormControlErrorText>
-                                    Informe um email válido.
-                                </FormControlErrorText>
-                            </FormControlError>
+                                value={email}
+                                onChangeText={handleChangeEmail}
+                                placeholder="Email"
+                                shadow={1}
+                                _focus={{borderColor: '#D02C23'}}
+                                _hover={{borderColor: '#D02C23'}}
+                                focusOutlineColor={'#D02C23'}
+                            />
+                            <FormControl.ErrorMessage>
+                                Email invalid
+                            </FormControl.ErrorMessage>
                         </FormControl>
-                        <FormControl isRequired isInvalid={!isSenhaValida}>
+                        <FormControl isRequired isInvalid={!isPasswordValid}>
+                            <FormControl.Label _text={{color:'#D02C23', fontWeight: '600'}}>Password</FormControl.Label>
                             <Input
-                                sx={{
-                                    ":focus": {
-                                        borderColor: "$red600",
-                                    }
-                                }}
-                            >
-                                <InputInput
-                                    type={showPassword ? "text" : "password"}
-                                    color="$gray700" 
-                                    placeholder="Senha"
-                                    value={senha}
-                                    onChangeText={handleChangeSenha}
-                                />
-                                <InputIcon 
-                                    pr="$3" onPress={handleState}
-                                    borderColor="none"
-                                    sx={{
-                                        ":focus": {
-                                            borderColor: "$red600",
-                                        }
-                                    }}
-                                >
-                            
-                                    <Icon
-                                        as={showPassword ? EyeIcon : EyeOffIcon}
-                                        color="$red500"
-                                    />
-                                </InputIcon>
-                            </Input>
-                            <FormControlError>
-                                <FormControlErrorIcon as={AlertCircleIcon} color="#D02C23" />
-                                <FormControlErrorText>
-                                    {mensagemErroSenha}
-                                </FormControlErrorText>
-                            </FormControlError>
+                                value={password}
+                                onChangeText={handleChangeSenha}
+                                type={showPassword ? 'text' : 'password'}
+                                placeholder="Password"
+                                shadow={1}
+                                _focus={{borderColor: '#D02C23'}}
+                                _hover={{borderColor: '#D02C23'}}
+                                focusOutlineColor={'#D02C23'}
+                                InputRightElement={
+                                    <Pressable onPress={handleState} >
+                                        <MdRemoveRedEye size={20}  color="#D02C23"/>
+                                    </Pressable>
+                                }
+                            />
+                            <FormControl.ErrorMessage>
+                                {passwordErrorMessage}
+                            </FormControl.ErrorMessage>
                         </FormControl>
-                        <FormControl isRequired isInvalid={!isConfirmarSenhaValida}>
+                        <FormControl isRequired isInvalid={!isConfirmPasswordValid}>
+                            <FormControl.Label _text={{color:'#D02C23', fontWeight: '600'}}>Confirm password</FormControl.Label>
                             <Input
-                                sx={{
-                                    ":focus": {
-                                        borderColor: "$red600",
-                                    }
-                                }}
-                            >
-                                <InputInput
-                                    type={showPassword ? "text" : "password"}
-                                    color="$gray700" 
-                                    placeholder="Confirmar Senha"
-                                    value={confirmarSenha}
-                                    onChangeText={handleChangeConfirmarSenha}
-                                />
-                                <InputIcon 
-                                    pr="$3" onPress={handleState}
-                                    borderColor="none"
-                                    sx={{
-                                        ":focus": {
-                                            borderColor: "$red600",
-                                        }
-                                    }}
-                                >
-                            
-                                    <Icon
-                                        as={showPassword ? EyeIcon : EyeOffIcon}
-                                        color="$red500"
-                                    />
-                                </InputIcon>
-                                
-                            </Input>
-                            <FormControlError>
-                                <FormControlErrorIcon as={AlertCircleIcon} color="#D02C23" />
-                                <FormControlErrorText>
-                                    {mensagemErroSenha}
-                                </FormControlErrorText>
-                            </FormControlError>
+                                value={confirmPassword}
+                                onChangeText={handleChangeConfirmarSenha}
+                                type={showPassword ? 'text' : 'password'}
+                                placeholder="Confirm password"
+                                shadow={1}
+                                _focus={{borderColor: '#D02C23'}}
+                                _hover={{borderColor: '#D02C23'}}
+                                focusOutlineColor={'#D02C23'}
+                                InputRightElement={
+                                    <Pressable onPress={handleState} >
+                                        <MdRemoveRedEye size={20}  color="#D02C23"/>
+                                    </Pressable>
+                                }
+                            />
+                            <FormControl.ErrorMessage>
+                                {passwordErrorMessage}
+                            </FormControl.ErrorMessage>
                         </FormControl>
-                    </VStack>
-                    <ButtonGroup>
-                        <Button
-                            onPress={register}
-                            variant="solid"
-                            colorScheme="red"
-                            size="lg"
-                            width="100%"
-                            height="50px"
-                            bg="$red600"
-                            sx={{
-                                ":hover": {
-                                  bg: "$red700",
-                                },
-                                ":active": {
-                                  bg: "$red800",
-                                },
-                            }}
-                            isDisabled={
-                                !isNomeValido ||
-                                !isSobrenomeValido ||
-                                !isUsernameValido ||
-                                !isEmailValido ||
-                                !isSenhaValida ||
-                                !isConfirmarSenhaValida
-                            }
-                        >
-                            {saving
-                                ?   (
-                                    <ButtonSpinner />
-                                )   
-                                :   (
-                                    <ButtonText>
-                                        Registrar
-                                    </ButtonText>
-                                )
-                            }
-                        </Button>
-                    </ButtonGroup>
-                </VStack>
-            </VStack>
-        </VStack>
+                    </Column>
+                </Row>
+                <Column space={'8px'} width={'80%'} mt={'8px'} >
+                    <Column width={'100%'}>
+                        <Row>
+                            <Text mr={'6px'}>
+                                Already have an account?
+                            </Text>
+                            <Pressable onPress={() => router.push('/register')}>
+                                <Text fontWeight={'600'} color={'#D02C23'} onPress={() => router.push('/login')}>
+                                    login
+                                </Text>
+                            </Pressable>
+                        </Row>
+                    </Column >
+                </Column>
+                <Column w={'40%'} justifyContent={'flex-end'} alignItems={'flex-end'}  width={'80%'}> 
+                    <Button 
+                        w={'90px'} 
+                        bg={'#D02C23'} 
+                        _hover={{bg: '#ae251e'}}
+                        onPress={register}
+                        isLoading={saving}
+                        isDisabled={
+                            !isFirstNameValid ||
+                            !isLastNameValid ||
+                            !isUsernameValid ||
+                            !isEmailValid ||
+                            !isPasswordValid ||
+                            !isConfirmPasswordValid ||
+                            firstName.trim() === '' ||
+                            lastName.trim() === '' ||
+                            username.trim() === '' ||
+                            email.trim() === '' ||
+                            password.trim() === '' ||
+                            confirmPassword.trim() === ''
+                        }
+                    >
+                        Register
+                    </Button>
+                </Column>
+            </Column>
+        </Center>
     )
 }

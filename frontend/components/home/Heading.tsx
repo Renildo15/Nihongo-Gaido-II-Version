@@ -1,10 +1,10 @@
-import React,{useContext} from "react";
-import { Box, HStack, Text } from "@gluestack-ui/themed";
-import ArrowLeft from "../../public/arrowLeft.svg"
-import Default from "../../public/default.jpg"
+import React from "react";
+import { Box, HStack, Text, Pressable } from "native-base";
+import { MdArrowBack } from "react-icons/md";
+import Default from "../../public/images/default.jpg"
 import Image from "next/image";
-import { useProfile,WhoIam } from "@/utils/api/user";
-
+import { useRouter } from "next/router";
+import { useProfile, WhoIam } from "../../utils/api/user";
 interface IHeadingProps {
     title: string;
 }
@@ -26,33 +26,36 @@ export function Heading({title}: IHeadingProps){
         mutate: profileMutate,
     } = useProfile(userInfo?.id)
 
+    const router = useRouter()
+
     return(
         <Box
             bg="#D02C23"
             h={"60px"}
-            w={"100%"}
             p={9}
             justifyContent="center"
         >
             <HStack 
                 justifyContent="space-between"
                 alignItems="center"
+                flexDirection={'row'}
             >   
-                <Image src={ArrowLeft} alt="ArrowLeft" />
+                <MdArrowBack size={30} color={'white'} />
                 <Text
                     color="white"
                     fontSize={20}
                     fontWeight="bold"
-                    fontFamily="Inter"
                 >
                     {title}
                 </Text>
-                <HStack
+                <Pressable
                     alignItems="center"
                     justifyContent="space-between"
+                    flexDirection={'row'}
                     w={140}
+                    onPress={() => router.push('/profile')}
                 >
-                 <Box style={{ borderRadius: 50, overflow: 'hidden' }}>
+                    <Box style={{ borderRadius: 50, overflow: 'hidden' }}>
                     {profile?.avatar 
                             ? (
                                 <Image
@@ -77,11 +80,10 @@ export function Heading({title}: IHeadingProps){
                     <Text
                         color="white"
                         fontSize={18}
-                        fontFamily="Inter"
                     >
                         {userInfo?.username}
                     </Text>
-                </HStack>
+                </Pressable>
             </HStack>
         </Box>
     )

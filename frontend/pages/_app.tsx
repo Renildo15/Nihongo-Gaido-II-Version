@@ -1,24 +1,22 @@
-import React,{ useState } from 'react';
-import { GluestackUIProvider, config } from '@gluestack-ui/themed';
-import type { AppProps } from 'next/app';
+import React from "react";
+import "../styles/globals.css";
+import type { AppProps } from "next/app";
+import { NativeBaseProvider } from "native-base";
 import { SWRConfig } from 'swr';
-import { HomeContext } from '@/components/home/HomeContext';
 
-export default function App({ Component, pageProps }: AppProps) {
-  const menuIsCollapsed = useState(false);
- 
+function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <GluestackUIProvider config={config.theme}>
+    <NativeBaseProvider isSSR>
       <SWRConfig
         value={{
           revalidateOnFocus: false,
           revalidateOnReconnect: false,
         }}
       >
-        <HomeContext.Provider value={{menuIsCollapsedState: menuIsCollapsed}}>
-          <Component {...pageProps} />
-        </HomeContext.Provider>
+        <Component {...pageProps} />
       </SWRConfig>
-    </GluestackUIProvider>
+    </NativeBaseProvider>
   );
 }
+
+export default MyApp;
