@@ -5,18 +5,20 @@ from rest_framework.response import Response
 
 from core.models import Grammar
 from core.serializers import GrammarCreateSerializer, GrammarSerializer
-
+from core.utils.paginationn import CustomPagination
+from core.filters import GrammarFilter
 
 @api_view(["GET", "POST"])
 @permission_classes([IsAuthenticated])
 def grammar_list(request):
     if request.method == "GET":
         grammars = Grammar.objects.filter(created_by=request.user)
-        serializer = GrammarSerializer(instance=grammars, many=True)
+        filter = GrammarFilter(request.GET, queryset=grammars)
+        paginator = CustomPagination()
+        result_page = paginator.paginate_queryset(filter.qs, request)
+        serializer = GrammarSerializer(instance=result_page, many=True)
 
-        data = {"grammars": serializer.data}
-
-        return Response(data)
+        return paginator.get_paginated_response(serializer.data)
     elif request.method == "POST":
         serializer = GrammarCreateSerializer(data=request.data)
 
@@ -28,7 +30,8 @@ def grammar_list(request):
             return Response(data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+    else:
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 @api_view(["GET", "PUT", "PATCH", "DELETE"])
 @permission_classes([IsAuthenticated])

@@ -5,18 +5,20 @@ from rest_framework.response import Response
 
 from core.models import Word
 from core.serializers import WordCreateSerializer, WordSerializer
-
+from core.utils.paginationn import CustomPagination
+from core.filters import WordFilter
 
 @api_view(["GET", "POST"])
 @permission_classes([IsAuthenticated])
 def word_list(request):
     if request.method == "GET":
         words = Word.objects.filter(created_by=request.user)
-        serializer = WordSerializer(words, many=True)
-
-        data = {"words": serializer.data}
-
-        return Response(data)
+        filter = WordFilter(request.GET, queryset=words)
+        paginator = CustomPagination()
+        result_page = paginator.paginate_queryset(filter.qs, request)
+        serializer = WordSerializer(result_page, many=True)
+    
+        return paginator.get_paginated_response(serializer.data)
     elif request.method == "POST":
         serializer = WordCreateSerializer(data=request.data)
 
@@ -27,6 +29,8 @@ def word_list(request):
             return Response(data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
 @api_view(["GET", "PATCH", "DELETE"])

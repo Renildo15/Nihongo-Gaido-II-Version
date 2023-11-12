@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "drf_yasg",
     "corsheaders",
+    "django_filters",
     # Local Apps (Your project's apps)
     "core",
 ]
