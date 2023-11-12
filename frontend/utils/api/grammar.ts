@@ -15,7 +15,7 @@ export interface IGrammarList {
 
 export function useGrammars() {
     interface GrammarsResponse {
-        grammars: IGrammarList[];
+        results: IGrammarList[];
     }
 
     const { 
@@ -25,9 +25,9 @@ export function useGrammars() {
         isValidating, 
         mutate
     } = useSWR<GrammarsResponse>("/api/grammar", fetcchSimple);
-
+    console.log(data);
     return {
-        data: data?.grammars,
+        data: data?.results,
         error,
         isLoading,
         isValidating,
