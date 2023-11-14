@@ -1,7 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Modal, FormControl, Input, Button, useToast, Box, Text, Column, Row, TextArea, Select } from "native-base";
-import { useGrammars } from "../../utils/api/grammar";
-import { WhoIam } from "../../utils/api/user";
+import { Modal, FormControl, Input, Button, useToast, Box, Column, TextArea, Select } from "native-base";
+import { createGrammar, useGrammars } from "../../utils/api/grammar";
 import { levelOptions } from "../../utils/levelOptions";
 
 interface IModalAddGrammarProps {
@@ -14,6 +13,10 @@ export default function ModalAddGrammar(props: IModalAddGrammarProps) {
     const initialRef = useRef(null);
     const finalRef = useRef(null);
 
+    const {
+        mutate: grammarsRevalidate
+    } = useGrammars()
+
     const [grammar, setGrammar] = useState('')
     const [structure, setStructure] = useState('')
     const [level, setLevel] = useState('')
@@ -22,9 +25,12 @@ export default function ModalAddGrammar(props: IModalAddGrammarProps) {
     const [isGrammarValid, setIsGrammarValid] = useState(false)
     const [isStructureValid, setIsStructureValid] = useState(false)
     const [isLevelValid, setIsLevelValid] = useState(false)
-    const [isExplainValid, setIsExplainValid] = useState(false)
+
+    const [saving, setSaving] = useState(false)
 
     const [structureErrorMessage, setStructureErrorMessage] = useState('')
+
+    const toast = useToast()
 
     const handleGrammarChange = (text: string) => {
         setGrammar(text)
@@ -38,7 +44,7 @@ export default function ModalAddGrammar(props: IModalAddGrammarProps) {
     const handleStructure = (text: string) => {
         setStructure(text)
 
-        const japaneseRegex = /^$|^[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\u002B\u002A\u007E]+$/;
+        const japaneseRegex = /^$|^[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\u002B\u002A\u007E\u002F]+$/;
 
         if (text.trim().length === 0) {
             setIsStructureValid(false)
@@ -60,6 +66,42 @@ export default function ModalAddGrammar(props: IModalAddGrammarProps) {
             setIsLevelValid(true);
         }
     }
+
+    const clearInputs = () => {
+        setGrammar('')
+        setStructure('')
+        setLevel('')
+        setExplain('')
+    }
+
+    async function save() {
+        setSaving(true)
+
+        try {
+            const newGrammar = await createGrammar({
+                grammar: grammar,
+                structure: structure,
+                level: level,
+                explain: explain
+            })
+
+            if (newGrammar) {
+                toast.show({
+                    title: 'Success',
+                    description: `Grammar added`,
+                    placement: 'top',
+                    duration: 2000
+                })
+            }
+            clearInputs()
+            grammarsRevalidate()
+            props.onClose()
+        } catch (error) {
+            alert(error)
+        } finally {
+            setSaving(false)
+        }
+    } 
 
     return (
         <Modal isOpen={props.isOpen} onClose={props.onClose} initialFocusRef={initialRef} finalFocusRef={finalRef} >
@@ -113,7 +155,8 @@ export default function ModalAddGrammar(props: IModalAddGrammarProps) {
                                     bg: "cyan.600",
                                     endIcon: <Box size={4} />,
                                 }}
-                            >  
+                            > 
+                                <Select.Item label="level" value="" />
                                 {levelOptions.map((level, index)=> (
                                     <Select.Item key={index} label={level.label} value={level.value} />
                                 ))}
@@ -156,6 +199,8 @@ export default function ModalAddGrammar(props: IModalAddGrammarProps) {
                             _hover={{bg: '#ae251e'}}
                             _pressed={{bg: '#ae251e'}}
                             isDisabled={ !isGrammarValid || !isStructureValid || !isLevelValid }
+                            isLoading={saving}
+                            onPress={save}
                         >
                             Save
                         </Button>
