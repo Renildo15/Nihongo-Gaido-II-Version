@@ -18,6 +18,49 @@ export default function ModalAddGrammar(props: IModalAddGrammarProps) {
     const [structure, setStructure] = useState('')
     const [level, setLevel] = useState('')
     const [explain, setExplain] = useState('')
+
+    const [isGrammarValid, setIsGrammarValid] = useState(false)
+    const [isStructureValid, setIsStructureValid] = useState(false)
+    const [isLevelValid, setIsLevelValid] = useState(false)
+    const [isExplainValid, setIsExplainValid] = useState(false)
+
+    const [structureErrorMessage, setStructureErrorMessage] = useState('')
+
+    const handleGrammarChange = (text: string) => {
+        setGrammar(text)
+        if (text.trim().length === 0 || text.length <= 3) {
+            setIsGrammarValid(false);
+        } else {
+            setIsGrammarValid(true);
+        }
+    }
+
+    const handleStructure = (text: string) => {
+        setStructure(text)
+
+        const japaneseRegex = /^$|^[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\u002B\u002A\u007E]+$/;
+
+        if (text.trim().length === 0) {
+            setIsStructureValid(false)
+            setStructureErrorMessage('Structure is required')
+        } else if (!japaneseRegex.test(text)) {
+            setIsStructureValid(false)
+            setStructureErrorMessage('Structure must be in Japanese')
+        } else {
+            setIsStructureValid(true)
+            setStructureErrorMessage('')
+        }
+    }
+
+    const handleSelectLevel = (text: string) => {
+        setLevel(text)
+        if (text.trim().length === 0) {
+            setIsLevelValid(false);
+        } else {
+            setIsLevelValid(true);
+        }
+    }
+
     return (
         <Modal isOpen={props.isOpen} onClose={props.onClose} initialFocusRef={initialRef} finalFocusRef={finalRef} >
             <Modal.Content maxWidth="400px" bg={'#f2f2f2'}>
@@ -25,11 +68,11 @@ export default function ModalAddGrammar(props: IModalAddGrammarProps) {
                 <Modal.Header _text={{color:'#D02C23'}}>Add new grammar</Modal.Header>
                 <Modal.Body>
                     <Column>
-                        <FormControl>
+                        <FormControl isInvalid={!isGrammarValid} isRequired>
                             <FormControl.Label _text={{color:'#D02C23', fontWeight: '600'}}>Grammar</FormControl.Label>
                             <Input
                                 bg={'white'}
-                                onChangeText={text => setGrammar(text)}
+                                onChangeText={handleGrammarChange}
                                 value={grammar}
                                 shadow={1}
                                 _focus={{borderColor: '#D02C23'}}
@@ -37,11 +80,14 @@ export default function ModalAddGrammar(props: IModalAddGrammarProps) {
                                 focusOutlineColor={'#D02C23'}
                                 placeholder="Grammar"
                             />
+                            <FormControl.ErrorMessage>
+                                Grammar is required
+                            </FormControl.ErrorMessage>
                         </FormControl>
-                        <FormControl>
+                        <FormControl isRequired isInvalid={!isStructureValid}>
                             <FormControl.Label _text={{color:'#D02C23', fontWeight: '600'}}>Structure</FormControl.Label>
                             <Input
-                                onChangeText={text => setStructure(text)}
+                                onChangeText={handleStructure}
                                 value={structure}
                                 bg={'white'}
                                 shadow={1}
@@ -50,8 +96,11 @@ export default function ModalAddGrammar(props: IModalAddGrammarProps) {
                                 focusOutlineColor={'#D02C23'}
                                 placeholder="Structure"
                             />
+                            <FormControl.ErrorMessage>
+                                {structureErrorMessage}
+                            </FormControl.ErrorMessage>
                         </FormControl>
-                        <FormControl>
+                        <FormControl isRequired isInvalid={!isLevelValid}>
                             <FormControl.Label _text={{color:'#D02C23', fontWeight: '600'}}>Level</FormControl.Label>
                             <Select
                                 selectedValue={level}
@@ -59,7 +108,7 @@ export default function ModalAddGrammar(props: IModalAddGrammarProps) {
                                 minWidth={200}
                                 accessibilityLabel="Select level"
                                 placeholder="Select level"
-                                onValueChange={(itemValue) => setLevel(itemValue)}
+                                onValueChange={handleSelectLevel}
                                 _selectedItem={{
                                     bg: "cyan.600",
                                     endIcon: <Box size={4} />,
@@ -69,6 +118,9 @@ export default function ModalAddGrammar(props: IModalAddGrammarProps) {
                                     <Select.Item key={index} label={level.label} value={level.value} />
                                 ))}
                             </Select>
+                            <FormControl.ErrorMessage>
+                                Level is required
+                            </FormControl.ErrorMessage>
                         </FormControl>
 
                         <FormControl>
@@ -103,6 +155,7 @@ export default function ModalAddGrammar(props: IModalAddGrammarProps) {
                             bg={'#D02C23'}
                             _hover={{bg: '#ae251e'}}
                             _pressed={{bg: '#ae251e'}}
+                            isDisabled={ !isGrammarValid || !isStructureValid || !isLevelValid }
                         >
                             Save
                         </Button>
