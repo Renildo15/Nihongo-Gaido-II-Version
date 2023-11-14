@@ -13,6 +13,13 @@ export interface IGrammarList {
     updated_at: string;
 }
 
+export interface IGrammarCreate {
+    grammar: string;
+    structure: string;
+    level: string;
+    explain: string;
+}
+
 export function useGrammars() {
     interface GrammarsResponse {
         results: IGrammarList[];
@@ -33,4 +40,19 @@ export function useGrammars() {
         isValidating,
         mutate
     }
+}
+
+export async function createGrammar({ grammar, structure, level, explain }: IGrammarCreate) {
+    interface IGrammarResponse {
+        grammar: IGrammarList;
+    }
+
+    try {
+        const res = await axios.post<IGrammarResponse>(`/api/grammar`, {grammar, structure, level, explain});
+
+        return res.data?.grammar
+    } catch (error: any) {
+        throw new Error(error.message);
+    }
+    
 }
