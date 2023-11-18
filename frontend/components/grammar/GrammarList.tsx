@@ -4,6 +4,7 @@ import { Heading, Row, Column, FlatList, Box, Pressable, Divider, Text } from "n
 import { ListRenderItemInfo } from "react-native";
 import { IGrammarsFilters } from "./SearchGrammar";
 import ModalUpdateGrammar from "./ModalUpdateGrammar";
+import ModalDeleteGrammar from "./ModalDeleteGrammar";
 interface IGrammarListProps {
     filters?: IGrammarsFilters
 }
@@ -20,10 +21,16 @@ export default function GrammarList(props: IGrammarListProps) {
 
     const [grammarId, setGrammarId] = useState<number | null>(null)
     const [modalVisible, setModalVisible] = useState(false)
+    const [modalDeleteVisible, setModalDeleteVisible] = useState(false)
 
     const handleChangeGrammarId = (id: number) => {
         setGrammarId(id)
         setModalVisible(true)
+    }
+
+    const handleChangeDeleteGrammarId = (id: number) => {
+        setGrammarId(id)
+        setModalDeleteVisible(true)
     }
 
     const filteredGrammars = useMemo(() => {
@@ -104,7 +111,14 @@ export default function GrammarList(props: IGrammarListProps) {
                     >
                         <Text color={'#D02C23'}>Edit</Text>
                     </Pressable>
-                    <Pressable>
+                    <Pressable
+                        onPress={() => handleChangeDeleteGrammarId(item.id)}
+                        bg={'#F2F2F2'}
+                        w={'40px'}
+                        alignItems={'center'}
+                        rounded={'md'}
+                        shadow={1}
+                    >
                         <Text>Delete</Text>
                     </Pressable>
                 </Row>
@@ -125,6 +139,11 @@ export default function GrammarList(props: IGrammarListProps) {
             <ModalUpdateGrammar
                 isOpen={modalVisible}
                 onClose={() => setModalVisible(false)}
+                grammarId={grammarId}
+            />
+            <ModalDeleteGrammar
+                isOpen={modalDeleteVisible}
+                onClose={() => setModalDeleteVisible(false)}
                 grammarId={grammarId}
             />
         </Box>
