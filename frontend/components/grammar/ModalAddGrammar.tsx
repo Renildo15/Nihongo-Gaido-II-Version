@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import { Modal, FormControl, Input, Button, useToast, Box, Column, TextArea, Select } from "native-base";
 import { createGrammar, useGrammars } from "../../utils/api/grammar";
 import { levelOptions } from "../../utils/levelOptions";
