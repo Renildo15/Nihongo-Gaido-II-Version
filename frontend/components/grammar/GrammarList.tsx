@@ -1,8 +1,9 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { useGrammars, IGrammarList } from "../../utils/api/grammar";
-import { Heading, Row, Column, FlatList, Box, Pressable, Divider } from "native-base";
+import { Heading, Row, Column, FlatList, Box, Pressable, Divider, Text } from "native-base";
 import { ListRenderItemInfo } from "react-native";
 import { IGrammarsFilters } from "./SearchGrammar";
+import ModalUpdateGrammar from "./ModalUpdateGrammar";
 interface IGrammarListProps {
     filters?: IGrammarsFilters
 }
@@ -16,6 +17,14 @@ export default function GrammarList(props: IGrammarListProps) {
         isValidating: grammarsIsValidating,
         mutate: grammarsMutate
     } = useGrammars()
+
+    const [grammarId, setGrammarId] = useState<number | null>(null)
+    const [modalVisible, setModalVisible] = useState(false)
+
+    const handleChangeGrammarId = (id: number) => {
+        setGrammarId(id)
+        setModalVisible(true)
+    }
 
     const filteredGrammars = useMemo(() => {
         if (grammars === undefined) return []
@@ -75,21 +84,28 @@ export default function GrammarList(props: IGrammarListProps) {
             <Row justifyContent={'space-around'} p={5} bg={'white'} >
                 <Column  w={'150px'}>
                     <Pressable>
-                        {item.grammar}
+                        <Text>{item.grammar}</Text>
                     </Pressable>
                 </Column>
                 <Column w={'150px'}>
-                    {item.structure}
+                    <Text>{item.structure}</Text>
                 </Column>
                 <Column w={'150px'}>
-                    {item.level}
+                    <Text>{item.level}</Text>
                 </Column>
                 <Row justifyContent={'space-around'} w={'110px'}>
-                    <Pressable>
-                        Edit
+                    <Pressable
+                        onPress={() => handleChangeGrammarId(item.id)}
+                        bg={'#F2F2F2'}
+                        w={'40px'}
+                        alignItems={'center'}
+                        rounded={'md'}
+                        shadow={1}
+                    >
+                        <Text color={'#D02C23'}>Edit</Text>
                     </Pressable>
                     <Pressable>
-                        Delete
+                        <Text>Delete</Text>
                     </Pressable>
                 </Row>
             </Row>
@@ -105,6 +121,11 @@ export default function GrammarList(props: IGrammarListProps) {
                 ListEmptyComponent={() => <Heading size={'sm'}>No grammar found</Heading>}
                 renderItem={items}
                 keyExtractor={(item) => item.id.toString()}
+            />
+            <ModalUpdateGrammar
+                isOpen={modalVisible}
+                onClose={() => setModalVisible(false)}
+                grammarId={grammarId}
             />
         </Box>
     )
