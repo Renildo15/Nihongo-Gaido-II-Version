@@ -13,6 +13,20 @@ export interface IGrammarList {
     updated_at: string;
 }
 
+export interface IGrammarCreate {
+    grammar: string;
+    structure: string;
+    level: string;
+    explain: string;
+}
+
+export interface IGrammarUpdate {
+    grammar?: string
+    structure?: string
+    level?: string
+    explain?: string
+}
+
 export function useGrammars() {
     interface GrammarsResponse {
         results: IGrammarList[];
@@ -25,12 +39,77 @@ export function useGrammars() {
         isValidating, 
         mutate
     } = useSWR<GrammarsResponse>("/api/grammar", fetcchSimple);
-    console.log(data);
     return {
         data: data?.results,
         error,
         isLoading,
         isValidating,
         mutate
+    }
+}
+
+export function useGrammar(id: number) {
+    interface IGrammarResponse {
+        grammar: IGrammarList;
+    }
+
+    const { 
+        data, 
+        error, 
+        isLoading, 
+        isValidating, 
+        mutate
+    } = useSWR<IGrammarResponse>(`/api/grammar/${id}`, fetcchSimple);
+    return {
+        data: data?.grammar,
+        error,
+        isLoading,
+        isValidating,
+        mutate
+    }
+
+}
+
+export async function createGrammar({ grammar, structure, level, explain }: IGrammarCreate) {
+    interface IGrammarResponse {
+        grammar: IGrammarList;
+    }
+
+    try {
+        const res = await axios.post<IGrammarResponse>(`/api/grammar`, {grammar, structure, level, explain});
+
+        return res.data?.grammar
+    } catch (error: any) {
+        throw new Error(error.message);
+    }
+    
+}
+
+export async function updateGrammar(id: number, { grammar, structure, level, explain }: IGrammarUpdate) {
+    interface IGrammarResponse {
+        grammar: IGrammarList;
+    }
+
+    try {
+        const res = await axios.patch<IGrammarResponse>(`/api/grammar/${id}`, {grammar, structure, level, explain});
+
+        return res.data?.grammar
+    } catch (error: any) {
+        throw new Error(error.message);
+    }
+    
+}
+
+export async function deleteGrammar(id: number) {
+    interface IGrammarResponse {
+        message: 'grammar deleted';
+    }
+
+    try {
+        const res = await axios.delete<IGrammarResponse>(`/api/grammar/${id}`);
+
+        return res.data?.message
+    } catch (error: any) {
+        throw new Error(error.message);
     }
 }

@@ -3,6 +3,7 @@ import { Row, Column, Input, Button } from "native-base";
 import FilterByLevel from "./FilterByLevel";
 import FilterByMonth, { IGrammarFilterMonth } from "./FilterByMonth";
 import { MdSearch, MdAdd } from "react-icons/md";
+import ModalAddGrammar from "./ModalAddGrammar";
 
 export interface IGrammarsFilters {
     searchText: string | null
@@ -15,6 +16,7 @@ interface ISearchGrammarProps {
 }
 
 export default function SearchGrammar (props: ISearchGrammarProps) {
+    const [modalVisible, setModalVisible] = useState(false)
     const [filters, setFilters] = useState<IGrammarsFilters>({
         searchText: null,
         level: null,
@@ -54,8 +56,9 @@ export default function SearchGrammar (props: ISearchGrammarProps) {
                 />
                 <Button
                     bg={'#D02C23'}
-                    onPress={() => {}}
+                    onPress={() => setModalVisible(true)}
                     _hover={{bg: '#ae251e'}}
+                    _pressed={{bg: '#ae251e'}}
                     size={'md'}
                     w={'140px'}
                     startIcon={<MdAdd size={25} color="white" />}
@@ -63,7 +66,10 @@ export default function SearchGrammar (props: ISearchGrammarProps) {
                     Add grammar
                 </Button>
             </Column>
-
+            <ModalAddGrammar
+                isOpen={modalVisible}
+                onClose={() => setModalVisible(false)}
+            />
         </Row>
     )
 }

@@ -138,8 +138,6 @@ export async function updateProfile (userId: number | undefined, {avatar, date_o
         if(response.status < 200 || response.status >= 300){
             return
         }
-
-        console.log(response.data?.profile)
         return response.data?.profile;
     } catch(err){
         console.log(err);
