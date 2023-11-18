@@ -99,3 +99,17 @@ export async function updateGrammar(id: number, { grammar, structure, level, exp
     }
     
 }
+
+export async function deleteGrammar(id: number) {
+    interface IGrammarResponse {
+        message: 'grammar deleted';
+    }
+
+    try {
+        const res = await axios.delete<IGrammarResponse>(`/api/grammar/${id}`);
+
+        return res.data?.message
+    } catch (error: any) {
+        throw new Error(error.message);
+    }
+}
