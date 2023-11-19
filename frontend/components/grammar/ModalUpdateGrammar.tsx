@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { Modal, FormControl, Input, Button, useToast, Box, Column, TextArea, Select } from "native-base";
 import { updateGrammar, useGrammar, useGrammars } from "../../utils/api/grammar";
 import { levelOptions } from "../../utils/levelOptions";
-
+import Error from "../Error"
 interface IModalUpdateGrammarProps {
     isOpen: boolean
     onClose: () => void
@@ -128,6 +128,13 @@ export default function ModalUpdateGrammar(props: IModalUpdateGrammarProps) {
             setSaving(false)
         }
     } 
+
+    if (origialGrammarError) {
+        return (
+            <Error message="Error loading grammars" />
+        )
+    }
+
     return (
         <Modal isOpen={props.isOpen} onClose={props.onClose} initialFocusRef={initialRef} finalFocusRef={finalRef} >
             <Modal.Content maxWidth="400px" bg={'#f2f2f2'}>

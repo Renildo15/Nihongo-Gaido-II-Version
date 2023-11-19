@@ -7,6 +7,7 @@ import Default from "../../public/images/default.jpg";
 import format from "date-fns/format";
 import ModalProfile from "./ModalProfile";
 import ProfileSkeleton from "./ProfileSkeleton";
+import Error from '../Error'
 
 export default function ProfileInfo() {
 
@@ -32,9 +33,9 @@ export default function ProfileInfo() {
     }
 
     if(userInfoError || profileError) {
-        <Box justifyContent="center" alignItems="center" w={"100%"} >
-            <Text color="#D02C23">Error loading profile</Text>
-        </Box>
+        return (
+            <Error message="Error loading profile" />
+        )
     }
 
     return (

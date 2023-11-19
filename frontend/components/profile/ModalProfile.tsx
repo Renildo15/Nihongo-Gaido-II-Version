@@ -3,6 +3,7 @@ import { Modal, FormControl, Input, Button, useToast, Box, Text, Column, Row } f
 import { useProfile, updateProfile, WhoIam } from "../../utils/api/user";
 import { nameIsValid, usernameIsValid, emailIsValid, dateBirthIsValid, removePhoneFormatting  } from "../../utils/validation";
 import format from "date-fns/format";
+import Error from '../Error'
 
 interface ModalProfileProps {
     isOpen: boolean;
@@ -125,9 +126,13 @@ export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
 
     if(originalProfileError) {
         return (
-            <Box justifyContent="center" alignItems="center" w={"100%"} >
-                <Text color="#D02C23">Error loading profile</Text>
-            </Box>
+            <Error message="Error loading profile" />
+        )
+    }
+
+    if(userError) {
+        return (
+            <Error message="Error loading user" />
         )
     }
 

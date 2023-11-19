@@ -7,6 +7,7 @@ import ModalUpdateGrammar from "./ModalUpdateGrammar";
 import ModalDeleteGrammar from "./ModalDeleteGrammar";
 import GrammarSkeleton from "./GrammarSkeleton";
 import DataEmpty from "../DataEmpty";
+import Error from "../Error";
 interface IGrammarListProps {
     filters?: IGrammarsFilters
 }
@@ -132,6 +133,14 @@ export default function GrammarList(props: IGrammarListProps) {
         return (
             <Box p={5}>
                 <GrammarSkeleton />
+            </Box>
+        )
+    }
+
+    if (grammarsError) {
+        return (
+            <Box p={5}>
+                <Error message={'Error loading grammars'} />
             </Box>
         )
     }
