@@ -20,9 +20,7 @@ export default function ModalUpdateGrammar(props: IModalUpdateGrammarProps) {
     
     const {
         data: originalGrammar,
-        error: origialGrammarError,
-        isLoading: originalGrammarIsLoading,
-        isValidating: originalGrammarIsValidating,
+        error: origialGrammarError
     } = useGrammar(props.grammarId ?? 1)
 
     const [grammar, setGrammar] = useState('')

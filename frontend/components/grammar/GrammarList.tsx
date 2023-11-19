@@ -5,6 +5,7 @@ import { ListRenderItemInfo } from "react-native";
 import { IGrammarsFilters } from "./SearchGrammar";
 import ModalUpdateGrammar from "./ModalUpdateGrammar";
 import ModalDeleteGrammar from "./ModalDeleteGrammar";
+import GrammarSkeleton from "./GrammarSkeleton";
 interface IGrammarListProps {
     filters?: IGrammarsFilters
 }
@@ -123,6 +124,14 @@ export default function GrammarList(props: IGrammarListProps) {
                     </Pressable>
                 </Row>
             </Row>
+        )
+    }
+
+    if (grammarsIsLoading || grammarsIsValidating) {
+        return (
+            <Box p={5}>
+                <GrammarSkeleton />
+            </Box>
         )
     }
 

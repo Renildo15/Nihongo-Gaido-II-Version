@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useProfile, WhoIam } from "../../utils/api/user";
-import { Box, Row, Column, Text, Button, Spinner } from "native-base";
+import { Box, Row, Column, Text, Button } from "native-base";
 import { applyPhoneMask } from "../../utils/validation";
 import Image from "next/image";
 import Default from "../../public/images/default.jpg";
 import format from "date-fns/format";
 import ModalProfile from "./ModalProfile";
+import ProfileSkeleton from "./ProfileSkeleton";
 
 export default function ProfileInfo() {
 
@@ -20,16 +21,17 @@ export default function ProfileInfo() {
         error: profileError,
         isLoading: profileLoading,
         isValidating: profileValidating,
-        mutate: mutateProfile
     } = useProfile(userInfo?.id );
 
     if(profileLoading || profileValidating) {
-        <Box justifyContent={'center'} alignItems={'center'}>
-            <Spinner color={'#D02C23'}/>
-        </Box>
+        return (
+            <Box justifyContent="center" alignItems="center" w={"100%"} >
+                <ProfileSkeleton />
+            </Box>
+        )
     }
 
-    if(userInfoError) {
+    if(userInfoError || profileError) {
         <Box justifyContent="center" alignItems="center" w={"100%"} >
             <Text color="#D02C23">Error loading profile</Text>
         </Box>
