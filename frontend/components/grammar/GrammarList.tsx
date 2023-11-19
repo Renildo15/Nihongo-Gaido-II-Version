@@ -6,6 +6,7 @@ import { IGrammarsFilters } from "./SearchGrammar";
 import ModalUpdateGrammar from "./ModalUpdateGrammar";
 import ModalDeleteGrammar from "./ModalDeleteGrammar";
 import GrammarSkeleton from "./GrammarSkeleton";
+import DataEmpty from "../DataEmpty";
 interface IGrammarListProps {
     filters?: IGrammarsFilters
 }
@@ -141,7 +142,7 @@ export default function GrammarList(props: IGrammarListProps) {
                 data={filteredGrammars}
                 ListHeaderComponent={header}
                 ItemSeparatorComponent={() => <Divider bg={'#D02C23'} />}
-                ListEmptyComponent={() => <Heading size={'sm'}>No grammar found</Heading>}
+                ListEmptyComponent={() => <DataEmpty message={'No grammar found'} />}
                 renderItem={items}
                 keyExtractor={(item) => item.id.toString()}
             />
