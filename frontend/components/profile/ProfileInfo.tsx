@@ -50,7 +50,12 @@ export default function ProfileInfo() {
                 py={5} 
                 px={8} 
                 space={'1px'}
-                bg={'white'}
+                _light={{
+                    bg: 'white'
+                }}
+                _dark={{
+                    bg: '#262626'
+                }}
             >
                 <Row w={210} alignItems="flex-end" justifyContent="space-between" p={5}>
                     <Box borderColor={"#D02C23"} borderWidth={'3px'} style={{ width: 100, height: 100, borderRadius: 50, overflow: 'hidden' }}>

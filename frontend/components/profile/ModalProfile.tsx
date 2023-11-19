@@ -183,7 +183,14 @@ export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
 
     return (
         <Modal isOpen={isOpen} onClose={onClose} initialFocusRef={initialRef} finalFocusRef={finalRef}>
-            <Modal.Content maxWidth={'500px'} borderWidth={1} bg={'#f2f2f2'}>
+            <Modal.Content 
+                maxWidth={'500px'} 
+                _light={{
+                    bg: '#F2F2F2'
+                }}
+                _dark={{
+                    bg: '#333333'
+                }}>
                 <Modal.CloseButton />
                 <Modal.Header _text={{color:'#D02C23'}}>Change Profile</Modal.Header>
                 <Modal.Body>
@@ -201,7 +208,12 @@ export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
                                 _focus={{borderColor: '#D02C23'}}
                                 _hover={{borderColor: '#D02C23'}}
                                 focusOutlineColor={'#D02C23'}
-                                bg={'white'}
+                                _light={{
+                                    bg: 'white'
+                                }}
+                                _dark={{
+                                    bg: '#262626'
+                                }}
                             />
                             <FormControl.ErrorMessage>
                                 First name invalid
@@ -217,7 +229,12 @@ export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
                                 _focus={{borderColor: '#D02C23'}}
                                 _hover={{borderColor: '#D02C23'}}
                                 focusOutlineColor={'#D02C23'}
-                                bg={'white'}
+                                _light={{
+                                    bg: 'white'
+                                }}
+                                _dark={{
+                                    bg: '#262626'
+                                }}
                             />
                             <FormControl.ErrorMessage>
                                 Last name invalid
@@ -233,7 +250,12 @@ export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
                                 _focus={{borderColor: '#D02C23'}}
                                 _hover={{borderColor: '#D02C23'}}
                                 focusOutlineColor={'#D02C23'}
-                                bg={'white'}
+                                _light={{
+                                    bg: 'white'
+                                }}
+                                _dark={{
+                                    bg: '#262626'
+                                }}
                             />
                             <FormControl.ErrorMessage>
                                 Username invalid
@@ -251,7 +273,12 @@ export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
                                 _focus={{borderColor: '#D02C23'}}
                                 _hover={{borderColor: '#D02C23'}}
                                 focusOutlineColor={'#D02C23'}
-                                bg={'white'}
+                                _light={{
+                                    bg: 'white'
+                                }}
+                                _dark={{
+                                    bg: '#262626'
+                                }}
                             />
                             <FormControl.ErrorMessage>
                                 Email invalid
@@ -268,7 +295,12 @@ export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
                                 _focus={{borderColor: '#D02C23'}}
                                 _hover={{borderColor: '#D02C23'}}
                                 focusOutlineColor={'#D02C23'}
-                                bg={'white'}
+                                _light={{
+                                    bg: 'white'
+                                }}
+                                _dark={{
+                                    bg: '#262626'
+                                }}
                             />
                             <FormControl.ErrorMessage>
                                 Phone invalid
@@ -284,7 +316,12 @@ export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
                                 _focus={{borderColor: '#D02C23'}}
                                 _hover={{borderColor: '#D02C23'}}
                                 focusOutlineColor={'#D02C23'}
-                                bg={'white'}
+                                _light={{
+                                    bg: 'white'
+                                }}
+                                _dark={{
+                                    bg: '#262626'
+                                }}
                             />
                             <FormControl.ErrorMessage>
                                 DateBirth invalid

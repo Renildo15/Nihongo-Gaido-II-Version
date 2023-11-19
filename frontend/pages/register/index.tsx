@@ -154,7 +154,16 @@ export default function Register() {
     }
 
     return (
-        <Center borderWidth={1} h={'100vh'} bg={'#f2f2f2'}>
+        <Center 
+            borderWidth={1} 
+            h={'100vh'} 
+            _light={{
+                bg: 'white'
+            }}
+            _dark={{
+                bg: '#333333'
+            }}
+        >
             <Head>
                 <title>
                     Nihongo Gaido - Register
@@ -169,7 +178,12 @@ export default function Register() {
                 justifyContent={'center'} 
                 alignItems={'center'} 
                 borderColor={'#D02C23'}
-                bg={'#fff'}
+                _light={{
+                    bg: 'white'
+                }}
+                _dark={{
+                    bg: '#262626'
+                }}
                 h={'80vh'}
             >
                 <Column justifyContent={'center'} alignItems={'center'}>

@@ -56,7 +56,12 @@ export default function FilterByMonth(props: IFilterMonthProps) {
             isDisabled={!grammars || grammarsError !== undefined || grammarsIsLoading}
             size={'md'}
             shadow={1}
-            bg={'white'}
+            _light={{
+                bg: 'white'
+            }}
+            _dark={{
+                bg: '#262626'
+            }}
             selectedValue={selectedMonth}
             minWidth={200}
             accessibilityLabel="Select month"

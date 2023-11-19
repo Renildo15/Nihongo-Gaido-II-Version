@@ -105,7 +105,15 @@ export default function ModalAddGrammar(props: IModalAddGrammarProps) {
 
     return (
         <Modal isOpen={props.isOpen} onClose={props.onClose} initialFocusRef={initialRef} finalFocusRef={finalRef} >
-            <Modal.Content maxWidth="400px" bg={'#f2f2f2'}>
+            <Modal.Content 
+                maxWidth="400px"
+                _light={{
+                    bg: '#F2F2F2'
+                }}
+                _dark={{
+                    bg: '#333333'
+                }}
+            >
                 <Modal.CloseButton />
                 <Modal.Header _text={{color:'#D02C23'}}>Add new grammar</Modal.Header>
                 <Modal.Body>
@@ -113,7 +121,12 @@ export default function ModalAddGrammar(props: IModalAddGrammarProps) {
                         <FormControl isInvalid={!isGrammarValid} isRequired>
                             <FormControl.Label _text={{color:'#D02C23', fontWeight: '600'}}>Grammar</FormControl.Label>
                             <Input
-                                bg={'white'}
+                                _light={{
+                                    bg: 'white'
+                                }}
+                                _dark={{
+                                    bg: '#262626'
+                                }}
                                 onChangeText={handleGrammarChange}
                                 value={grammar}
                                 shadow={1}
@@ -131,7 +144,12 @@ export default function ModalAddGrammar(props: IModalAddGrammarProps) {
                             <Input
                                 onChangeText={handleStructure}
                                 value={structure}
-                                bg={'white'}
+                                _light={{
+                                    bg: 'white'
+                                }}
+                                _dark={{
+                                    bg: '#262626'
+                                }}
                                 shadow={1}
                                 _focus={{borderColor: '#D02C23'}}
                                 _hover={{borderColor: '#D02C23'}}
@@ -146,7 +164,12 @@ export default function ModalAddGrammar(props: IModalAddGrammarProps) {
                             <FormControl.Label _text={{color:'#D02C23', fontWeight: '600'}}>Level</FormControl.Label>
                             <Select
                                 selectedValue={level}
-                                bg={'white'}
+                                _light={{
+                                    bg: 'white'
+                                }}
+                                _dark={{
+                                    bg: '#262626'
+                                }}
                                 minWidth={200}
                                 accessibilityLabel="Select level"
                                 placeholder="Select level"
@@ -169,7 +192,12 @@ export default function ModalAddGrammar(props: IModalAddGrammarProps) {
                         <FormControl>
                             <FormControl.Label _text={{color:'#D02C23', fontWeight: '600'}}>Explain</FormControl.Label>
                             <TextArea
-                                bg={'white'}
+                                _light={{
+                                    bg: 'white'
+                                }}
+                                _dark={{
+                                    bg: '#262626'
+                                }}  
                                 autoCompleteType={'off'}
                                 onChangeText={text => setExplain(text)}
                                 value={explain}

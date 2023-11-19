@@ -1,15 +1,17 @@
-import React from "react";
-import { Box, HStack, Text, Pressable } from "native-base";
-import { MdArrowBack } from "react-icons/md";
+import React, { useState } from "react";
+import { Box, HStack, Text, Pressable, useColorMode, IconButton, Icon } from "native-base";
 import Default from "../../public/images/default.jpg"
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useProfile, WhoIam } from "../../utils/api/user";
+import { MdDarkMode, MdLightMode, MdArrowBack } from "react-icons/md";
 interface IHeadingProps {
     title: string;
 }
 
 export function Heading({title}: IHeadingProps){
+    const [theme, setTheme] = useState<'light' | 'dark'>('light')
+    const { toggleColorMode } = useColorMode()
     const {
         data: userInfo,
         error: userError,
@@ -48,42 +50,59 @@ export function Heading({title}: IHeadingProps){
                 >
                     {title}
                 </Text>
-                <Pressable
-                    alignItems="center"
-                    justifyContent="space-between"
-                    flexDirection={'row'}
-                    w={140}
-                    onPress={() => router.push('/profile')}
-                >
-                    <Box style={{ borderRadius: 50, overflow: 'hidden' }}>
-                    {profile?.avatar 
-                            ? (
-                                <Image
-                                    src={`http://127.0.0.1:8000${profile.avatar}`}
-                                    alt="Avatar"
-                                    width={30}
-                                    height={30}
-                                    objectFit="cover"
-                                />
-                            )
-                        :   (
-                                <Image
-                                    src={Default}
-                                    alt="Avatar"
-                                    width={30}
-                                    height={30}
-                                    objectFit="cover"
-                                />
-                            )   
+                <HStack alignItems={'center'}>
+                    <IconButton 
+                        w={10}
+                        h={10}
+                        onPress={() => {
+                            setTheme(theme === 'dark' ? 'light' : 'dark')
+                            toggleColorMode()
+                        }}
+                        icon={
+                        <Icon color={'white'}>
+                            {theme === 'dark' ? <MdDarkMode size={20} /> : <MdLightMode size={20} />}
+                        </Icon>
                         }
-                    </Box>
-                    <Text
-                        color="white"
-                        fontSize={18}
+                        p={1}
+                        rounded={20}
+                    />
+                    <Pressable
+                        alignItems="center"
+                        justifyContent="space-between"
+                        flexDirection={'row'}
+                        w={140}
+                        onPress={() => router.push('/profile')}
                     >
-                        {userInfo?.username}
-                    </Text>
-                </Pressable>
+                        <Box style={{ borderRadius: 50, overflow: 'hidden' }}>
+                        {profile?.avatar 
+                                ? (
+                                    <Image
+                                        src={`http://127.0.0.1:8000${profile.avatar}`}
+                                        alt="Avatar"
+                                        width={30}
+                                        height={30}
+                                        objectFit="cover"
+                                    />
+                                )
+                            :   (
+                                    <Image
+                                        src={Default}
+                                        alt="Avatar"
+                                        width={30}
+                                        height={30}
+                                        objectFit="cover"
+                                    />
+                                )   
+                            }
+                        </Box>
+                        <Text
+                            color="white"
+                            fontSize={18}
+                        >
+                            {userInfo?.username}
+                        </Text>
+                    </Pressable>
+                </HStack>
             </HStack>
         </Box>
     )
