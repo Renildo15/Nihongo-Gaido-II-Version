@@ -29,7 +29,12 @@ export default function FilterByLevel(props: IFilterByLevelProps) {
         <Select
             isDisabled={!grammars || grammarsError !== undefined || grammarsIsLoading}
             size={'md'}
-            bg={'white'}
+            _light={{
+                bg: 'white'
+            }}
+            _dark={{
+                bg: '#262626'
+            }}
             selectedValue={selectedLevel}
             onValueChange={handleSelectLevel}
             minWidth={200}

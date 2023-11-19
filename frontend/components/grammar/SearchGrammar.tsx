@@ -36,7 +36,12 @@ export default function SearchGrammar (props: ISearchGrammarProps) {
             <Column space={'20px'}> 
                 <Input
                     placeholder="Search grammar"
-                    bg={'white'}
+                    _light={{
+                        bg: 'white'
+                    }}
+                    _dark={{
+                        bg: '#262626'
+                    }}
                     w={'700px'}
                     size={'md'}
                     onChangeText={text => handleFilterChanged({...filters, searchText: text})}

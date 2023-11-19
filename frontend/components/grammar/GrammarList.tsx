@@ -91,7 +91,16 @@ export default function GrammarList(props: IGrammarListProps) {
 
     function items({item}: ListRenderItemInfo<IGrammarList>) {
         return (
-            <Row justifyContent={'space-around'} p={5} bg={'white'} >
+            <Row 
+                justifyContent={'space-around'} 
+                p={5}
+                _light={{
+                    bg: 'white'
+                }}
+                _dark={{
+                    bg: '#262626'
+                }}
+            >
                 <Column  w={'150px'}>
                     <Pressable>
                         <Text>{item.grammar}</Text>
@@ -106,7 +115,12 @@ export default function GrammarList(props: IGrammarListProps) {
                 <Row justifyContent={'space-around'} w={'110px'}>
                     <Pressable
                         onPress={() => handleChangeGrammarId(item.id)}
-                        bg={'#F2F2F2'}
+                        _light={{
+                            bg: '#F2F2F2'
+                        }}
+                        _dark={{
+                            bg: '#333333'
+                        }}
                         w={'40px'}
                         alignItems={'center'}
                         rounded={'md'}
@@ -116,7 +130,12 @@ export default function GrammarList(props: IGrammarListProps) {
                     </Pressable>
                     <Pressable
                         onPress={() => handleChangeDeleteGrammarId(item.id)}
-                        bg={'#F2F2F2'}
+                        _light={{
+                            bg: '#F2F2F2'
+                        }}
+                        _dark={{
+                            bg: '#333333'
+                        }}
                         w={'40px'}
                         alignItems={'center'}
                         rounded={'md'}

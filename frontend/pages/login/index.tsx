@@ -90,7 +90,14 @@ export default function Login() {
     }
 
     return (
-        <Center borderWidth={1} h={'100vh'} bg={'#f2f2f2'}>
+        <Center borderWidth={1} h={'100vh'} 
+            _light={{
+                bg: 'white'
+            }}
+            _dark={{
+                bg: '#333333'
+            }}
+        >
             <Head>
                 <title>
                     Nihongo Gaido - Login
@@ -105,7 +112,12 @@ export default function Login() {
                 justifyContent={'center'} 
                 alignItems={'center'} 
                 borderColor={'#D02C23'}
-                bg={'#fff'}
+                _light={{
+                    bg: 'white'
+                }}
+                _dark={{
+                    bg: '#262626'
+                }}
             >
                 <Column justifyContent={'center'} alignItems={'center'}>
                     <Image
@@ -132,6 +144,12 @@ export default function Login() {
                             _focus={{borderColor: '#D02C23'}}
                             _hover={{borderColor: '#D02C23'}}
                             focusOutlineColor={'#D02C23'}
+                            _light={{
+                                bg: 'white'
+                            }}
+                            _dark={{
+                                bg: '#262626'
+                            }}
                         />
                     </FormControl>
                     <FormControl>
@@ -145,6 +163,12 @@ export default function Login() {
                             _focus={{borderColor: '#D02C23'}}
                             _hover={{borderColor: '#D02C23'}}
                             focusOutlineColor={'#D02C23'}
+                            _light={{
+                                bg: 'white'
+                            }}
+                            _dark={{
+                                bg: '#262626'
+                            }}
                             InputRightElement={
                                 <Pressable onPress={handleState} >
                                     <MdRemoveRedEye size={20}  color="#D02C23"/>
@@ -182,6 +206,7 @@ export default function Login() {
                         w={'90px'} 
                         bg={'#D02C23'} 
                         _hover={{bg: '#ae251e'}}
+                        _pressed={{bg: '#ae251e'}}
                         onPress={login}
                         isLoading={sendingLogin}
                     >
