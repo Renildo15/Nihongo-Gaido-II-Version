@@ -8,7 +8,7 @@ from .views.login_views import login_view
 from .views.practice_grammar_views import (choice_grammar,
                                            choice_grammar_detail, setence_list)
 from .views.profile_views import profile_list
-from .views.sentence_views import sentence_detail, sentence_list
+from .views.sentence_views import sentence_detail, sentences_list
 from .views.text_translate_views import (text_translate_detail,
                                          text_translate_list)
 from .views.text_views import text_detail, text_list
@@ -28,7 +28,7 @@ urlpatterns = [
         "choice_grammar/<int:pk>", choice_grammar_detail, name="choice_grammar_detail"
     ),
     path("sentence_list", setence_list, name="sentence_list"),
-    path("sentence", sentence_list, name="sentence_list_create"),
+    path("sentences/<int:grammar_id>", sentences_list, name="sentence_list_create"),
     path("sentence/<int:pk>", sentence_detail, name="sentence_detail"),
     path("category", category_list, name="category_list_create"),
     path("category/<int:pk>", category_detail, name="category_detail"),
