@@ -3,6 +3,7 @@ import { Column } from "native-base"
 import { useSentences } from "../../utils/api/sentence"
 import { useGrammar } from "../../utils/api/grammar"
 import GrammarExplain from "./GrammarExplain"
+import SentenceList from "./SentenceList"
 import Error from "../Error"
 
 
@@ -31,8 +32,9 @@ export default function SentenceMain(props: ISentenceMainProps) {
     if (grammarError) return <Error message="Error loading grammar"/>
 
     return (
-        <Column justifyContent={'center'} alignItems={'center'}>
+        <Column justifyContent={'center'} alignItems={'center'} space={'30px'}>
             <GrammarExplain grammar={grammar}/>
+            <SentenceList sentences={sentences}/>
         </Column>
     )
 }
