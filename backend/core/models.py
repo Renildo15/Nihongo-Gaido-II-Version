@@ -69,7 +69,7 @@ class PracticeGrammar(models.Model):
 
 
 class Sentence(models.Model):
-    sentence = models.CharField(max_length=200, unique=True)
+    sentence = models.CharField(max_length=200)
     translate = models.CharField(max_length=200)
     annotation = models.TextField(max_length=300, blank=True, null=True)
     grammar = models.ForeignKey(
