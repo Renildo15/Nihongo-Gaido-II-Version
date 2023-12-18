@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import { Modal, Button, useToast, Box, Column } from "native-base"
+import ModalAddSentence from "./ModalAddSentence"
 
 interface ModalSentenceProps {
     isOpen: boolean
