@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import { ISentenceList } from "../../utils/api/sentence"
-import ModalSentence from "./ModalSentence"
+import ModalSentence from "./modal/ModalSentence"
+import ModalAddSentence from "./modal/ModalAddSentence"
 import { ListRenderItemInfo } from "react-native"
 import { FlatList, Pressable, Text, Divider, Row, Column, Button } from "native-base"
 import { MdList, MdAdd } from "react-icons/md"
@@ -8,10 +9,12 @@ import DataEmpty from "../DataEmpty"
 
 interface ISentenceListProps {
     sentences: ISentenceList[] | undefined
+    grammarId: number | null
 }
 
 export default function SentenceList(props: ISentenceListProps) {
     const [modalVisible, setModalVisible] = useState(false)
+    const [modalAddVisible, setModalAddVisible] = useState(false)
     const [sentenceId, setSentenceId] = useState<number | null>(null)
 
     const handleChangeSentenceId = (id: number) => {
@@ -19,12 +22,16 @@ export default function SentenceList(props: ISentenceListProps) {
         setModalVisible(true)
     }
 
+    const handleAddSentence = () => {
+        setModalAddVisible(true)
+    }
+
     function header() {
         return (
             <Row justifyContent={'space-between'} alignItems={'center'} w={'100%'} mb={5}>
                 <Text fontSize={20} fontWeight={700}>Sentences({props.sentences?.length})</Text>
                 <Button
-                    onPress={() => {}}
+                    onPress={handleAddSentence}
                     bg={'#D02C23'}
                     _hover={{bg: '#ae251e'}}
                     _pressed={{bg: '#ae251e'}}
@@ -76,6 +83,12 @@ export default function SentenceList(props: ISentenceListProps) {
                 onClose={() => setModalVisible(false)}
                 sentenceId={sentenceId}
             />
+            <ModalAddSentence
+                isOpen={modalAddVisible}
+                onClose={() => setModalAddVisible(false)}
+                grammarId={props.grammarId}
+            />
+
         </>
     )
 }

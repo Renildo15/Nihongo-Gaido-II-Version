@@ -42,7 +42,7 @@ export default function SentenceMain(props: ISentenceMainProps) {
     return (
         <Column justifyContent={'center'} alignItems={'center'} space={'30px'}>
             <GrammarExplain grammar={grammar}/>
-            <SentenceList sentences={sentences}/>
+            <SentenceList sentences={sentences} grammarId={props.grammarId}/>
         </Column>
     )
 }
