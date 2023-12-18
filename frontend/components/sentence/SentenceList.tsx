@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import { ISentenceList } from "../../utils/api/sentence"
+import ModalSentence from "./ModalSentence"
 import { ListRenderItemInfo } from "react-native"
 import { FlatList, Pressable, Text, Divider, Row, Column, Button } from "native-base"
 import { MdList, MdAdd } from "react-icons/md"
@@ -10,6 +11,13 @@ interface ISentenceListProps {
 }
 
 export default function SentenceList(props: ISentenceListProps) {
+    const [modalVisible, setModalVisible] = useState(false)
+    const [sentenceId, setSentenceId] = useState<number | null>(null)
+
+    const handleChangeSentenceId = (id: number) => {
+        setSentenceId(id)
+        setModalVisible(true)
+    }
 
     function header() {
         return (
@@ -40,7 +48,9 @@ export default function SentenceList(props: ISentenceListProps) {
             >
                 <Row justifyContent={'space-between'}>
                     <Text fontSize={20} fontWeight={700}>{item.sentence}</Text>
-                    <Pressable onPress={() => {}}>
+                    <Pressable onPress={() => {
+                        handleChangeSentenceId(item.id)
+                    }}>
                         <MdList size={24} color={'#D02C23'}/>
                     </Pressable>
                 </Row>
@@ -52,13 +62,20 @@ export default function SentenceList(props: ISentenceListProps) {
 
 
     return (
-        <FlatList
-            data={props.sentences}
-            renderItem={items}
-            ListHeaderComponent={header}
-            keyExtractor={item => item.id.toString()}
-            ListEmptyComponent={<DataEmpty message="No sentences"/>}
-            ItemSeparatorComponent={() => <Divider bg={'none'} mt={2} />}
-        />
+        <>
+            <FlatList
+                data={props.sentences}
+                renderItem={items}
+                ListHeaderComponent={header}
+                keyExtractor={item => item.id.toString()}
+                ListEmptyComponent={<DataEmpty message="No sentences"/>}
+                ItemSeparatorComponent={() => <Divider bg={'none'} mt={2} />}
+            />
+            <ModalSentence
+                isOpen={modalVisible}
+                onClose={() => setModalVisible(false)}
+                sentenceId={sentenceId}
+            />
+        </>
     )
 }
