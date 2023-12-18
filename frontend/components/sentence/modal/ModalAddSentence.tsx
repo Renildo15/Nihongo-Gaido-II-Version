@@ -19,9 +19,36 @@ export default function ModalAddSentence(props: IModalAddSentenceProps) {
 
     const [isSentenceValid, setIsSentenceValid] = useState(false)
     const [isTranslateValid, setIsTranslateValid] = useState(false)
-    const [isAnnotationValid, setIsAnnotationValid] = useState(false)
 
+    const [SentenceErrorMessage, setSentenceErrorMessage] = useState('')
+    
     const [saving, setSaving] = useState(false)
+
+    const handleSentence = (text: string) => {
+        setSentence(text)
+
+        const japaneseRegex = /^$|^[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\u002B\u002A\u007E\u002F]+$/;
+
+        if (text.trim().length === 0) {
+            setIsSentenceValid(false)
+            setSentenceErrorMessage('Sentence is required')
+        } else if (!japaneseRegex.test(text)) {
+            setIsSentenceValid(false)
+            setSentenceErrorMessage('Sentence must be in Japanese')
+        } else {
+            setIsSentenceValid(true)
+            setSentenceErrorMessage('')
+        }
+    }
+
+    const handleTranslate = (text: string) => {
+        setTranslate(text)
+        if(text.trim().length === 0 || text.length <= 3) {
+            setIsTranslateValid(false)
+        } else {
+            setIsTranslateValid(true)
+        }
+    }
 
     return (
         <Modal isOpen={props.isOpen} onClose={props.onClose} initialFocusRef={initialRef} finalFocusRef={finalRef} >
@@ -47,7 +74,7 @@ export default function ModalAddSentence(props: IModalAddSentenceProps) {
                                 _dark={{
                                     bg: '#262626'
                                 }}
-                                // onChangeText={handleGrammarChange}
+                                onChangeText={handleSentence}
                                 value={sentence}
                                 shadow={1}
                                 _focus={{borderColor: '#D02C23'}}
@@ -56,13 +83,13 @@ export default function ModalAddSentence(props: IModalAddSentenceProps) {
                                 placeholder="Sentence"
                             />
                             <FormControl.ErrorMessage>
-                                Sentence is required
+                                {SentenceErrorMessage}
                             </FormControl.ErrorMessage>
                         </FormControl>
                         <FormControl isRequired isInvalid={!isTranslateValid}>
                             <FormControl.Label _text={{color:'#D02C23', fontWeight: '600'}}>Translate</FormControl.Label>
                             <Input
-                                // onChangeText={handleStructure}
+                                onChangeText={handleTranslate}
                                 value={translate}
                                 _light={{
                                     bg: 'white'
