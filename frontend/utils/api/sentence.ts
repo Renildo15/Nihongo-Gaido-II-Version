@@ -18,6 +18,7 @@ export interface ISentenceCreate {
     translate: string;
     annotation: string;
     grammar: number;
+    created_by?: number;
 }
 
 export interface ISentenceUpdate {
@@ -46,5 +47,18 @@ export function useSentences(grammarId: number | undefined) {
         isLoading,
         isValidating,
         mutate
+    }
+}
+
+export async function createSentence({sentence, translate, annotation, grammar, created_by }:ISentenceCreate){
+    interface ISentenceResponse{
+        message: string
+    }
+
+    try {
+        const res = await axios.post<ISentenceResponse>(`/api/sentences`, {sentence, translate, annotation, grammar, created_by})
+        return res.data.message
+    } catch (error: any) {
+        throw new Error(error.message)
     }
 }
