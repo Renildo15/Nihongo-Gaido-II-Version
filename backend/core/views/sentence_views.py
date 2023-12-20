@@ -10,20 +10,18 @@ from core.utils.paginationn import CustomPagination
 
 @api_view(["GET", "POST"])
 @permission_classes([IsAuthenticated])
-def sentences_list(request, grammar_id=None):
-    if grammar_id:
-        try:
-            sentences = Sentence.objects.filter(grammar_id=grammar_id, created_by=request.user)
-        except Sentence.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+def sentences_list(request, grammar_id):
+    try:
+        sentences = Sentence.objects.filter(grammar_id=grammar_id, created_by=request.user)
+    except Sentence.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
     
-        if request.method == "GET":
-            paginator = CustomPagination()
-            result_page = paginator.paginate_queryset(sentences, request)
-            serializer = SentenceListSerializer(instance=result_page, many=True)
+    if request.method == "GET":
+        paginator = CustomPagination()
+        result_page = paginator.paginate_queryset(sentences, request)
+        serializer = SentenceListSerializer(instance=result_page, many=True)
 
-            return paginator.get_paginated_response(serializer.data)
-        
+        return paginator.get_paginated_response(serializer.data)
     elif request.method == "POST":
         serializer = SentenceCreateSerializer(data=request.data)
 
@@ -35,8 +33,8 @@ def sentences_list(request, grammar_id=None):
             return Response(data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
-    return Response(status=status.HTTP_404_NOT_FOUND)
+    else:
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
 @api_view(["GET", "PATCH", "DELETE"])
