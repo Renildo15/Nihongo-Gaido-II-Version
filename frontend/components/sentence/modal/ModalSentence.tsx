@@ -1,6 +1,7 @@
 import React, { useState } from "react"
-import { Modal, Button, useToast, Box, Column } from "native-base"
+import { Modal, Button, Box, Column } from "native-base"
 import ModalUpdateSentence from "./ModalUpdateSentence"
+import ModalDeleteSentence from "./ModalDeleteSentence"
 
 interface ModalSentenceProps {
     isOpen: boolean
@@ -11,6 +12,7 @@ interface ModalSentenceProps {
 
 export default function ModalSentence(props: ModalSentenceProps) {
     const [modalVisible, setModalVisible] = useState(false)
+    const [modalDeleteVisible, setModalDeleteVisible] = useState(false)
     return (
         <Modal isOpen={props.isOpen} onClose={props.onClose}>
             <Modal.Content>
@@ -19,7 +21,12 @@ export default function ModalSentence(props: ModalSentenceProps) {
                 <Modal.Body>
                     <Box>
                         <Column space={'10px'}>
-                            <Button colorScheme="danger" onPress={() => {}}>
+                            <Button 
+                                colorScheme="danger" 
+                                onPress={() => {
+                                    setModalDeleteVisible(true)
+                                    props.onClose()
+                                }}>
                                 Delete
                             </Button>
                             <Button 
@@ -31,7 +38,7 @@ export default function ModalSentence(props: ModalSentenceProps) {
                             >
                                 Edit
                             </Button>
-                            <Button colorScheme="info" onPress={() => {}}>
+                            <Button colorScheme="info" onPress={() => {}} disabled>
                                 View
                             </Button>
                         </Column>
@@ -54,6 +61,12 @@ export default function ModalSentence(props: ModalSentenceProps) {
                 onClose={() => setModalVisible(false)}
                 sentenceId={props.sentenceId}
                 grammarId={props.grammarId} 
+            />
+            <ModalDeleteSentence
+                isOpen={modalDeleteVisible}
+                onClose={() => setModalDeleteVisible(false)}
+                sentenceId={props.sentenceId}
+                grammarId={props.grammarId}
             />
         </Modal>
         
