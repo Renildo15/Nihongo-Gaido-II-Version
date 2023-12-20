@@ -96,3 +96,16 @@ export async function updateSentence(id: number, {sentence, translate, annotatio
         throw new Error(error.message)
     }
 }
+
+export async function deleteSentence(id: number){
+    interface ISentenceResponse{
+        message: string
+    }
+
+    try {
+        const res = await axios.delete<ISentenceResponse>(`/api/sentence/${id}`)
+        return res.data.message
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
