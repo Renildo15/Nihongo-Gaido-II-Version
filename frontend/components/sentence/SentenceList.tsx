@@ -82,6 +82,7 @@ export default function SentenceList(props: ISentenceListProps) {
                 isOpen={modalVisible}
                 onClose={() => setModalVisible(false)}
                 sentenceId={sentenceId}
+                grammarId={props.grammarId}
             />
             <ModalAddSentence
                 isOpen={modalAddVisible}

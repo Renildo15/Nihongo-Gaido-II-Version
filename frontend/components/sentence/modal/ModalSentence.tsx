@@ -1,14 +1,16 @@
 import React, { useState } from "react"
 import { Modal, Button, useToast, Box, Column } from "native-base"
-import ModalAddSentence from "./ModalAddSentence"
+import ModalUpdateSentence from "./ModalUpdateSentence"
 
 interface ModalSentenceProps {
     isOpen: boolean
     onClose: () => void
     sentenceId: number | null
+    grammarId: number | null
 }
 
 export default function ModalSentence(props: ModalSentenceProps) {
+    const [modalVisible, setModalVisible] = useState(false)
     return (
         <Modal isOpen={props.isOpen} onClose={props.onClose}>
             <Modal.Content>
@@ -20,7 +22,13 @@ export default function ModalSentence(props: ModalSentenceProps) {
                             <Button colorScheme="danger" onPress={() => {}}>
                                 Delete
                             </Button>
-                            <Button colorScheme="warning" onPress={() => {}}>
+                            <Button 
+                                colorScheme="warning" 
+                                onPress={() => {
+                                    setModalVisible(true)
+                                    props.onClose()
+                                }}
+                            >
                                 Edit
                             </Button>
                             <Button colorScheme="info" onPress={() => {}}>
@@ -41,6 +49,12 @@ export default function ModalSentence(props: ModalSentenceProps) {
                     </Button.Group>
                 </Modal.Footer>
             </Modal.Content>
+            <ModalUpdateSentence
+                isOpen={modalVisible}
+                onClose={() => setModalVisible(false)}
+                sentenceId={props.sentenceId}
+                grammarId={props.grammarId} 
+            />
         </Modal>
         
     )
