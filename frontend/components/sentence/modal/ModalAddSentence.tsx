@@ -1,6 +1,7 @@
 import React, {useState, useRef} from "react"
 import { Modal, FormControl, Input, Button, useToast, Box, Column, TextArea } from "native-base"
 import { createSentence, useSentences } from "../../../utils/api/sentence"
+import { WhoIam } from "../../../utils/api/user"
 
 interface IModalAddSentenceProps {
     isOpen: boolean
@@ -12,6 +13,11 @@ export default function ModalAddSentence(props: IModalAddSentenceProps) {
 
     const initialRef = useRef(null)
     const finalRef = useRef(null)
+
+    const toast = useToast()
+
+    const {mutate: sentenceRevalidate} = useSentences(props.grammarId || undefined)
+    const {data: user} = WhoIam()
 
     const [sentence, setSentence] = useState('')
     const [translate, setTranslate] = useState('')
@@ -49,6 +55,44 @@ export default function ModalAddSentence(props: IModalAddSentenceProps) {
             setIsTranslateValid(true)
         }
     }
+
+    const clearInputs = () => {
+        setSentence('')
+        setTranslate('')
+        setAnnotation('')
+    }
+
+    async function save() {
+        setSaving(true)
+        try {
+            const grammarId = props.grammarId || 0
+            const newSentence = await createSentence({
+                sentence: sentence,
+                translate: translate,
+                annotation: annotation,
+                grammar: grammarId,
+                created_by: user?.id || undefined
+            })
+
+            if (newSentence){
+                toast.show({
+                    title: 'Success',
+                    description: `Sentence added`,
+                    placement: 'top',
+                    duration: 2000
+                })
+            }
+
+            clearInputs()
+            sentenceRevalidate()
+            props.onClose()
+        } catch (error) {
+            alert(error)
+        } finally {
+            setSaving(false)
+        }
+    }
+
 
     return (
         <Modal isOpen={props.isOpen} onClose={props.onClose} initialFocusRef={initialRef} finalFocusRef={finalRef} >
@@ -101,7 +145,7 @@ export default function ModalAddSentence(props: IModalAddSentenceProps) {
                                 _focus={{borderColor: '#D02C23'}}
                                 _hover={{borderColor: '#D02C23'}}
                                 focusOutlineColor={'#D02C23'}
-                                placeholder="Structure"
+                                placeholder="Translate"
                             />
                             <FormControl.ErrorMessage>
                                 Translate is required
@@ -125,7 +169,7 @@ export default function ModalAddSentence(props: IModalAddSentenceProps) {
                                 _focus={{borderColor: '#D02C23'}}
                                 _hover={{borderColor: '#D02C23'}}
                                 focusOutlineColor={'#D02C23'}
-                                placeholder="Explain"
+                                placeholder="Annotation"
                             />
                         </FormControl>
 
@@ -138,6 +182,7 @@ export default function ModalAddSentence(props: IModalAddSentenceProps) {
                             colorScheme="blueGray" 
                             onPress={()=> {
                                 props.onClose()
+                                clearInputs()
                             }}
                         >
                             Cancel
@@ -148,7 +193,7 @@ export default function ModalAddSentence(props: IModalAddSentenceProps) {
                             _pressed={{bg: '#ae251e'}}
                             isDisabled={ !isSentenceValid || !isTranslateValid }
                             isLoading={saving}
-                            // onPress={save}
+                            onPress={save}
                         >
                             Save
                         </Button>

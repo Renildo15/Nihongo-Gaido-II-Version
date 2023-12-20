@@ -17,7 +17,7 @@ export interface ISentenceCreate {
     sentence: string;
     translate: string;
     annotation: string;
-    grammar: number;
+    grammar: number ;
     created_by?: number;
 }
 
@@ -56,7 +56,7 @@ export async function createSentence({sentence, translate, annotation, grammar, 
     }
 
     try {
-        const res = await axios.post<ISentenceResponse>(`/api/sentences`, {sentence, translate, annotation, grammar, created_by})
+        const res = await axios.post<ISentenceResponse>(`/api/sentences/${grammar}`, {sentence, translate, annotation, grammar, created_by})
         return res.data.message
     } catch (error: any) {
         throw new Error(error.message)
