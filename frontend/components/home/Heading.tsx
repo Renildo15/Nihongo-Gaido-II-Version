@@ -14,18 +14,10 @@ export function Heading({title}: IHeadingProps){
     const { toggleColorMode } = useColorMode()
     const {
         data: userInfo,
-        error: userError,
-        isLoading: userIsLoading,
-        isValidating: userIsValidating,
-        mutate: userRevalidate
     } = WhoIam()
 
     const {
         data: profile,
-        error: profileError,
-        isLoading: profileIsLoading,
-        isValidating: profileIsValidating,
-        mutate: profileMutate,
     } = useProfile(userInfo?.id)
 
     const router = useRouter()
@@ -42,7 +34,16 @@ export function Heading({title}: IHeadingProps){
                 alignItems="center"
                 flexDirection={'row'}
             >   
-                <MdArrowBack size={30} color={'white'} />
+                <IconButton
+                    onPress={() => router.back()}
+                    icon={
+                        <Icon color={'white'}>
+                            <MdArrowBack size={24} />
+                        </Icon>
+                    }
+                    p={1}
+                    rounded={20}
+                />
                 <Text
                     color="white"
                     fontSize={20}

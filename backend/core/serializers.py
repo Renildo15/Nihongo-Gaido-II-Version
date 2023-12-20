@@ -267,8 +267,6 @@ class SentenceCreateSerializer(serializers.ModelSerializer):
 
 
 class SentenceListSerializer(serializers.ModelSerializer):
-    grammar = GrammarSerializer(read_only=True)
-
     class Meta:
         model = Sentence
         fields = [

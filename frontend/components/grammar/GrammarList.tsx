@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { useGrammars, IGrammarList } from "../../utils/api/grammar";
+import { useRouter } from "next/router";
 import { Heading, Row, Column, FlatList, Box, Pressable, Divider, Text } from "native-base";
 import { ListRenderItemInfo } from "react-native";
 import { IGrammarsFilters } from "./SearchGrammar";
@@ -25,6 +26,8 @@ export default function GrammarList(props: IGrammarListProps) {
     const [grammarId, setGrammarId] = useState<number | null>(null)
     const [modalVisible, setModalVisible] = useState(false)
     const [modalDeleteVisible, setModalDeleteVisible] = useState(false)
+
+    const router = useRouter()
 
     const handleChangeGrammarId = (id: number) => {
         setGrammarId(id)
@@ -102,7 +105,9 @@ export default function GrammarList(props: IGrammarListProps) {
                 }}
             >
                 <Column  w={'150px'}>
-                    <Pressable>
+                    <Pressable 
+                        onPress={() => router.push(`/grammar/sentences/${item.id}`)}
+                    >
                         <Text>{item.grammar}</Text>
                     </Pressable>
                 </Column>
