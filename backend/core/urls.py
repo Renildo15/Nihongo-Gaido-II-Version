@@ -32,7 +32,7 @@ urlpatterns = [
     path("sentence/<int:pk>", sentence_detail, name="sentence_detail"),
     path("category", category_list, name="category_list_create"),
     path("category/<int:pk>", category_detail, name="category_detail"),
-    path("word", word_list, name="word_list_create"),
+    path("words", word_list, name="word_list_create"),
     path("word/<int:pk>", word_detail, name="word_detail"),
     path(
         "conjugation/<int:word_id>", conjugation_list, name="conjugation_list_create"
