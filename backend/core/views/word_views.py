@@ -13,7 +13,8 @@ from core.filters import WordFilter
 def word_list(request):
     if request.method == "GET":
         words = Word.objects.filter(created_by=request.user)
-        filter = WordFilter(request.GET, queryset=words)
+        words_ordered = words.order_by("-created_at")
+        filter = WordFilter(request.GET, queryset=words_ordered)
         paginator = CustomPagination()
         result_page = paginator.paginate_queryset(filter.qs, request)
         serializer = WordSerializer(result_page, many=True)
