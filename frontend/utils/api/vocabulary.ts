@@ -69,7 +69,7 @@ export function useWord(wordId: number | undefined) {
         isLoading, 
         isValidating, 
         mutate
-    } = useSWR<WordReponse>(`/api/words/${wordId}`, fetcchSimple);
+    } = useSWR<WordReponse>(`/api/word/${wordId}`, fetcchSimple);
 
     return {
         data: data?.word,
