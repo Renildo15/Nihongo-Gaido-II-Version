@@ -1,4 +1,4 @@
-import React, {useMemo} from "react"
+import React, {useMemo, useState} from "react"
 import { FlatList, Pressable, Text, Divider, Row, Column, Button, Spinner } from "native-base"
 import { ListRenderItemInfo } from "react-native"
 import { useWords, IWordList } from "../../utils/api/vocabulary"
@@ -6,12 +6,16 @@ import { MdList, MdAdd } from "react-icons/md"
 import DataEmpty from "../DataEmpty"
 import Error from "../Error"
 import { IVocabularyFilters } from "./SearchVocabulary"
+import ModalAddWord from "./ModalAddWord"
 
 interface IWordListProps {
     filters?: IVocabularyFilters
 }
 
 export default function WordList(props: IWordListProps) {
+
+    const [isModalAddWordOpen, setIsModalAddWordOpen] = useState(false)
+
     const {
         data: words, 
         error: wordsError,
@@ -66,7 +70,9 @@ export default function WordList(props: IWordListProps) {
             <Row justifyContent={'space-between'} alignItems={'center'} w={'100%'} mb={5} p={"10px"}>
                 <Text fontSize={20} fontWeight={700}>Words({words?.length})</Text>
                 <Button
-                    onPress={() => {}}
+                    onPress={() => {
+                        setIsModalAddWordOpen(true)
+                    }}
                     bg={'#D02C23'}
                     _hover={{bg: '#ae251e'}}
                     _pressed={{bg: '#ae251e'}}
@@ -100,14 +106,23 @@ export default function WordList(props: IWordListProps) {
     }
 
     return (
-        <FlatList
-            w={"60%"}
-            data={filteredVocabulary}
-            ListHeaderComponent={header}
-            renderItem={items}
-            keyExtractor={item => item.id.toString()}
-            ListEmptyComponent={<DataEmpty message="No words" />}
-            ItemSeparatorComponent={() => <Divider mt={2} />}
-        />
+        <>
+            <FlatList
+                w={"60%"}
+                data={filteredVocabulary}
+                ListHeaderComponent={header}
+                renderItem={items}
+                keyExtractor={item => item.id.toString()}
+                ListEmptyComponent={<DataEmpty message="No words" />}
+                ItemSeparatorComponent={() => <Divider mt={2} />}
+            />
+            <ModalAddWord
+                isOpen={isModalAddWordOpen}
+                onClose={() => {
+                    setIsModalAddWordOpen(false)
+                }}
+            />
+
+        </>
     )
 }

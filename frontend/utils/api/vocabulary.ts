@@ -23,7 +23,7 @@ export interface IWordCreate {
     meaning: string;
     type: TypeWord
     level: TypeLevel;
-    category: string;
+    category: number;
     created_by?: number;
 }
 
