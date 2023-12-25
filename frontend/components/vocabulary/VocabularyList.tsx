@@ -2,11 +2,12 @@ import React, {useMemo, useState} from "react"
 import { FlatList, Pressable, Text, Divider, Row, Column, Button, Spinner } from "native-base"
 import { ListRenderItemInfo } from "react-native"
 import { useWords, IWordList } from "../../utils/api/vocabulary"
-import { MdList, MdAdd } from "react-icons/md"
+import {MdAdd } from "react-icons/md"
 import DataEmpty from "../DataEmpty"
 import Error from "../Error"
 import { IVocabularyFilters } from "./SearchVocabulary"
 import ModalAddWord from "./ModalAddWord"
+import { useRouter } from "next/router"
 
 interface IWordListProps {
     filters?: IVocabularyFilters
@@ -15,6 +16,7 @@ interface IWordListProps {
 export default function WordList(props: IWordListProps) {
 
     const [isModalAddWordOpen, setIsModalAddWordOpen] = useState(false)
+    const router = useRouter()
 
     const {
         data: words, 
@@ -87,21 +89,27 @@ export default function WordList(props: IWordListProps) {
 
     function items({item}: ListRenderItemInfo<IWordList>) {
         return (
-            <Column
-                p={"10px"}
-                _light={{bg: 'white'}}
-                _dark={{bg: 'gray.700'}}
-                rounded={'md'}
+            <Pressable
+                onPress={() => {
+                    router.push(`/vocabulary/details/${item.id}`)
+                }}
             >
-                <Text
-                    fontSize={20}
-                    fontWeight={700}
+                <Column
+                    p={"10px"}
+                    _light={{bg: 'white'}}
+                    _dark={{bg: 'gray.700'}}
+                    rounded={'md'}
                 >
-                    {item.word} - {item.reading}
-                </Text>
-                <Divider/>
-                <Text>{item.meaning}</Text>
-            </Column>
+                    <Text
+                        fontSize={20}
+                        fontWeight={700}
+                    >
+                        {item.word} - {item.reading}
+                    </Text>
+                    <Divider/>
+                    <Text>{item.meaning}</Text>
+                </Column>
+            </Pressable>
         )
     }
 
