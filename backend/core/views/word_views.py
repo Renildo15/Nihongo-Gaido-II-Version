@@ -22,7 +22,6 @@ def word_list(request):
         return paginator.get_paginated_response(serializer.data)
     elif request.method == "POST":
         serializer = WordCreateSerializer(data=request.data)
-
         if serializer.is_valid():
             serializer.save(created_by=request.user)
 
