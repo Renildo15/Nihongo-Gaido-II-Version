@@ -33,7 +33,7 @@ export interface IWordUpdate {
     meaning?: string;
     type?: TypeWord
     level?: TypeLevel;
-    category?: string;
+    category?: number;
 }
 
 export function useWords() {
@@ -107,4 +107,17 @@ export async function updateWord(wordId: number, { word, reading, meaning, type,
         } catch (error: any) {
             throw new Error(error.message)
         }
+}
+
+export async function deleteWord(wordId: number) {
+    interface IWordResponse {
+        message: string
+    }
+
+    try {
+        const res = await axios.delete<IWordResponse>(`/api/word/${wordId}`)
+        return res.data.message
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
 }
