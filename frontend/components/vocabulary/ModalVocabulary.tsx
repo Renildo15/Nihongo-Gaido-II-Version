@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import { Modal, Button, Box, Column } from "native-base"
 import ModalUpdateWord from "./ModalUpdateWord"
+import ModalDeleteWord from "./ModalDeleteWord"
 
 interface ModalVocabularyProps {
     isOpen: boolean
@@ -54,6 +55,12 @@ export default function ModalVocabulary(props: ModalVocabularyProps) {
             <ModalUpdateWord
                 isOpen={modalVisible}
                 onClose={() => setModalVisible(false)}
+                wordId={props.wordId}
+            />
+
+            <ModalDeleteWord
+                isOpen={modalDeleteVisible}
+                onClose={() => setModalDeleteVisible(false)}
                 wordId={props.wordId}
             />
         </Modal>
