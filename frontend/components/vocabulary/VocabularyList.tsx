@@ -2,11 +2,12 @@ import React, {useMemo, useState} from "react"
 import { FlatList, Pressable, Text, Divider, Row, Column, Button, Spinner } from "native-base"
 import { ListRenderItemInfo } from "react-native"
 import { useWords, IWordList } from "../../utils/api/vocabulary"
-import {MdAdd } from "react-icons/md"
+import { MdAdd, MdList } from "react-icons/md"
 import DataEmpty from "../DataEmpty"
 import Error from "../Error"
 import { IVocabularyFilters } from "./SearchVocabulary"
 import ModalAddWord from "./ModalAddWord"
+import ModalVocabulary from "./ModalVocabulary"
 import { useRouter } from "next/router"
 
 interface IWordListProps {
@@ -16,6 +17,8 @@ interface IWordListProps {
 export default function WordList(props: IWordListProps) {
 
     const [isModalAddWordOpen, setIsModalAddWordOpen] = useState(false)
+    const [wordId, setWordId] = useState<number | null>(null)
+    const [isModalVocabularyOpen, setIsModalVocabularyOpen] = useState(false)
     const router = useRouter()
 
     const {
@@ -24,6 +27,11 @@ export default function WordList(props: IWordListProps) {
         isLoading: wordsIsLoading,
         isValidating: wordsIsValidating,
     } = useWords()
+
+    const handleChangeWordId = (wordId: number | null) => {
+        setWordId(wordId)
+        setIsModalVocabularyOpen(true)
+    }
 
 
     const filteredVocabulary = useMemo(() => {
@@ -108,7 +116,13 @@ export default function WordList(props: IWordListProps) {
                     </Text>
                     <Divider/>
                     <Text>{item.meaning}</Text>
+                    <Pressable onPress={() => {
+                        handleChangeWordId(item.id)
+                    }}>
+                        <MdList size={24} color={'#D02C23'}/>
+                </Pressable>
                 </Column>
+                
             </Pressable>
         )
     }
@@ -129,6 +143,13 @@ export default function WordList(props: IWordListProps) {
                 onClose={() => {
                     setIsModalAddWordOpen(false)
                 }}
+            />
+            <ModalVocabulary
+                isOpen={isModalVocabularyOpen}
+                onClose={() => {
+                    setIsModalVocabularyOpen(false)
+                }}
+                wordId={wordId}
             />
 
         </>
