@@ -222,6 +222,7 @@ class Example(models.Model):
 class Text(models.Model):
     title = models.CharField(max_length=200)
     text = models.TextField()
+    translate = models.TextField()
     annotation = models.TextField(blank=True, null=True)
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True
@@ -237,7 +238,7 @@ class Text(models.Model):
     def __str__(self):
         return self.title
 
-
+##TODO: Remover esse model e todas as usas views e urls
 class TextTranslate(models.Model):
     title = models.CharField(max_length=200)
     text = models.TextField()

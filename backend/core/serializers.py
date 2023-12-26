@@ -584,7 +584,7 @@ class TextCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Text
-        fields = ["title", "text", "annotation"]
+        fields = ["title", "text", "translate", "annotation"]
 
 
 class TextSerializer(serializers.ModelSerializer):
@@ -594,6 +594,7 @@ class TextSerializer(serializers.ModelSerializer):
             "id",
             "title",
             "text",
+            "translate",
             "annotation",
             "created_by",
             "created_at",
