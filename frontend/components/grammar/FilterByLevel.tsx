@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Select } from "native-base";
-import { levelOptions } from "../../utils/levelOptions";
+import { levelOptions } from "../../utils/options";
 import { useGrammars } from "../../utils/api/grammar";
 
 interface IFilterByLevelProps {

@@ -113,29 +113,46 @@ class Category(models.Model):
 
 
 class Word(models.Model):
-    level_choices = (
+    LEVEL_CHOICES = (
         ("N5", "N5"),
         ("N4", "N4"),
         ("N3", "N3"),
         ("N2", "N2"),
         ("N1", "N1"),
-        ("UNKNOW", "UNKNOW"),
+        ("Unknown", "Unknown"),
     )
 
-    type_choice = (
-        ("Verbo - Grupo 1", "Verbo - Grupo 1 "),
-        ("Verbo - Grupo 2 ", "Verbo - Grupo 2"),
-        ("Verbo - Grupo 3", "Verbo - Grupo 3"),
-        ("Adjetivo-I", "Adjetivo-I"),
-        ("Adjetivo-NA", "Adjetivo-NA"),
-        ("Substantivo", "Substantivo"),
-        ("Onomatopeia", "Onomatopeia"),
+    TYPE_CHOICES = (
+        ("Verb - Group 1", "Verb - Group 1 "),
+        ("Verb - Group 2 ", "Verb - Group 2"),
+        ("Verb - Group 3", "Verb - Group 3"),
+        ("Adjective - i", "Adjective - i"),
+        ("Adjective - na", "Adjective - na"),
+        ("Noun", "Noun"),
+        ("Adverb", "Adverb"),
+        ("Pronoun", "Pronoun"),
+        ("Preposition", "Preposition"),
+        ("Conjunction", "Conjunction"),
+        ("Interjection", "Interjection"),
+        ("Phrase", "Phrase"),
+        ("Expression", "Expression"),
+        ("Counter", "Counter"),
+        ("Number", "Number"),
+        ("Prefix", "Prefix"),
+        ("Suffix", "Suffix"),
+        ("Particle", "Particle"),
+        ("Auxiliary verb", "Auxiliary verb"),
+        ("Honorific", "Honorific"),
+        ("Onomatopoeia", "Onomatopoeia"),
+        ("Proverb", "Proverb"),
+        ("Other", "Other"),
+        ("Unknow", "Unknow")
     )
     word = models.CharField(max_length=20)
     reading = models.CharField(max_length=20)
     meaning = models.CharField(max_length=200)
-    type = models.CharField(max_length=20, choices=type_choice)
-    level = models.CharField(max_length=6, choices=level_choices)
+    type = models.CharField(max_length=20, choices=TYPE_CHOICES)
+    level = models.CharField(max_length=8, choices=LEVEL_CHOICES)
     category = models.ForeignKey(
         Category, on_delete=models.SET_NULL, blank=True, null=True
     )

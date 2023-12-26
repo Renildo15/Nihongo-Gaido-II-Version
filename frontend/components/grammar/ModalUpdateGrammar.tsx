@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Modal, FormControl, Input, Button, useToast, Box, Column, TextArea, Select } from "native-base";
 import { updateGrammar, useGrammar, useGrammars } from "../../utils/api/grammar";
-import { levelOptions } from "../../utils/levelOptions";
+import { levelOptions } from "../../utils/options";
 import Error from "../Error"
 interface IModalUpdateGrammarProps {
     isOpen: boolean
