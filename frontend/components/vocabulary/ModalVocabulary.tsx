@@ -1,13 +1,14 @@
 import React, { useState } from "react"
 import { Modal, Button, Box, Column } from "native-base"
+import ModalUpdateWord from "./ModalUpdateWord"
 
-interface ModalSentenceProps {
+interface ModalVocabularyProps {
     isOpen: boolean
     onClose: () => void
     wordId: number | null
 }
 
-export default function ModalVocabulary(props: ModalSentenceProps) {
+export default function ModalVocabulary(props: ModalVocabularyProps) {
     const [modalVisible, setModalVisible] = useState(false)
     const [modalDeleteVisible, setModalDeleteVisible] = useState(false)
     return (
@@ -50,6 +51,11 @@ export default function ModalVocabulary(props: ModalSentenceProps) {
                     </Button.Group>
                 </Modal.Footer>
             </Modal.Content>
+            <ModalUpdateWord
+                isOpen={modalVisible}
+                onClose={() => setModalVisible(false)}
+                wordId={props.wordId}
+            />
         </Modal>
         
     )
