@@ -1,5 +1,5 @@
 import React from "react"
-import { MdWrapText } from "react-icons/md"
+import { MdBook } from "react-icons/md"
 import { Column, Pressable, Text, Box } from "native-base"
 
 export default function TextWritingCard() {
@@ -33,7 +33,7 @@ export default function TextWritingCard() {
                     justifyContent={'center'}
                     alignItems={'center'}
                 >
-                    <MdWrapText size={50} color={'white'}/>
+                    <MdBook size={50} color={'white'}/>
                 </Box>
                 <Text
                     textAlign={'center'}
