@@ -1,6 +1,6 @@
 import React from "react"
 import { Column, Row, Text, Box } from "native-base"
-import TextTranslateCard from "./TextTranslateCard"
+import TextTranslateCard from "./TextTranslate/TextTranslateCard"
 import TextWritingCard from "./TextWritingCard"
 
 export default function TextOptions() {
