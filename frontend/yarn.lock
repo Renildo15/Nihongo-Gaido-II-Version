@@ -2817,6 +2817,14 @@
   resolved "https://registry.yarnpkg.com/@sideway/pinpoint/-/pinpoint-2.0.0.tgz#cff8ffadc372ad29fd3f78277aeb29e632cc70df"
   integrity sha512-RNiOoTPkptFtSVzQevY/yWtZwf/RxyVnPy/OcA9HBM3MlGDnBEYL5B41H0MTn0Uec8Hi+2qUtTfG2WWZBmMejQ==
 
+"@tinymce/tinymce-react@^4.3.2":
+  version "4.3.2"
+  resolved "https://registry.yarnpkg.com/@tinymce/tinymce-react/-/tinymce-react-4.3.2.tgz#fbe05e35e948b0e577eddf639bfe7ee2158fdc10"
+  integrity sha512-wJHZhPf2Mk3yTtdVC/uIGh+kvDgKuTw/qV13uzdChTNo68JI1l7jYMrSQOpyimDyn5LHAw0E1zFByrm1WHAVeA==
+  dependencies:
+    prop-types "^15.6.2"
+    tinymce "^6.0.0 || ^5.5.1"
+
 "@types/axios@^0.14.0":
   version "0.14.0"
   resolved "https://registry.yarnpkg.com/@types/axios/-/axios-0.14.0.tgz#ec2300fbe7d7dddd7eb9d3abf87999964cafce46"
@@ -2848,6 +2856,11 @@
     "@types/express" "*"
     "@types/keygrip" "*"
     "@types/node" "*"
+
+"@types/editorjs__header@^2.6.3":
+  version "2.6.3"
+  resolved "https://registry.yarnpkg.com/@types/editorjs__header/-/editorjs__header-2.6.3.tgz#929de153c7676908320e19c55bb6a7d8b69c6639"
+  integrity sha512-Z6xroWfklSjsiJhaqZd/94lV7h31T2894GCvUjqB8C7UjOn/1yHfTnv1teBIyEjRxmGo5DB0nLyDwyRnhD587A==
 
 "@types/express-serve-static-core@^4.17.33":
   version "4.17.39"
@@ -11054,6 +11067,11 @@ tinycolor2@^1.4.2:
   version "1.4.2"
   resolved "https://registry.yarnpkg.com/tinycolor2/-/tinycolor2-1.4.2.tgz#3f6a4d1071ad07676d7fa472e1fac40a719d8803"
   integrity sha512-vJhccZPs965sV/L2sU4oRQVAos0pQXwsvTLkWYdqJ+a8Q5kPFzJTuOFwy7UniPli44NKQGAglksjvOcpo95aZA==
+
+"tinymce@^6.0.0 || ^5.5.1":
+  version "6.8.2"
+  resolved "https://registry.yarnpkg.com/tinymce/-/tinymce-6.8.2.tgz#567b1a0d922555b535de4c74b7c74af6964016ea"
+  integrity sha512-Lho79o2Y1Yn+XdlTEkHTEkEmzwYWTXz7IUsvPwxJF3VTtgHUIAAuBab29kik+f2KED3rZvQavr9D7sHVMJ9x4A==
 
 tmpl@1.0.5:
   version "1.0.5"
