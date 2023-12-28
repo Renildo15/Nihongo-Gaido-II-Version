@@ -29,9 +29,13 @@ export const BaseLayout: FunctionComponent<Props> = ({children, title}) => {
                 <LateralMenu />
                 <VStack w={'82.8%'}>
                     <Heading title={title} />
+                    <ScrollView
+                        h={"500px"}
+                    >
                         <Box mt={30}>
                             {children}
                         </Box>
+                    </ScrollView>
                 </VStack>
             </HStack>
         </VStack>
