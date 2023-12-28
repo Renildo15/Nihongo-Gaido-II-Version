@@ -1,14 +1,18 @@
 import React, { useState } from "react"
-import { Input, Column, FormControl, Toast, Text } from "native-base"
-import { OutputData } from '@editorjs/editorjs';
-import dynamic from "next/dynamic";
-
-const TextEditor = dynamic(
-    () => import("../TextEditor"),
-    { ssr: false } // Indique que este componente não deve ser renderizado no lado do servidor (SSR)
-);
+import { Input, Column, FormControl, Toast, Text, Button } from "native-base"
+import TextEditor from "../TextEditor"
 
 export default function Translate() {
+    
+    const [text, setText] = useState<string>('')
+    const [title, setTitle] = useState<string>('')
+    const [translate, setTranslate] = useState<string>('')
+    const [annotation, setAnnotation] = useState<string>('')
+
+    const handleChasngeText = (text: string) => {
+        setText(text)
+    }
+    console.log(text)
     return (
         <Column
             space={4}
@@ -33,6 +37,8 @@ export default function Translate() {
                         fontWeight: 'bold',
                         fontSize: 'lg'
                     }}
+                    key="title-label"
+                    testID="title-label"
                 >
                     Title
                 </FormControl.Label>
@@ -48,20 +54,26 @@ export default function Translate() {
                     _dark={{
                         bg: '#262626'
                     }}
+                    onChangeText={(text) => setTitle(text)}
+                    value={title}
+                    testID="title-input"
                 />
             </FormControl>
-            <FormControl>
-                <FormControl.Label
-                    _text={{
-                        fontWeight: 'bold',
-                        fontSize: 'lg'
-                    }}
-                >
-                    Text
-                </FormControl.Label>
-                <TextEditor/>
-            </FormControl>
+                <FormControl>
+                    <FormControl.Label
+                        _text={{
+                            fontWeight: 'bold',
+                            fontSize: 'lg'
+                        }}
+                    >
+                        Text
+                    </FormControl.Label>
+                    <TextEditor content={text} onContentChanged={handleChasngeText}/>
+                </FormControl>
             </Column>
+            <Button>
+                Save
+            </Button>
         </Column>
     )
 }

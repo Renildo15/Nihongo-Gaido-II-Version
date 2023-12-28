@@ -1,57 +1,50 @@
-import React, { useRef, useEffect } from "react"
-import EditorJS, { OutputData } from '@editorjs/editorjs';
-import Header from '@editorjs/header';
-// import List from '@editorjs/list';
+import React, { useRef } from "react"
+import { Editor } from "@tinymce/tinymce-react";
 
+interface ITextEditorProps {
+    content: string;
+    onContentChanged: (content: string) => void;
 
-interface EditorProps {
-    onDataUpdate: (data: OutputData) => void;
 }
 
-const DEFAULT_INITIAL_DATA =  {
-    "time": new Date().getTime(),
-    "blocks": [
-        {
-        "type": "header",
-            "data": {
-                "text": "Write your text here",
-                "level": 1
-            }
-        },
-    ]
-}
+export default function TextEditor(props: ITextEditorProps) {
+    return (
+        <Editor
+            apiKey='pbv0jdkkhcvo06i60c4xggyb7yalxvduruojunaj1dbxtuze'
 
-export default function TextEditor() {
-    const editorRef = useRef<EditorJS | null>(null);
-    const initEditor = () => {
-        const editor = new EditorJS({
-            holder: 'editorjs',
-            onReady: () => {
-                    editorRef.current = editor;
-            },
-            autofocus: true,
-            data: DEFAULT_INITIAL_DATA,
-            onChange: async () => {
-                    let content = await editor.saver.save();
-    
-                    console.log(content);
-                },
-            tools: { 
-                    header: Header, 
-                },
-            });
-        };
-
-    useEffect(() => {
-        if (editorRef.current === null) {
-            initEditor();
-        }
-    
-        return () => {
-            editorRef?.current?.destroy();
-            editorRef.current = null;
-        };
-      }, []);
-
-    return <div id="editorjs"  />;
+            value={props.content}
+            onEditorChange={(content) => props.onContentChanged(content)}
+            init={{
+                height: 340,
+                menubar: false,
+                plugins: [
+                    "advlist",
+                    "autolink",
+                    "lists",
+                    "link",
+                    "image",
+                    "charmap",
+                    "preview",
+                    "anchor",
+                    "searchreplace",
+                    "visualblocks",
+                    "code",
+                    "fullscreen",
+                    "insertdatetime",
+                    "media",
+                    "table",
+                    "code",
+                    "help",
+                    "wordcount",
+                ],
+                toolbar:
+                    "undo redo | blocks | " +
+                    "bold italic forecolor | alignleft aligncenter " +
+                    "alignright alignjustify | bullist numlist outdent indent | " +
+                    "removeformat | help",
+                content_style:
+                    "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+            }}
+        />
+    )
 }
