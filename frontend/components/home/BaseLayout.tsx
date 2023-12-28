@@ -14,7 +14,7 @@ type Props = {
 export const BaseLayout: FunctionComponent<Props> = ({children, title}) => {
     return(
         <VStack 
-            maxW={'1900px'} 
+            maxW={'1800px'} 
             _light={{
                 bg:'#f2f2f2'
             }}
@@ -29,13 +29,9 @@ export const BaseLayout: FunctionComponent<Props> = ({children, title}) => {
                 <LateralMenu />
                 <VStack w={'82.8%'}>
                     <Heading title={title} />
-                    <ScrollView
-                        h={"500px"}
-                    >
                         <Box mt={30}>
                             {children}
                         </Box>
-                    </ScrollView>
                 </VStack>
             </HStack>
         </VStack>
