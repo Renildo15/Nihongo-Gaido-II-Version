@@ -1,4 +1,4 @@
-import React, { useRef } from "react"
+import React from "react"
 import { Editor } from "@tinymce/tinymce-react";
 
 interface ITextEditorProps {
@@ -8,9 +8,11 @@ interface ITextEditorProps {
 }
 
 export default function TextEditor(props: ITextEditorProps) {
+    const TINY_API_KEY = process.env.TINY_API_KEY
+
     return (
         <Editor
-            apiKey='pbv0jdkkhcvo06i60c4xggyb7yalxvduruojunaj1dbxtuze'
+            apiKey={TINY_API_KEY} 
 
             value={props.content}
             onEditorChange={(content) => props.onContentChanged(content)}
