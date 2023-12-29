@@ -52,7 +52,7 @@ export function useTexts(){
 
 export function useText(id: number){
     interface ITextResponse{
-        results: ITextList
+        text: ITextList
     }
 
     const {
@@ -64,7 +64,7 @@ export function useText(id: number){
     } = useSWR<ITextResponse>(`/api/text/${id}`, fetcchSimple)
 
     return {
-        data,
+        data: data?.text,
         error,
         isLoading,
         isValidating,

@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import { Column, Box, Text, FlatList, Pressable, Divider } from "native-base"
 import { useTexts, ITextList } from "../../../utils/api/text"
 import { ListRenderItemInfo } from "react-native"
@@ -28,7 +28,7 @@ export default function TranslateList() {
     function item({ item }: ListRenderItemInfo<ITextList>) {
         return (
             <Pressable 
-                onPress={() => router.push(`/text/translate-text/${item.id}`)}
+                onPress={() => router.push(`/text/text-translate/text-detail/${item.id}`)}
             >
                 <Box width={'100%'} px={3} py={2} textDecoration={'underline'}>
                     <Text>{item.title}</Text>
