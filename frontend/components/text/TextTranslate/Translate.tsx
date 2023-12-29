@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react"
 import { Input, Column, FormControl, Toast, Button, Row } from "native-base"
-import { createText } from "../../../utils/api/text"
+import { createText, useTexts } from "../../../utils/api/text"
 import TextEditor from "../TextEditor"
 
 export default function Translate() {
@@ -26,6 +26,7 @@ export default function Translate() {
     const annotationRef = useRef(null)
     const japaneseRegex = /^$|^[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\u002B\u002A\u007E\u3000-\u303F\u002F<>a-zA-Z0-9!@#$%^&*(),.?":{}|_]+$/;
 
+    const {mutate: textsRevalidate} = useTexts()
 
     const handleTitle = (text: string) => {
         setTitle(text)
@@ -102,6 +103,7 @@ export default function Translate() {
                 })
             }
             clearInputs()
+            textsRevalidate()
         } catch (error) {
             alert(error)
         } finally {
@@ -113,16 +115,13 @@ export default function Translate() {
     return (
         <Column
             space={4}
-            borderWidth={1}
             w={'70%'}
             p={'10px'}
             rounded={'md'}
             _dark={{
-                borderColor: 'white',
                 bg: 'gray.700',
             }}
             _light={{
-                borderColor: 'gray.700',
                 bg: 'gray.100',
             }}
         >
