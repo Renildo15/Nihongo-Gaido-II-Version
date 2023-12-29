@@ -2,7 +2,7 @@ import useSWR from "swr"
 import axios from "axios"
 import { fetcchSimple } from "./user"
 
-interface ITextList {
+export interface ITextList {
     id: number
     title: string
     text: string
@@ -13,14 +13,14 @@ interface ITextList {
     updated_at: string
 }
 
-interface ITextCreate {
+export interface ITextCreate {
     title: string
     text: string
     translate: string
     annotation: string
 }
 
-interface ITextUpdate {
+export interface ITextUpdate {
     id: number
     title?: string
     text?: string
@@ -39,10 +39,10 @@ export function useTexts(){
         isLoading,
         isValidating,
         mutate
-    } = useSWR<ITextResponse>(`/api/texts`, fetcchSimple)
+    } = useSWR<ITextResponse>(`/api/text`, fetcchSimple)
 
     return {
-        data,
+        data: data?.results,
         error,
         isLoading,
         isValidating,
