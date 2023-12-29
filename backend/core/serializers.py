@@ -573,7 +573,7 @@ class ExampleSerializer(serializers.ModelSerializer):
 
 class TextCreateSerializer(serializers.ModelSerializer):
     def validate_title(self, value):
-        pattern = r"^[ぁ-んァ-ン一-龯+/~ ]+$"
+        pattern = r"^[ぁ-んァ-ン一-龯+/~<>a-zA-Z0-9!@#$%^&*(),.?\":{}|_ ]+$"
 
         if not re.match(pattern, value):
             raise serializers.ValidationError(

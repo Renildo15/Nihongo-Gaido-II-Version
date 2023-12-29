@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react"
-import { Input, Column, FormControl, Toast, Text, Button, Row } from "native-base"
+import { Input, Column, FormControl, Toast, Button, Row } from "native-base"
+import { createText } from "../../../utils/api/text"
 import TextEditor from "../TextEditor"
 
 export default function Translate() {
@@ -13,6 +14,8 @@ export default function Translate() {
     const [isTextValid, setIsTextValid] = useState<boolean>(false)
     const [isTranslateValid, setIsTranslateValid] = useState<boolean>(false)
 
+    const [saving, setSaving] = useState<boolean>(false)
+
     const [titleErrorMessage, setTitleErrorMessage] = useState<string>('')
     const [textErrorMessage, setTextErrorMessage] = useState<string>('')
     const [translateErrorMessage, setTranslateErrorMessage] = useState<string>('')
@@ -21,7 +24,8 @@ export default function Translate() {
     const [AddAnnotation, setAddAnnotation] = useState<boolean>(false)
 
     const annotationRef = useRef(null)
-    const japaneseRegex = /^$|^[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\u002B\u002A\u007E\u002F]+$/;
+    const japaneseRegex = /^$|^[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\u002B\u002A\u007E\u3000-\u303F\u002F<>a-zA-Z0-9!@#$%^&*(),.?":{}|_]+$/;
+
 
     const handleTitle = (text: string) => {
         setTitle(text)
@@ -52,7 +56,7 @@ export default function Translate() {
             setTextErrorMessage('')
         }
     }
-    console.log(translate.length)
+
     const handleTranslate = (text: string) => {
         setTranslate(text)
         
@@ -71,7 +75,41 @@ export default function Translate() {
     const handleAnnotation = (text: string) => {
         setAnnotation(text)
     }
-   
+
+    const clearInputs = () => {
+        setTitle('')
+        setText('')
+        setTranslate('')
+        setAnnotation('')
+    }
+
+    async function save() {
+        setSaving(true)
+        try {
+            const newText = await createText({
+                title: title,
+                text: text,
+                translate: translate,
+                annotation: annotation,
+            })
+
+            if (newText) {
+                Toast.show({
+                    title: 'Success',
+                    description: `Text created`,
+                    placement: 'top',
+                    duration: 20000 
+                })
+            }
+            clearInputs()
+        } catch (error) {
+            alert(error)
+        } finally {
+            setSaving(false)
+        }
+    }
+
+
     return (
         <Column
             space={4}
@@ -192,11 +230,13 @@ export default function Translate() {
                 justifyContent={'space-between'}
             >
                 <Button
+                    onPress={save}
                     w={'40%'}
                     bg={'#D02C23'}
                     _hover={{bg: '#ae251e'}}
                     _pressed={{bg: '#ae251e'}}
                     isDisabled={!isTitleValid || !isTextValid || !isTranslateValid}
+                    isLoading={saving}
                 >
                     Save
                 </Button>
@@ -212,6 +252,7 @@ export default function Translate() {
                     bg={'#D02C23'}
                     _hover={{bg: '#ae251e'}}
                     _pressed={{bg: '#ae251e'}}
+
                 >
                     {AddAnnotation ? 'Hide Annotation' : 'Add Annotation'}
                 </Button>

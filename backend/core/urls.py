@@ -48,7 +48,7 @@ urlpatterns = [
         example_detail,
         name="example_detail",
     ),
-    path("texts/", text_list, name="text_list_create"),
+    path("text", text_list, name="text_list_create"),
     path("text/<int:text_id>", text_detail, name="text_detail"),
     path(
         "text_translate/<int:text_id>",
