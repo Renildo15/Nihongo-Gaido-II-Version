@@ -95,3 +95,15 @@ export async function updateText(id: number, {title, text, translate, annotation
         throw new Error(error.message)
     }
 }
+
+export async function deleteText(id: number){
+    interface ITextResponse{
+        message: string
+    }
+    try {
+        const res = await axios.delete<ITextResponse>(`/api/text/${id}`)
+        return res.data.message
+    } catch (error: any) {
+        throw new Error(error.message)
+    }
+}
