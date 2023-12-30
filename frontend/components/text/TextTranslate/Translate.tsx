@@ -49,9 +49,6 @@ export default function Translate() {
         if (text.trim().length === 0) {
             setIsTextValid(false)
             setTextErrorMessage('Text is required')
-        } else if (!japaneseRegex.test(text)) {
-            setIsTextValid(false)
-            setTextErrorMessage('Text must be in Japanese')
         } else {
             setIsTextValid(true)
             setTextErrorMessage('')
