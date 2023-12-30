@@ -1,16 +1,21 @@
-import React from "react"
+import React, { useState } from "react"
 import { Text, Column, Row, Button } from "native-base"
 import { useText } from "../../../utils/api/text"
 // @ts-ignore
 import HTMLRenderer from 'react-html-renderer'
 import Error from "../../Error"
-
+import ModalDeleteText from "./ModalDeleteText"
 
 interface ITextDetailProps {
     textId: number
 }
 
 export default function TextTranslateDetail(props: ITextDetailProps) {
+
+    const [modalDeleteText, setModalDeleteText] = useState<boolean>(false)
+
+
+
     const {
         data: text,
         error: textError,
@@ -103,13 +108,19 @@ export default function TextTranslateDetail(props: ITextDetailProps) {
                         <Button
                             variant={'ghost'}
                             colorScheme={'red'}
-                            
+                            onPress={() => setModalDeleteText(true)}
                         >
                             Delete text
                         </Button>
                     </Row>
                 </Column>
             </Row>
+
+            <ModalDeleteText
+                isOpen={modalDeleteText}
+                onClose={() => setModalDeleteText(false)}
+                textId={props.textId}
+            />
         </Column>
     )
 }
