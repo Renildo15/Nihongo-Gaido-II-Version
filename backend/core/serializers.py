@@ -601,39 +601,6 @@ class TextSerializer(serializers.ModelSerializer):
             "updated_at",
         ]
 
-
-class TextTranslateCreateSerializer(serializers.ModelSerializer):
-    def validate_title(self, value):
-        pattern = r"^[a-zA-Z-~ ]+$"
-
-        if not re.match(pattern, value):
-            raise serializers.ValidationError(
-                "O campo 'title' deve conter apenas letras."
-            )
-
-        return value
-
-    class Meta:
-        model = TextTranslate
-        fields = ["title", "text", "text_original"]
-
-
-class TextTranslateSerializer(serializers.ModelSerializer):
-    text_original = TextSerializer(read_only=True)
-
-    class Meta:
-        model = TextTranslate
-        fields = [
-            "id",
-            "title",
-            "text",
-            "text_original",
-            "created_by",
-            "created_at",
-            "updated_at",
-        ]
-
-
 class TextWritingCreateSerializer(serializers.ModelSerializer):
     def validate_title(self, value):
         pattern = r"^[ぁ-んァ-ン一-龯+/~ ]+$"
