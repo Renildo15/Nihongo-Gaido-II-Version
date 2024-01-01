@@ -21,7 +21,6 @@ export interface ITextCreate {
 }
 
 export interface ITextUpdate {
-    id: number
     title?: string
     text?: string
     translate?: string
