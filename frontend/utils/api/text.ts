@@ -88,7 +88,7 @@ export async function updateText(id: number, {title, text, translate, annotation
         message: string
     }
     try {
-        const res = await axios.put<ITextResponse>(`/api/text/${id}`, {title, text, translate, annotation})
+        const res = await axios.patch<ITextResponse>(`/api/text/${id}`, {title, text, translate, annotation})
         return res.data.message
     } catch (error: any) {
         throw new Error(error.message)
