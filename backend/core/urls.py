@@ -44,8 +44,8 @@ urlpatterns = [
 
     path("text", text_list, name="text_list_create"),
     path("text/<int:text_id>", text_detail, name="text_detail"),
-    path("text_writing", text_writing_list, name="text_writing_list_create"),
-    path("text_writing_detail/<int:text_writing_id>",text_writing_detail,name="text_writing_detail"),
-    
+    path("text/writing", text_writing_list, name="text_writing_list_create"),
+    path("text/writing/<int:text_writing_id>",text_writing_detail,name="text_writing_detail"),
+
     path("auth/login", login_view, name="login"),
 ]
