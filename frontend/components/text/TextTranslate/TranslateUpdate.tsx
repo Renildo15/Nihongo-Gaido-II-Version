@@ -1,7 +1,8 @@
-import React, { useState, useRef, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import { Input, Column, FormControl, Toast, Button, Row } from "native-base"
 import { updateText, useText, useTexts } from "../../../utils/api/text"
 import TextEditor from "../TextEditor"
+import { useRouter } from "next/router"
 
 interface ITranslateUpdateProps {
     textId: number
@@ -25,14 +26,15 @@ export default function TranslateUpdate(props: ITranslateUpdateProps) {
     const [textErrorMessage, setTextErrorMessage] = useState<string>('')
     const [translateErrorMessage, setTranslateErrorMessage] = useState<string>('')
 
-
-    const [AddAnnotation, setAddAnnotation] = useState<boolean>(false)
-
-    const annotationRef = useRef(null)
-    const japaneseRegex = /^$|^[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\u002B\u002A\u007E\u3000-\u303F\u002F<>a-zA-Z0-9!@#$%^&*(),.?":{}|_]+$/;
-
     const {mutate: textsRevalidate} = useTexts()
     const {data: originalText} = useText(props.textId)
+
+    const [AddAnnotation, setAddAnnotation] = useState<boolean>(originalText?.annotation ? true : false)
+    const japaneseRegex = /^$|^[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\u002B\u002A\u007E\u3000-\u303F\u002F<>a-zA-Z0-9!@#$%^&*(),.?":{}|_]+$/;
+
+    
+
+    const router = useRouter()
 
     useEffect(() => {
         if (originalText) {
@@ -134,6 +136,7 @@ export default function TranslateUpdate(props: ITranslateUpdateProps) {
                 })
             }
             clearInputs()
+            router.replace(`/text/text-translate`)
             textsRevalidate()
         } catch (error) {
             alert(error)
@@ -239,7 +242,7 @@ export default function TranslateUpdate(props: ITranslateUpdateProps) {
                         {translateErrorMessage}
                     </FormControl.ErrorMessage>
                 </FormControl>
-                {AddAnnotation && (
+                { AddAnnotation && (
                     <FormControl>
                         <FormControl.Label
                             _text={{
@@ -249,7 +252,7 @@ export default function TranslateUpdate(props: ITranslateUpdateProps) {
                         >
                             Annotation
                         </FormControl.Label>
-                        <TextEditor content={annotation} onContentChanged={handleAnnotation} ref={annotationRef}/>
+                        <TextEditor content={annotation} onContentChanged={handleAnnotation} />
                         
                     </FormControl>
                 
@@ -273,11 +276,7 @@ export default function TranslateUpdate(props: ITranslateUpdateProps) {
 
                 <Button 
                     onPress={() => {
-                        setAddAnnotation(!AddAnnotation)
-                        if (!AddAnnotation && annotationRef.current) {
-                            // @ts-ignore
-                            annotationRef.current.focus();
-                        }
+                        setAddAnnotation(prevState => !prevState);
                     }}
                     w={'20%'}
                     bg={'#D02C23'}
@@ -285,7 +284,7 @@ export default function TranslateUpdate(props: ITranslateUpdateProps) {
                     _pressed={{bg: '#ae251e'}}
 
                 >
-                    {AddAnnotation ? 'Hide Annotation' : 'Add Annotation'}
+                    {AddAnnotation ? 'Hide Annotation' : 'Show Annotation'}
                 </Button>
                 
                 <Button 
