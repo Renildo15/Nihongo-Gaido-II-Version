@@ -13,7 +13,7 @@ export default function TextEditor(props: ITextEditorProps) {
 
     return (
         <Editor
-            apiKey={'pbv0jdkkhcvo06i60c4xggyb7yalxvduruojunaj1dbxtuze'} 
+            apiKey={TINY_API_KEY} 
             ref={props.ref}
             value={props.content}
             onEditorChange={(content) => props.onContentChanged(content)}
