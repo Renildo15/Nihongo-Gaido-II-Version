@@ -31,11 +31,13 @@ export default function WritingView(props: IWritinglProps) {
 
     return (
         <Column 
-        width={'100%'}  
-        px={3} 
-        py={2}
-        space={4}
-    >
+            width={'100%'}  
+            px={3} 
+            py={2}
+            space={4}
+            justifyContent={'center'}
+            alignItems={'center'}
+        >
             <Column 
                 space={4}
                 _dark={{
@@ -50,49 +52,42 @@ export default function WritingView(props: IWritinglProps) {
             >
                 <HTMLRenderer html={text?.text} components={{ h1: Paragraph, p :Paragraph }} />
             </Column>
-            <Row
-                justifyContent={'space-around'}
-                alignItems={'flex-start'}
-                mt={'10px'}
-            >
-                <Column
-                    space={4}
-                    _dark={{
-                        bg: 'gray.700',
-                    }}
-                    _light={{
-                        bg: 'white',
-                    }}
-                    p={"10px"}
-                    rounded={'md'}
-                    w={'45%'}
-                >   
-                    <Text fontWeight={600} fontSize={15} textAlign={'center'}>Annotation</Text>
-                    <HTMLRenderer  html={text?.annotation || '<p>Nenhuma anotação disponível</p>'}components={{ h1: Paragraph, p :Paragraph }} />
-                    <Row
-                        justifyContent={'space-around'}
-                        alignItems={'flex-start'}
-                        mt={'10px'}
+            <Column
+                space={4}
+                _dark={{
+                    bg: 'gray.700',
+                }}
+                _light={{
+                    bg: 'white',
+                }}
+                p={"10px"}
+                rounded={'md'}
+                w={'45%'}
+            >   
+                <Text fontWeight={600} fontSize={15} textAlign={'center'}>Annotation</Text>
+                <HTMLRenderer  html={text?.annotation || '<p>Nenhuma anotação disponível</p>'}components={{ h1: Paragraph, p :Paragraph }} />
+                <Row
+                    justifyContent={'space-around'}
+                    alignItems={'flex-start'}
+                    mt={'10px'}
+                >
+                    <Button
+                        bg={'#D02C23'}
+                        _hover={{bg: '#ae251e'}}
+                        _pressed={{bg: '#ae251e'}}
+                        onPress={props.onEdit}
                     >
-                        <Button
-                            bg={'#D02C23'}
-                            _hover={{bg: '#ae251e'}}
-                            _pressed={{bg: '#ae251e'}}
-                            onPress={props.onEdit}
-                        >
-                            Edit text
-                        </Button>
-                        <Button
-                            variant={'ghost'}
-                            colorScheme={'red'}
-                            onPress={() => setModalDeleteText(true)}
-                        >
-                            Delete text
-                        </Button>
-                    </Row>
-                </Column>
-            </Row>
-
+                        Edit text
+                    </Button>
+                    <Button
+                        variant={'ghost'}
+                        colorScheme={'red'}
+                        onPress={() => setModalDeleteText(true)}
+                    >
+                        Delete text
+                    </Button>
+                </Row>
+            </Column>
             <ModalDeleteTextWriting
                 isOpen={modalDeleteText}
                 onClose={() => setModalDeleteText(false)}
