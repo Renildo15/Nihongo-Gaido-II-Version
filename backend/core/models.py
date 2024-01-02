@@ -222,6 +222,7 @@ class Example(models.Model):
 class Text(models.Model):
     title = models.CharField(max_length=200)
     text = models.TextField()
+    translate = models.TextField()
     annotation = models.TextField(blank=True, null=True)
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True
@@ -236,28 +237,6 @@ class Text(models.Model):
 
     def __str__(self):
         return self.title
-
-
-class TextTranslate(models.Model):
-    title = models.CharField(max_length=200)
-    text = models.TextField()
-    text_original = models.OneToOneField(
-        Text, on_delete=models.CASCADE, blank=True, null=True
-    )
-    created_by = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True
-    )
-    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
-    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
-
-    class Meta:
-        verbose_name = "text translate"
-        verbose_name_plural = "text translates"
-        ordering = ("title",)
-
-    def __str__(self):
-        return self.title
-
 
 class TextWriting(models.Model):
     title = models.CharField(max_length=200)

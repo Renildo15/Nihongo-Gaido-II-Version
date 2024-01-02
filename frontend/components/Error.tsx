@@ -6,7 +6,7 @@ interface IErrorProps {
     message: string
 }
 
-export default function DataEmpty({message}: IErrorProps) {
+export default function Error({message}: IErrorProps) {
     return (
         <Column width={'100%'} justifyContent={'center'} alignItems={'center'} mt={10}>
             <MdError size={50} color='#bfbfbf'/>
