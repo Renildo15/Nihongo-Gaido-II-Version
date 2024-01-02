@@ -154,7 +154,7 @@ export function useTextWritings(){
 
 export function useTextWriting(id: number){
     interface ITextWritingResponse{
-        text: ITextWritingList
+        text_writing: ITextWritingList
     }
 
     const {
@@ -166,7 +166,7 @@ export function useTextWriting(id: number){
     } = useSWR<ITextWritingResponse>(`/api/text/writing/${id}`, fetcchSimple)
 
     return {
-        data: data?.text,
+        data: data?.text_writing,
         error,
         isLoading,
         isValidating,
