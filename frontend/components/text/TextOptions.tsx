@@ -1,7 +1,7 @@
 import React from "react"
 import { Column, Row, Text, Box } from "native-base"
 import TextTranslateCard from "./TextTranslate/TextTranslateCard"
-import TextWritingCard from "./TextWritingCard"
+import TextWritingCard from "./TextWriting/TextWritingCard"
 
 export default function TextOptions() {
     return (
@@ -25,14 +25,14 @@ export default function TextOptions() {
                 justifyContent={'space-around'}
                 alignItems={'center'}
                 p={'10px'}
-                // _dark={{
-                //     borderColor: 'gray.700',
-                //     bg: 'gray.700',
-                // }}
-                // _light={{
-                //     borderColor: 'gray.100',
-                //     bg: 'gray.100',
-                // }}
+                _dark={{
+                    borderColor: 'gray.700',
+                    bg: 'gray.700',
+                }}
+                _light={{
+                    borderColor: 'gray.100',
+                    bg: 'gray.100',
+                }}
                 rounded={'md'}
             >
                 <TextTranslateCard />

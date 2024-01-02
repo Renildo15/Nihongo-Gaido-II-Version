@@ -1,8 +1,11 @@
 import React from "react"
 import { MdBook } from "react-icons/md"
 import { Column, Pressable, Text, Box } from "native-base"
+import { useRouter } from "next/router"
 
 export default function TextWritingCard() {
+
+    const router = useRouter()
     return (
         <Pressable
             p={'10px'}
@@ -25,6 +28,7 @@ export default function TextWritingCard() {
             }}
             h={'200px'}
             w={'200px'}
+            onPress={() => router.push('/text/text-writing')}
         >
             <Column
                 space={2}
