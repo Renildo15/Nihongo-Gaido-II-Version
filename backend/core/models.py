@@ -200,7 +200,6 @@ class Conjugation(models.Model):
 
 class Example(models.Model):
     example = models.CharField(max_length=200)
-    reading = models.CharField(max_length=200)
     meaning = models.CharField(max_length=200)
     annotation = models.TextField(max_length=500, null=True, blank=True)
     word = models.ForeignKey(Word, on_delete=models.CASCADE, blank=True, null=True)
