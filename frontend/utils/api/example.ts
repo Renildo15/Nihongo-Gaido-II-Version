@@ -3,6 +3,7 @@ import useSWR from 'swr';
 import { fetcchSimple } from './user';
 
 export interface IExampleList {
+    id: number;
     example: string;
     reading: string;
     meaning: string;
