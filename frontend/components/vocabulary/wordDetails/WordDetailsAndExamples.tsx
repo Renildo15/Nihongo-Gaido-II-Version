@@ -4,6 +4,7 @@ import { useWord } from "../../../utils/api/vocabulary"
 import Error from "../../Error"
 import ExampleList from "./ExampleList"
 
+
 interface IWordDetailsProps {
     wordId: number
 }
@@ -15,6 +16,7 @@ enum WordExampleAndConjugation{
 export default function WordDetailsAndExamples(props: IWordDetailsProps) {
 
     const [selectedTab, setSelectedTab] = useState<WordExampleAndConjugation>(WordExampleAndConjugation.ExampleList)
+    
 
     const {
         data: word,

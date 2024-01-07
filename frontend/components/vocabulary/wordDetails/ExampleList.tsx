@@ -3,8 +3,10 @@ import { Button, Row, Text, FlatList, Pressable, Box } from "native-base";
 import { useExamples, IExampleList } from "../../../utils/api/example";
 import { ListRenderItemInfo } from "react-native";
 import { MdList, MdAdd } from "react-icons/md";
+import ModalAddExample from "./ModalAddExample"
 import DataEmpty from "../../DataEmpty";
 import Error from "../../Error";
+
 
 interface IExampleListProps {
     wordId: number
@@ -18,6 +20,8 @@ export default function ExampleList(props: IExampleListProps) {
         isValidating: examplesIsValidating
     } = useExamples(props.wordId)
 
+    const [isModalOpen, setIsModalOpen] = useState(false)
+
     function headers(){
         return (
             <Row
@@ -28,7 +32,7 @@ export default function ExampleList(props: IExampleListProps) {
                 <Text>Examples sentences</Text>
                 <Button
                     bg={'#D02C23'}
-                    // onPress={() => setModalVisible(true)}
+                    onPress={() => setIsModalOpen(true)}
                     _hover={{bg: '#ae251e'}}
                     _pressed={{bg: '#ae251e'}}
                     size={'md'}
@@ -37,6 +41,11 @@ export default function ExampleList(props: IExampleListProps) {
                 >
                     Add example
                 </Button>
+                <ModalAddExample
+                    isOpen={isModalOpen}
+                    wordId={props.wordId}
+                    onClose={() => setIsModalOpen(false)}
+                />
             </Row>
         )
 

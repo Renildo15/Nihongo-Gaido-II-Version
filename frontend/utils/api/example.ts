@@ -16,7 +16,6 @@ export interface IExampleList {
 
 export interface IExampleCreate {
     example: string;
-    reading: string;
     meaning: string;
     annotation: string;
     wordId: number;
@@ -74,7 +73,7 @@ export function useExample(exampleId: number){
     }
 }
 
-export async function createExample(id : number, {example, reading, meaning, annotation, wordId}: IExampleCreate){
+export async function createExample(id : number, {example, meaning, annotation, wordId}: IExampleCreate){
     interface IExampleResponse {
         message: string;
     }
@@ -82,7 +81,6 @@ export async function createExample(id : number, {example, reading, meaning, ann
     try {
         const res = await axios.post<IExampleResponse>(`/api/example/${id}`, {
             example,
-            reading,
             meaning,
             annotation,
             wordId
@@ -94,7 +92,7 @@ export async function createExample(id : number, {example, reading, meaning, ann
     }
 }
 
-export async function updateExample(exampleId: number, {example, reading, meaning, annotation, wordId}: IExampleUpdate){
+export async function updateExample(exampleId: number, {example, meaning, annotation, wordId}: IExampleUpdate){
     interface IExampleResponse {
         message: string;
     }
@@ -102,7 +100,6 @@ export async function updateExample(exampleId: number, {example, reading, meanin
     try {
         const res = await axios.patch<IExampleResponse>(`/api/example/detail/${exampleId}`, {
             example,
-            reading,
             meaning,
             annotation,
             wordId
