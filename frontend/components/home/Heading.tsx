@@ -28,6 +28,7 @@ export function Heading({title}: IHeadingProps){
             h={"60px"}
             p={9}
             justifyContent="center"
+            width={'100%'}
         >
             <HStack 
                 justifyContent="space-between"

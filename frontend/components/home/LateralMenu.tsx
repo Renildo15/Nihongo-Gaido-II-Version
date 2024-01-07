@@ -23,11 +23,11 @@ export function LateralMenu() {
         <VStack h={'100vh'} w={'235px'} bg={'#D02C23'}>
             <VStack>
                 <Box
-                w={"100%"}
-                p={'15px'}
-                alignItems={'center'}
-                justifyContent={'center'}
-            >
+                    w={"100%"}
+                    
+                    alignItems={'center'}
+                    justifyContent={'center'}
+                >
                     <Pressable onPress={() => router.push('/home')}>
                         <Image src={Logo} alt="Logo" width={100} height={100} />
                     </Pressable>

@@ -1,5 +1,5 @@
 import React, {FunctionComponent} from "react";
-import { VStack, HStack, Box, ScrollView } from "native-base";
+import { Column, Row, Box, ScrollView } from "native-base";
 
 import Head from "next/head";
 
@@ -13,31 +13,34 @@ type Props = {
 
 export const BaseLayout: FunctionComponent<Props> = ({children, title}) => {
     return(
-        <VStack 
-            maxW={'1800px'} 
-            _light={{
-                bg:'#f2f2f2'
-            }}
-            _dark={{
-                bg:'#333333'
-            }}
+        <Row
+            bg={'#F6F6F6'}
+            w={'100%'}
+            flex={1}
         >
             <Head>
                 <title>{title}</title>
             </Head>
-            <HStack flexDirection={'row'}  w={'100%'}>
-                <LateralMenu />
-                <VStack w={'82.8%'}>
-                    <Heading title={title} />
-                    <ScrollView
-                        h={"500px"}
-                    >
-                        <Box mt={30}>
-                            {children}
-                        </Box>
-                    </ScrollView>
-                </VStack>
-            </HStack>
-        </VStack>
+            <Column>
+                <LateralMenu/>
+            </Column>
+            <Column
+                flex={3}
+                _light={{
+                    bg:'#f2f2f2'
+                }}
+                _dark={{
+                    bg:'#333333'
+                }}
+                
+            >
+                <Heading title={title}/>
+                <ScrollView h={'500px'}>
+                    <Box flex={1} p={'20px'} justifyContent={'center'} alignItems={'center'}>
+                        {children}
+                    </Box>
+                </ScrollView>
+            </Column>
+        </Row>
     )
 }
