@@ -70,13 +70,6 @@ export default function ModalUpdateWord(props: IModalAddWordProps) {
         }
     }, [originalWord])
 
-    console.log(isWordValid)
-    console.log(isReadingValid)
-    console.log(isMeaningValid)
-    console.log(isTypeValid)
-    console.log(isLevelValid)
-    console.log(isCategoryValid)
-
     function setOriginalValues() {
         if(originalWord) {
             setWord(originalWord.word)
