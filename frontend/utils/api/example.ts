@@ -23,10 +23,8 @@ export interface IExampleCreate {
 
 export interface IExampleUpdate {
     example?: string;
-    reading?: string;
     meaning?: string;
     annotation?: string;
-    wordId?: number;
 }
 
 export function useExamples(wordId: number){
@@ -51,7 +49,7 @@ export function useExamples(wordId: number){
     }
 }
 
-export function useExample(exampleId: number){
+export function useExample(exampleId: number, wordId: number){
     interface IExampleResponse {
         example: IExampleList;
     }
@@ -62,7 +60,7 @@ export function useExample(exampleId: number){
         isLoading,
         isValidating,
         mutate
-    } = useSWR<IExampleResponse>(`/api/example/detail/${exampleId}`, fetcchSimple);
+    } = useSWR<IExampleResponse>(`/api/example/detail/${wordId}/${exampleId}`, fetcchSimple);
 
     return {
         data: data?.example,
@@ -92,17 +90,16 @@ export async function createExample(id : number, {example, meaning, annotation, 
     }
 }
 
-export async function updateExample(exampleId: number, {example, meaning, annotation, wordId}: IExampleUpdate){
+export async function updateExample(exampleId: number, wordId: number,  {example, meaning, annotation}: IExampleUpdate){
     interface IExampleResponse {
         message: string;
     }
 
     try {
-        const res = await axios.patch<IExampleResponse>(`/api/example/detail/${exampleId}`, {
+        const res = await axios.patch<IExampleResponse>(`/api/example/detail/${wordId}/${exampleId}`, {
             example,
             meaning,
             annotation,
-            wordId
         });
 
         return res.data.message;
@@ -111,13 +108,13 @@ export async function updateExample(exampleId: number, {example, meaning, annota
     }
 }
 
-export async function deleteExample(exampleId: number){
+export async function deleteExample(exampleId: number, wordId: number){
     interface IExampleResponse {
         message: string;
     }
 
     try {
-        const res = await axios.delete<IExampleResponse>(`/api/example/detail/${exampleId}`);
+        const res = await axios.delete<IExampleResponse>(`/api/example/detail/${wordId}/${exampleId}`);
 
         return res.data.message;
     } catch (error: any) {
