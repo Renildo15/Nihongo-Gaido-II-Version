@@ -4,6 +4,7 @@ import { useExamples, IExampleList } from "../../../utils/api/example";
 import { ListRenderItemInfo } from "react-native";
 import { MdList, MdAdd } from "react-icons/md";
 import ModalAddExample from "./ModalAddExample"
+import ModalExample from "./ModalExample";
 import DataEmpty from "../../DataEmpty";
 import Error from "../../Error";
 
@@ -21,7 +22,13 @@ export default function ExampleList(props: IExampleListProps) {
     } = useExamples(props.wordId)
 
     const [isModalOpen, setIsModalOpen] = useState(false)
-
+    const [isModalExampelOpen, setIsModalExampleOpen] = useState(false)
+    const [exampleId, setExampleId] = useState<number>(0)
+    
+    function handleUpdateExample(exampleId: number) {
+        setExampleId(exampleId)
+        setIsModalExampleOpen(true)
+    }
     function headers(){
         return (
             <Row
@@ -41,11 +48,7 @@ export default function ExampleList(props: IExampleListProps) {
                 >
                     Add example
                 </Button>
-                <ModalAddExample
-                    isOpen={isModalOpen}
-                    wordId={props.wordId}
-                    onClose={() => setIsModalOpen(false)}
-                />
+              
             </Row>
         )
 
@@ -65,7 +68,9 @@ export default function ExampleList(props: IExampleListProps) {
                     <Text>{item.example}</Text>
                     <Text>{item.meaning}</Text>
                 </Box>
-                <Pressable>
+                <Pressable
+                    onPress={() => handleUpdateExample(item.id)}
+                >
                     <MdList size={25} color="#D02C23" />
                 </Pressable>
             </Row>
@@ -88,6 +93,19 @@ export default function ExampleList(props: IExampleListProps) {
                 data={examples}
                 renderItem={items}
                 keyExtractor={(item) => item.id.toString()}
+            />
+
+            <ModalExample
+                isOpen={isModalExampelOpen}
+                onClose={() => setIsModalExampleOpen(false)}
+                exampleId={exampleId}
+                wordId={props.wordId}
+            />
+
+            <ModalAddExample
+                isOpen={isModalOpen}
+                wordId={props.wordId}
+                onClose={() => setIsModalOpen(false)}
             />
         </>
     )
