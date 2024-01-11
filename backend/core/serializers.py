@@ -518,50 +518,19 @@ class ConjugationSerializer(serializers.ModelSerializer):
 
 
 class ExampleCreateSerializer(serializers.ModelSerializer):
-    def validate_example(self, value):
-        pattern = r"^[ぁ-んァ-ン一-龯+/~ ]+$"
-
-        if not re.match(pattern, value):
-            raise serializers.ValidationError(
-                "O campo 'example' deve conter apenas letras japonesas."
-            )
-
-        return value
-
-    def validate_reading(self, value):
-        pattern = r"^[ぁ-んァ-ン一-龯+/~ ]+$"
-
-        if not re.match(pattern, value):
-            raise serializers.ValidationError(
-                "O campo 'reading' deve conter apenas letras japonesas."
-            )
-
-        return value
-
-    def validate_meaning(self, value):
-        pattern = r"^[a-zA-Z ]+$"
-
-        if not re.match(pattern, value):
-            raise serializers.ValidationError(
-                "O campo 'meaning' deve conter apenas letras."
-            )
-
-        return value
-
+    
     class Meta:
         model = Example
-        fields = ["example", "reading", "meaning", "annotation"]
+        fields = ["example", "meaning", "annotation"]
 
 
 class ExampleSerializer(serializers.ModelSerializer):
-    word = WordSerializer(read_only=True)
 
     class Meta:
         model = Example
         fields = [
             "id",
             "example",
-            "reading",
             "meaning",
             "annotation",
             "word",

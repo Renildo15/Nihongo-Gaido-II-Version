@@ -40,7 +40,7 @@ urlpatterns = [
     path("conjugation_detail/<int:word_id>/<int:conjugation_id>",conjugation_detail, name="conjugation_detail",),
 
     path("example/<int:word_id>", example_list, name="example_list_create"),
-    path("example_detail/<int:word_id>/<int:example_id>",example_detail,name="example_detail",),
+    path("example/detail/<int:word_id>/<int:example_id>",example_detail,name="example_detail",),
 
     path("text", text_list, name="text_list_create"),
     path("text/<int:text_id>", text_detail, name="text_detail"),
