@@ -3,6 +3,7 @@ import { Column, Text, Divider, Row, Pressable } from "native-base"
 import { useWord } from "../../../utils/api/vocabulary"
 import Error from "../../Error"
 import ExampleList from "./ExampleList"
+import ConjugationList from "./ConjugationList"
 
 
 interface IWordDetailsProps {
@@ -10,7 +11,8 @@ interface IWordDetailsProps {
 }
 
 enum WordExampleAndConjugation{
-    ExampleList
+    ExampleList,
+    ConjugationList
 }
 
 export default function WordDetailsAndExamples(props: IWordDetailsProps) {
@@ -38,6 +40,9 @@ export default function WordDetailsAndExamples(props: IWordDetailsProps) {
         switch(selectedTab) {
             case WordExampleAndConjugation.ExampleList:
                 return <ExampleList wordId={props.wordId}/>
+            case WordExampleAndConjugation.ConjugationList:
+                return <ConjugationList wordId={props.wordId}/>
+            
             default:
                 return <ExampleList wordId={props.wordId}/>
         }
@@ -89,7 +94,7 @@ export default function WordDetailsAndExamples(props: IWordDetailsProps) {
                         <Text>Examples</Text>
                     </Pressable>
                     <Pressable
-                        onPress={() => setSelectedTab(WordExampleAndConjugation.ExampleList)}
+                        onPress={() => setSelectedTab(WordExampleAndConjugation.ConjugationList)}
                         _light={{bg: 'white', borderColor: 'black'}}        
                         _dark={{bg: 'gray.700', borderColor: 'white'}}
                         h={'25px'}
