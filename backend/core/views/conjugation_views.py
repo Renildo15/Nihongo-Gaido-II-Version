@@ -34,7 +34,7 @@ def conjugation_list(request, word_id):
 
             data = {
                 "message": "Conjugation created successfully",
-                "word": serializer.data,
+                "conjugation": serializer.data,
             }
 
             return Response(data, status=status.HTTP_201_CREATED)
@@ -66,7 +66,7 @@ def conjugation_detail(request, word_id, conjugation_id):
 
             data = {
                 "message": "Conjugation updated successfully",
-                "word": serializer.data,
+                "conjugation": serializer.data,
             }
 
             return Response(data)

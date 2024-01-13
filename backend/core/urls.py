@@ -37,7 +37,7 @@ urlpatterns = [
     path("word/<int:pk>", word_detail, name="word_detail"),
 
     path("conjugation/<int:word_id>", conjugation_list, name="conjugation_list_create"),
-    path("conjugation_detail/<int:word_id>/<int:conjugation_id>",conjugation_detail, name="conjugation_detail",),
+    path("conjugation/detail/<int:word_id>/<int:conjugation_id>",conjugation_detail, name="conjugation_detail",),
 
     path("example/<int:word_id>", example_list, name="example_list_create"),
     path("example/detail/<int:word_id>/<int:example_id>",example_detail,name="example_detail",),
