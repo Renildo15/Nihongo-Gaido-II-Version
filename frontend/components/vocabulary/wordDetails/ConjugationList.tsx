@@ -1,10 +1,8 @@
 import React from "react";
-import { Button, Row, Text, FlatList, Pressable, Box, Column } from "native-base";
-import { useConjugations, IConjugationList} from "../../../utils/api/conjugation";
-import { ListRenderItemInfo } from "react-native";
-import { MdList, MdAdd } from "react-icons/md";
+import { Button, Row, Text, Column } from "native-base";
+import { useConjugations} from "../../../utils/api/conjugation";
+import { MdAdd } from "react-icons/md";
 import Error from "../../Error";
-import DataEmpty from "../../DataEmpty";
 
 interface IConjugationListProps {
     wordId: number
@@ -16,7 +14,6 @@ export default function ConjugationList( props: IConjugationListProps) {
         data:conjugation,
         error: conjugationError,
         isLoading: conjugationIsLoading,
-        mutate: conjugationMutate,
     } = useConjugations(props.wordId)
 
 
@@ -40,17 +37,20 @@ export default function ConjugationList( props: IConjugationListProps) {
                 w={'100%'}
             >
                 <Text>Conjugations</Text>
-                <Button
-                    bg={'#D02C23'}
-                    onPress={()=>{}}
-                    _hover={{bg: '#ae251e'}}
-                    _pressed={{bg: '#ae251e'}}
-                    size={'md'}
-                    w={'140px'}
-                    startIcon={<MdAdd size={25} color="white" />}
-                >
-                    Add conjugation
-                </Button>
+                {conjugation === undefined && (
+
+                        <Button
+                            bg={'#D02C23'}
+                            onPress={()=>{}}
+                            _hover={{bg: '#ae251e'}}
+                            _pressed={{bg: '#ae251e'}}
+                            size={'md'}
+                            w={'140px'}
+                            startIcon={<MdAdd size={25} color="white" />}
+                        >
+                            Add conjugation
+                        </Button>
+                )}
             </Row>
             <Column>
                 <Text>Present: {conjugation.present}</Text>

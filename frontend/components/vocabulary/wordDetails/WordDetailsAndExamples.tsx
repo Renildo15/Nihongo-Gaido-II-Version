@@ -93,18 +93,20 @@ export default function WordDetailsAndExamples(props: IWordDetailsProps) {
                     >
                         <Text>Examples</Text>
                     </Pressable>
-                    <Pressable
-                        onPress={() => setSelectedTab(WordExampleAndConjugation.ConjugationList)}
-                        _light={{bg: 'white', borderColor: 'black'}}        
-                        _dark={{bg: 'gray.700', borderColor: 'white'}}
-                        h={'25px'}
-                        borderWidth={1}
-                        rounded={10}
-                        padding={5}
-                        justifyContent={'center'}
-                    >
-                        <Text>Conjugations</Text>
-                    </Pressable>
+                    {['Verb - Group 1', 'Verb - Group 2', 'Verb - Group 3'].includes(word.type) && (
+                        <Pressable
+                            onPress={() => setSelectedTab(WordExampleAndConjugation.ConjugationList)}
+                            _light={{ bg: 'white', borderColor: 'black' }}
+                            _dark={{ bg: 'gray.700', borderColor: 'white' }}
+                            h={'25px'}
+                            borderWidth={1}
+                            rounded={10}
+                            padding={5}
+                            justifyContent={'center'}
+                        >
+                            <Text>Conjugations</Text>
+                        </Pressable>
+                    )}
                 </Row>
                 {getCurrentTab()}
             </Column>
