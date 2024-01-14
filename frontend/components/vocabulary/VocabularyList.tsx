@@ -155,7 +155,6 @@ export default function WordList(props: IWordListProps) {
                 ItemSeparatorComponent={() => <Box mt={2} />}
                 numColumns={3}
                 windowSize={10}
-                contentContainerStyle={{ flexWrap: "wrap" }} 
             />
             <Suspense fallback={<Spinner />}>
                 <ModalAddWord

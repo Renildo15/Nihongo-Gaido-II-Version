@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { Button, Row, Text, FlatList, Pressable, Box } from "native-base";
+import { Row, Text, FlatList, Pressable, Box } from "native-base";
 import { useExamples, IExampleList } from "../../../utils/api/example";
 import { ListRenderItemInfo } from "react-native";
 import { MdList, MdAdd } from "react-icons/md";
@@ -21,7 +21,6 @@ export default function ExampleList(props: IExampleListProps) {
         isValidating: examplesIsValidating
     } = useExamples(props.wordId)
 
-    const [isModalOpen, setIsModalOpen] = useState(false)
     const [isModalExampelOpen, setIsModalExampleOpen] = useState(false)
     const [exampleId, setExampleId] = useState<number>(0)
     
@@ -29,31 +28,7 @@ export default function ExampleList(props: IExampleListProps) {
         setExampleId(exampleId)
         setIsModalExampleOpen(true)
     }
-    function headers(){
-        return (
-            <Row
-                justifyContent={'space-between'}
-                alignItems={'center'}
-                padding={5}
-            >
-                <Text>Examples sentences</Text>
-                <Button
-                    bg={'#D02C23'}
-                    onPress={() => setIsModalOpen(true)}
-                    _hover={{bg: '#ae251e'}}
-                    _pressed={{bg: '#ae251e'}}
-                    size={'md'}
-                    w={'140px'}
-                    startIcon={<MdAdd size={25} color="white" />}
-                >
-                    Add example
-                </Button>
-              
-            </Row>
-        )
-
-    }
-
+   
     function items({item}: ListRenderItemInfo<IExampleList>) {
         return (
             <Row
@@ -88,7 +63,6 @@ export default function ExampleList(props: IExampleListProps) {
     return (
         <>
             <FlatList
-                ListHeaderComponent={headers}
                 ListEmptyComponent={<DataEmpty message={'No examples found'}/>}
                 data={examples}
                 renderItem={items}
@@ -100,12 +74,6 @@ export default function ExampleList(props: IExampleListProps) {
                 onClose={() => setIsModalExampleOpen(false)}
                 exampleId={exampleId}
                 wordId={props.wordId}
-            />
-
-            <ModalAddExample
-                isOpen={isModalOpen}
-                wordId={props.wordId}
-                onClose={() => setIsModalOpen(false)}
             />
         </>
     )
