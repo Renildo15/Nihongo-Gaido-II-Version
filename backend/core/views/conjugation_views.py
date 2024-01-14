@@ -5,7 +5,7 @@ from rest_framework.response import Response
 
 from core.models import Conjugation, Word
 from core.serializers import ConjugationCreateSerializer, ConjugationSerializer
-from core.utils.paginationn import CustomPagination
+from django.shortcuts import get_object_or_404
 
 
 @api_view(["GET", "POST"])
@@ -18,7 +18,7 @@ def conjugation_list(request, word_id):
         return Response(status=status.HTTP_404_NOT_FOUND)
     if request.method == "GET":
         
-        conjugation = Conjugation.objects.get(created_by=request.user, word=word)
+        conjugation = get_object_or_404(Conjugation, word=word)
         serializer = ConjugationSerializer(conjugation)
         
         data = {

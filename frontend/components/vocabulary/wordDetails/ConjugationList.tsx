@@ -1,25 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Row, Text, Column } from "native-base";
 import { useConjugations} from "../../../utils/api/conjugation";
 import { MdAdd } from "react-icons/md";
 import Error from "../../Error";
+import ModalAddConjugation from "./ModalAddConjugation";
 
 interface IConjugationListProps {
     wordId: number
 }
 
 export default function ConjugationList( props: IConjugationListProps) {
-
+    const [isOpen, setIsOpen] = useState(false)
     const {
         data:conjugation,
-        error: conjugationError,
         isLoading: conjugationIsLoading,
     } = useConjugations(props.wordId)
 
-
-    if(conjugationError !== undefined) {
-        return <Error message={conjugationError.message}/>
+    const handleOpen = () => {
+        setIsOpen(true)
     }
+
 
     if(conjugation === undefined || conjugationIsLoading) {
         return <Text>Loading...</Text>
@@ -37,20 +37,17 @@ export default function ConjugationList( props: IConjugationListProps) {
                 w={'100%'}
             >
                 <Text>Conjugations</Text>
-                {conjugation === undefined && (
-
-                        <Button
-                            bg={'#D02C23'}
-                            onPress={()=>{}}
-                            _hover={{bg: '#ae251e'}}
-                            _pressed={{bg: '#ae251e'}}
-                            size={'md'}
-                            w={'140px'}
-                            startIcon={<MdAdd size={25} color="white" />}
-                        >
-                            Add conjugation
-                        </Button>
-                )}
+                <Button
+                    bg={'#D02C23'}
+                    _hover={{bg: '#ae251e'}}
+                    _pressed={{bg: '#ae251e'}}
+                    size={'md'}
+                    w={'140px'}
+                    startIcon={<MdAdd size={25} color="white" />}
+                    onPress={handleOpen}
+                >
+                    Add conjugation
+                </Button>
             </Row>
             <Column>
                 <Text>Present: {conjugation.present}</Text>
@@ -65,6 +62,12 @@ export default function ConjugationList( props: IConjugationListProps) {
                 <Text>Conditional: {conjugation.conditional}</Text>
                 <Text>Imperative: {conjugation.imperative}</Text>
             </Column>
+
+            <ModalAddConjugation
+                isOpen={isOpen}
+                onClose={()=>setIsOpen(false)}
+                wordId={props.wordId}
+            />
         </Column>
     )
 }

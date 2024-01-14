@@ -20,6 +20,7 @@ export interface IConjugationList {
 }
 
 interface IConjugationCreate {
+    wordId: number;
     present: string;
     past: string;
     negative: string;
