@@ -18,13 +18,14 @@ def conjugation_list(request, word_id):
         return Response(status=status.HTTP_404_NOT_FOUND)
     if request.method == "GET":
         
-        conjugation = Conjugation.objects.filter(created_by=request.user, word=word)
+        conjugation = Conjugation.objects.get(created_by=request.user, word=word)
+        serializer = ConjugationSerializer(conjugation)
         
-        paginator = CustomPagination()  
-        result_page = paginator.paginate_queryset(conjugation, request)
-        serializer = ConjugationSerializer(result_page)
-        
-        return paginator.get_paginated_response(serializer.data)
+        data = {
+            "conjugation": serializer.data,
+        }
+
+        return Response(data=data, status=status.HTTP_200_OK)
 
     elif request.method == "POST":
         serializer = ConjugationCreateSerializer(data=request.data)

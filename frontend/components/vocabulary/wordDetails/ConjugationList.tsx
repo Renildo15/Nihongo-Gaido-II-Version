@@ -13,27 +13,31 @@ interface IConjugationListProps {
 export default function ConjugationList( props: IConjugationListProps) {
 
     const {
-        data:conjugations,
-        error: conjugationsError,
-        isLoading: conjugationsIsLoading,
-        mutate: conjugationsMutate,
+        data:conjugation,
+        error: conjugationError,
+        isLoading: conjugationIsLoading,
+        mutate: conjugationMutate,
     } = useConjugations(props.wordId)
 
 
-    if(conjugationsError !== undefined) {
-        return <Error message={conjugationsError.message}/>
+    if(conjugationError !== undefined) {
+        return <Error message={conjugationError.message}/>
     }
 
-    if(conjugations === undefined || conjugationsIsLoading) {
+    if(conjugation === undefined || conjugationIsLoading) {
         return <Text>Loading...</Text>
     }
 
-    function headers(){
-        return (
+    return (
+        <Column
+            borderWidth={1}
+            w={'100%'}
+        >
             <Row
                 justifyContent={'space-between'}
                 alignItems={'center'}
                 padding={5}
+                w={'100%'}
             >
                 <Text>Conjugations</Text>
                 <Button
@@ -48,38 +52,19 @@ export default function ConjugationList( props: IConjugationListProps) {
                     Add conjugation
                 </Button>
             </Row>
-        )
-
-    }
-
-    function items({item}: ListRenderItemInfo<IConjugationList>) {
-        return (
             <Column>
-                <Text>{item.present}</Text>
-                <Text>{item.negative}</Text>
-                <Text>{item.past}</Text>
-                <Text>{item.te_form}</Text>
-                <Text>{item.potential}</Text>
-                <Text>{item.volitional}</Text>
-                <Text>{item.causative}</Text>
-                <Text>{item.passive}</Text>
-                <Text>{item.causative_passive}</Text>
-                <Text>{item.conditional}</Text>
-                <Text>{item.imperative}</Text>
+                <Text>Present: {conjugation.present}</Text>
+                <Text>Negative: {conjugation.negative}</Text>
+                <Text>Past: {conjugation.past}</Text>
+                <Text>Te form: {conjugation.te_form}</Text>
+                <Text>Potential: {conjugation.potential}</Text>
+                <Text>Volitional: {conjugation.volitional}</Text>
+                <Text>Causative: {conjugation.causative}</Text>
+                <Text>Passive: {conjugation.passive}</Text>
+                <Text>Causative Passive: {conjugation.causative_passive}</Text>
+                <Text>Conditional: {conjugation.conditional}</Text>
+                <Text>Imperative: {conjugation.imperative}</Text>
             </Column>
-        )
-    }
-
-    return (
-        <>
-            <FlatList
-                data={conjugations}
-                renderItem={items}
-                keyExtractor={item => item.id.toString()}
-                ListHeaderComponent={headers}
-                ListEmptyComponent={DataEmpty}
-            />
-
-        </>
+        </Column>
     )
 }

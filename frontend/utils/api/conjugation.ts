@@ -1,10 +1,11 @@
 import axios from 'axios';
 import useSWR from 'swr';
 import { fetcchSimple } from './user';
+import { IWordList } from './vocabulary';
 
 export interface IConjugationList {
     id: number;
-    wordId: number;
+    word: IWordList;
     present: string;
     past: string;
     negative: string;
@@ -48,7 +49,7 @@ interface IConjugationUpdate {
 
 export function useConjugations(wordId: number){
     interface IConjugationResponse {
-        results: IConjugationList;
+        conjugation: IConjugationList;
     }
 
     const {
@@ -60,7 +61,7 @@ export function useConjugations(wordId: number){
     } = useSWR<IConjugationResponse>(`/api/conjugation/${wordId}`, fetcchSimple);
 
     return {
-        data: data?.results,
+        data: data?.conjugation,
         error,
         isLoading,
         isValidating,
