@@ -19,32 +19,32 @@ export default function ConjugationList( props: IConjugationListProps) {
     }
 
     return (
-        <Column
-            borderWidth={1}
+        <Row
             w={'100%'}
+            p={4}
+            _dark={{bg: 'gray.700'}}
+            _light={{bg: 'white'}}
+            justifyContent={'space-between'}
+            alignItems={'center'}
         >
-            <Row
-                justifyContent={'space-between'}
-                alignItems={'center'}
-                padding={5}
-                w={'100%'}
-            >
-                <Text>Conjugations</Text>
-            </Row>
-            <Column>
-                <Text>Present: {conjugation.present}</Text>
-                <Text>Negative: {conjugation.negative}</Text>
-                <Text>Past: {conjugation.past}</Text>
-                <Text>Te form: {conjugation.te_form}</Text>
-                <Text>Potential: {conjugation.potential}</Text>
-                <Text>Volitional: {conjugation.volitional}</Text>
-                <Text>Causative: {conjugation.causative}</Text>
-                <Text>Passive: {conjugation.passive}</Text>
-                <Text>Causative Passive: {conjugation.causative_passive}</Text>
-                <Text>Conditional: {conjugation.conditional}</Text>
-                <Text>Imperative: {conjugation.imperative}</Text>
+            <Column space={4}>
+                <Text fontWeight={'bold'}>Present: {conjugation.present}</Text>
+                <Text fontWeight={'bold'}>Negative: {conjugation.negative}</Text>
+                <Text fontWeight={'bold'}>Past: {conjugation.past}</Text>
+                <Text fontWeight={'bold'}>Te form: {conjugation.te_form}</Text>
+            </Column>
+            <Column space={4}>
+                <Text fontWeight={'bold'}>Potential: {conjugation.potential}</Text>
+                <Text fontWeight={'bold'}>Volitional: {conjugation.volitional}</Text>
+                <Text fontWeight={'bold'}>Causative: {conjugation.causative}</Text>
+                <Text fontWeight={'bold'}>Passive: {conjugation.passive}</Text>
+            </Column>
+            <Column space={4}>
+                <Text fontWeight={'bold'}>Causative Passive: {conjugation.causative_passive}</Text>
+                <Text fontWeight={'bold'}>Conditional: {conjugation.conditional}</Text>
+                <Text fontWeight={'bold'}>Imperative: {conjugation.imperative}</Text>
             </Column>
 
-        </Column>
+        </Row>
     )
 }

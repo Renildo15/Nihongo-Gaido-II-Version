@@ -21,6 +21,7 @@ export default function WordDetailsAndExamples(props: IWordDetailsProps) {
 
     const [selectedTab, setSelectedTab] = useState<WordExampleAndConjugation>(WordExampleAndConjugation.ExampleList)
     
+    
     const {
         data: word,
         error: wordError,
@@ -35,7 +36,6 @@ export default function WordDetailsAndExamples(props: IWordDetailsProps) {
     if(word === undefined || wordIsLoading || wordIsValidating) {
         return <Text>Loading...</Text>
     }
-
 
     function getCurrentTab() {
         switch(selectedTab) {
@@ -114,8 +114,14 @@ function Header({word}: IHeaderProps){
                     w={'140px'}
                     startIcon={<MdAdd size={25} color="white" />}
                     onPress={() => setIsOpen(true)}
+                    disabled={['Verb - Group 1', 'Verb - Group 2', 'Verb - Group 3'].includes(word.type) ? false : true}
+                    opacity={['Verb - Group 1', 'Verb - Group 2', 'Verb - Group 3'].includes(word.type) ? 1 : 0.5}
                 >
-                    Add conjugation
+                    <Text
+                        fontWeight={'bold'}
+                    >
+                        Conjugation
+                    </Text>
                 </Button>
 
                 <Button
@@ -126,8 +132,13 @@ function Header({word}: IHeaderProps){
                     size={'md'}
                     w={'140px'}
                     startIcon={<MdAdd size={25} color="white" />}
+                    
                 >
-                    Add example
+                    <Text
+                        fontWeight={'bold'}
+                    >
+                        Example
+                    </Text>
                 </Button>
             </Column>
 
@@ -152,24 +163,44 @@ interface ITabHeaderProps {
 }
 
 function TabHeader( {setSelectedTab, word}: ITabHeaderProps){
+    const [isConjugationPressed, setIsConjugationPressed] = useState<boolean>(false)
+    const [isExamplePressed, setIsExamplePressed] = useState<boolean>(true)
+
+    function handleConjugationTab() {
+        setIsConjugationPressed(true)
+        setIsExamplePressed(false)
+        setSelectedTab(WordExampleAndConjugation.ConjugationList)
+    }
+
+    function handleExampleTab() {
+        setIsExamplePressed(true)
+        setIsConjugationPressed(false)
+        setSelectedTab(WordExampleAndConjugation.ExampleList)
+    }
     return (
         <Row
             justifyContent={'flex-start'}
         >
             <Pressable
-                onPress={() => setSelectedTab(WordExampleAndConjugation.ExampleList)}
+                onPress={handleExampleTab}
                 _light={{bg: 'white', borderColor: 'black'}}        
                 _dark={{bg: 'gray.700', borderColor: 'white'}}
                 h={'25px'}
                 padding={5}
                 justifyContent={'center'}
                 _pressed={{bg: 'gray.400'}}
+                isPressed={isExamplePressed}
             >
-                <Text>Examples</Text>
+                <Text
+                    fontWeight={'bold'}
+                    fontSize={15}
+                >
+                    Examples
+                </Text>
             </Pressable>
             {['Verb - Group 1', 'Verb - Group 2', 'Verb - Group 3'].includes(word.type) && (
                 <Pressable
-                    onPress={() => setSelectedTab(WordExampleAndConjugation.ConjugationList)}
+                    onPress={handleConjugationTab}
                     _light={{ bg: 'white', borderColor: 'black' }}
                     _dark={{ bg: 'gray.700', borderColor: 'white' }}
                     h={'25px'}
@@ -177,8 +208,14 @@ function TabHeader( {setSelectedTab, word}: ITabHeaderProps){
                     justifyContent={'center'}
                     borderLeftWidth={1}
                     _pressed={{bg: 'gray.400'}}
+                    isPressed={isConjugationPressed}
                 >
-                    <Text>Conjugations</Text>
+                    <Text
+                        fontWeight={'bold'}
+                        fontSize={15}
+                    >
+                        Conjugations
+                    </Text>
                 </Pressable>
             )}
         </Row>
