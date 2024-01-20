@@ -9,11 +9,11 @@ interface ITextEditorProps {
 }
 
 export default function TextEditor(props: ITextEditorProps) {
-    const TINY_API_KEY = process.env.TINY_API_KEY
+    const NEXT_PUBLIC_TINY_API_KEY = process.env.NEXT_PUBLIC_TINY_API_KEY
 
     return (
         <Editor
-            apiKey={TINY_API_KEY} 
+            apiKey={NEXT_PUBLIC_TINY_API_KEY} 
             ref={props.ref}
             value={props.content}
             onEditorChange={(content) => props.onContentChanged(content)}
