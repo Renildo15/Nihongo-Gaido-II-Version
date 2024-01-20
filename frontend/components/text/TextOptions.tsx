@@ -12,13 +12,7 @@ export default function TextOptions() {
             alignItems={'center'}
             h={'60vh'}
         >
-            <Text
-                textAlign={'center'}
-                fontSize={'xl'}
-                fontWeight={'bold'}
-            >
-                Choose an option
-            </Text>
+            
             <Row 
                 w={'50%'}
                 space={2}

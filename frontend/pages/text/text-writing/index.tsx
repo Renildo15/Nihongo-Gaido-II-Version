@@ -18,6 +18,7 @@ export default function TextWriting() {
                 justifyContent={'space-around'}
                 alignItems={'flex-start'}
                 mt={'10px'}
+                w={'100%'}
             >
                 <WritingCreate />
                 <WritingList />

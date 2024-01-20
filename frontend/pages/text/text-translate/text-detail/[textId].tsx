@@ -5,6 +5,7 @@ import { BaseLayout } from "../../../../components/home/BaseLayout"
 import { useRouter } from "next/router"
 import { useText } from "../../../../utils/api/text"
 import TextTranslateDetail from "../../../../components/text/TextTranslate/TextTranslateDetail"
+import { Box } from "native-base"
 
 export async function getServerSideProps({req, res}: GetServerSidePropsContext) {
     return redirectIfNoCredentials({req, res});
@@ -17,7 +18,11 @@ export default function TextDetail() {
 
     return (
         <BaseLayout title={`${text?.title}`}>
-            <TextTranslateDetail textId={textId}/>
+            <Box
+                w={'100%'}
+            >
+                <TextTranslateDetail textId={textId}/>
+            </Box>
         </BaseLayout>
     )
 }
