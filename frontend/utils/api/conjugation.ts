@@ -111,7 +111,7 @@ export async function updateConjugation(conjugationId: number, wordId: number, d
     }
 
     try {
-        const response = await axios.patch<IConjugationResponse>(`/api/conjugation/${wordId}/${conjugationId}`, data);
+        const response = await axios.patch<IConjugationResponse>(`/api/conjugation/detail/${wordId}/${conjugationId}`, data);
         return response.data.message
     } catch (error: any) {
         throw new Error(error.message);
@@ -124,7 +124,7 @@ export async function deleteConjugation(conjugationId: number, wordId: number){
     }
 
     try {
-        const response = await axios.delete<IConjugationResponse>(`/api/conjugation/${wordId}/${conjugationId}`);
+        const response = await axios.delete<IConjugationResponse>(`/api/conjugation/detail/${wordId}/${conjugationId}`);
         return response.data.message
     } catch (error: any) {
         throw new Error(error.message);
