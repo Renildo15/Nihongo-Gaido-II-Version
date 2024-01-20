@@ -366,15 +366,6 @@ class WordSerializer(serializers.ModelSerializer):
 
 
 class ConjugationCreateSerializer(serializers.ModelSerializer):
-    def validate_word(self, value):
-        pattern = r"^[ぁ-んァ-ン一-龯+/~]+$"
-
-        if not re.match(pattern, value):
-            raise serializers.ValidationError(
-                "O campo 'word' deve conter apenas letras japonesas."
-            )
-
-        return value
 
     def validate_present(self, value):
         pattern = r"^[ぁ-んァ-ン一-龯]+$"
@@ -487,6 +478,7 @@ class ConjugationCreateSerializer(serializers.ModelSerializer):
             "volitional",
             "passive",
             "causative",
+            "causative_passive",
             "potential",
             "imperative",
             "conditional",
@@ -508,6 +500,7 @@ class ConjugationSerializer(serializers.ModelSerializer):
             "volitional",
             "passive",
             "causative",
+            "causative_passive",
             "potential",
             "imperative",
             "conditional",

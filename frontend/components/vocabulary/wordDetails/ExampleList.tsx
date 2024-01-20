@@ -1,16 +1,15 @@
-import React, {useState} from "react";
-import { Button, Row, Text, FlatList, Pressable, Box } from "native-base";
+import React, { useState } from "react";
+import { Row, Text, FlatList, Pressable, Box, Column } from "native-base";
 import { useExamples, IExampleList } from "../../../utils/api/example";
 import { ListRenderItemInfo } from "react-native";
-import { MdList, MdAdd } from "react-icons/md";
-import ModalAddExample from "./ModalAddExample"
-import ModalExample from "./ModalExample";
+import { MdArrowDropUp, MdArrowDropDown, MdDelete, MdEdit } from "react-icons/md";
+import ModalUpdatExample from "./ModalUpdateExample";
+import ModalDeleteExample from "./ModalDeleteExample";
 import DataEmpty from "../../DataEmpty";
 import Error from "../../Error";
 
-
 interface IExampleListProps {
-    wordId: number
+    wordId: number;
 }
 
 export default function ExampleList(props: IExampleListProps) {
@@ -18,96 +17,119 @@ export default function ExampleList(props: IExampleListProps) {
         data: examples,
         error: examplesError,
         isLoading: examplesIsLoading,
-        isValidating: examplesIsValidating
-    } = useExamples(props.wordId)
+        isValidating: examplesIsValidating,
+    } = useExamples(props.wordId);
 
-    const [isModalOpen, setIsModalOpen] = useState(false)
-    const [isModalExampelOpen, setIsModalExampleOpen] = useState(false)
-    const [exampleId, setExampleId] = useState<number>(0)
-    
+    const [exampleId, setExampleId] = useState<number>(0);
+    const [modalUpdateVisible, setModalUpdateVisible] = useState(false)
+    const [modalDeleteVisible, setModalDeleteVisible] = useState(false)
+
+    // Use an array to store the expanded state for each item
+    const [isExpanded, setIsExpanded] = useState<boolean[]>(Array(examples?.length).fill(false));
+
     function handleUpdateExample(exampleId: number) {
-        setExampleId(exampleId)
-        setIsModalExampleOpen(true)
-    }
-    function headers(){
-        return (
-            <Row
-                justifyContent={'space-between'}
-                alignItems={'center'}
-                padding={5}
-            >
-                <Text>Examples sentences</Text>
-                <Button
-                    bg={'#D02C23'}
-                    onPress={() => setIsModalOpen(true)}
-                    _hover={{bg: '#ae251e'}}
-                    _pressed={{bg: '#ae251e'}}
-                    size={'md'}
-                    w={'140px'}
-                    startIcon={<MdAdd size={25} color="white" />}
-                >
-                    Add example
-                </Button>
-              
-            </Row>
-        )
-
+        setExampleId(exampleId);
+        setModalUpdateVisible(true);
     }
 
-    function items({item}: ListRenderItemInfo<IExampleList>) {
+    function handleDeleteExample(exampleId: number) {
+        setExampleId(exampleId);
+        setModalDeleteVisible(true);
+    }
+
+    function toggleExpand(index: number) {
+        const newExpandedState = [...isExpanded];
+        newExpandedState[index] = !newExpandedState[index];
+        setIsExpanded(newExpandedState);
+    }
+
+    function items({ item, index }: ListRenderItemInfo<IExampleList>) {
         return (
+        <Box>
+            <Row justifyContent={"space-between"} alignItems={"center"}>
             <Row
-                padding={5}
-                _light={{bg: 'white', borderColor: 'black'}}        
-                _dark={{bg: 'gray.700', borderColor: 'white'}}
-                rounded={10}
+                width={"100%"}
+                justifyContent={"space-between"}
+                _light={{ bg: "white", borderColor: "black" }}
+                _dark={{ bg: "gray.700", borderColor: "white" }}
+                p={4}
                 borderWidth={1}
-                margin={2}
+                rounded={10}
             >
-                <Box>
-                    <Text>{item.example}</Text>
-                    <Text>{item.meaning}</Text>
-                </Box>
-                <Pressable
-                    onPress={() => handleUpdateExample(item.id)}
-                >
-                    <MdList size={25} color="#D02C23" />
+                <Text>{item.example}</Text>
+                <Row w={"10%"} justifyContent={"space-between"} alignItems={"center"}>
+                <Pressable onPress={() => handleUpdateExample(item.id)}>
+                    <MdEdit size={25} color="#D02C23" />
                 </Pressable>
+                <Pressable onPress={() => handleDeleteExample(item.id)}>
+                    <MdDelete size={25} color="#D02C23" />
+                </Pressable>
+                <Pressable onPress={() => toggleExpand(index)}>
+                    {isExpanded[index] ? (
+                    <MdArrowDropUp size={25} color="#D02C23" />
+                    ) : (
+                    <MdArrowDropDown size={25} color="#D02C23" />
+                    )}
+                </Pressable>
+                </Row>
             </Row>
-        )
+            </Row>
+            {isExpanded[index] && (
+            <Column
+                width={"80%"}
+                _light={{ bg: "white", borderColor: "black" }}
+                _dark={{ bg: "gray.700", borderColor: "white" }}
+                p={4}
+                space={2}
+            >
+                <Text
+                    fontSize={15}
+                    fontWeight={"bold"}
+                >
+                    {item.meaning}
+                </Text>
+                <Text>{!item.annotation ? "No annotation" : item.annotation}</Text>
+                <Text>{new Date(item.createdAt).toLocaleDateString("pt-BR")}</Text>
+            </Column>
+            )}
+        </Box>
+        );
     }
 
-    if(examplesError !== undefined) {
-        return <Error message={examplesError.message}/>
+    if (examplesError !== undefined) {
+        return <Error message={examplesError.message} />;
     }
 
-    if(examples === undefined || examplesIsLoading || examplesIsValidating) {
-        return <Text>Loading...</Text>
+    if (examples === undefined || examplesIsLoading || examplesIsValidating) {
+        return <Text>Loading...</Text>;
     }
 
     return (
-        <>
-            <FlatList
-                ListHeaderComponent={headers}
-                ListEmptyComponent={<DataEmpty message={'No examples found'}/>}
-                data={examples}
-                renderItem={items}
-                keyExtractor={(item) => item.id.toString()}
-            />
+        <Box
+        _light={{ bg: "white", borderColor: "black" }}
+        _dark={{ bg: "gray.700", borderColor: "white" }}
+        >
+        <FlatList
+            ListEmptyComponent={<DataEmpty message={"No examples found"} />}
+            data={examples}
+            renderItem={items}
+            keyExtractor={(item) => item.id.toString()}
+        />
 
-            <ModalExample
-                isOpen={isModalExampelOpen}
-                onClose={() => setIsModalExampleOpen(false)}
-                exampleId={exampleId}
-                wordId={props.wordId}
-            />
+        <ModalUpdatExample
+            isOpen={modalUpdateVisible}
+            onClose={() => setModalUpdateVisible(false)}
+            exampleId={exampleId}
+            wordId={props.wordId}
+        />
 
-            <ModalAddExample
-                isOpen={isModalOpen}
-                wordId={props.wordId}
-                onClose={() => setIsModalOpen(false)}
-            />
-        </>
-    )
+        <ModalDeleteExample
+            isOpen={modalDeleteVisible}
+            onClose={() => setModalDeleteVisible(false)}
+            exampleId={exampleId}
+            wordId={props.wordId}
+        />
 
+        </Box>
+    );
 }

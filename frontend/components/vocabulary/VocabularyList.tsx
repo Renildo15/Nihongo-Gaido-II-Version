@@ -1,13 +1,12 @@
-import React, {useMemo, useState} from "react"
-import { FlatList, Pressable, Text, Divider, Row, Column, Button, Spinner } from "native-base"
-import { ListRenderItemInfo } from "react-native"
+import React, { useMemo, useState, memo, lazy, Suspense } from "react"
+import { FlatList, Pressable, Text, Divider, Row, Button, Spinner, Box } from "native-base"
 import { useWords, IWordList } from "../../utils/api/vocabulary"
 import { MdAdd, MdList } from "react-icons/md"
 import DataEmpty from "../DataEmpty"
 import Error from "../Error"
 import { IVocabularyFilters } from "./SearchVocabulary"
-import ModalAddWord from "./ModalAddWord"
-import ModalVocabulary from "./ModalVocabulary"
+const ModalAddWord = lazy(() => import("./ModalAddWord"));
+const ModalVocabulary = lazy(() => import("./ModalVocabulary"));
 import { useRouter } from "next/router"
 
 interface IWordListProps {
@@ -95,18 +94,25 @@ export default function WordList(props: IWordListProps) {
         )
     }
 
-    function items({item}: ListRenderItemInfo<IWordList>) {
+    const RenderItem = memo(({ item }: {item: IWordList}) => {
         return (
             <Pressable
                 onPress={() => {
                     router.push(`/vocabulary/details/${item.id}`)
                 }}
+                _hover={{
+                    bg: 'gray.200'
+                }}
             >
-                <Column
-                    p={"10px"}
-                    _light={{bg: 'white'}}
-                    _dark={{bg: 'gray.700'}}
+                <Box
+                    p={5}
+                    _light={{ bg: 'white' }}
+                    _dark={{ bg: 'gray.700' }}
                     rounded={'md'}
+                    mx={2}
+                    mb={2}
+                    w={'220px'}
+                    shadow={2}
                 >
                     <Text
                         fontSize={20}
@@ -114,44 +120,60 @@ export default function WordList(props: IWordListProps) {
                     >
                         {item.word} - {item.reading}
                     </Text>
-                    <Divider/>
-                    <Text>{item.meaning}</Text>
+                    <Divider />
+                    <Text
+                        fontSize={15}
+                        fontWeight={500}
+                    >
+                        {item.meaning}
+                    </Text>
                     <Pressable onPress={() => {
                         handleChangeWordId(item.id)
                     }}>
-                        <MdList size={24} color={'#D02C23'}/>
-                </Pressable>
-                </Column>
-                
+                        <MdList size={24} color={'#D02C23'} />
+                    </Pressable>
+                </Box>
+    
             </Pressable>
-        )
-    }
+        );
+    });
+    
+    RenderItem.displayName = "WordItem";
 
     return (
-        <>
+        <Box
+            w={'100%'}
+            p={5}
+        >
             <FlatList
-                w={"60%"}
+                w={"100%"}
                 data={filteredVocabulary}
                 ListHeaderComponent={header}
-                renderItem={items}
+                renderItem={({ item }) => <RenderItem item={item} />}
                 keyExtractor={item => item.id.toString()}
                 ListEmptyComponent={<DataEmpty message="No words" />}
-                ItemSeparatorComponent={() => <Divider mt={2} />}
+                ItemSeparatorComponent={() => <Box mt={2} />}
+                numColumns={3}
+                windowSize={10}
             />
-            <ModalAddWord
-                isOpen={isModalAddWordOpen}
-                onClose={() => {
-                    setIsModalAddWordOpen(false)
-                }}
-            />
-            <ModalVocabulary
-                isOpen={isModalVocabularyOpen}
-                onClose={() => {
-                    setIsModalVocabularyOpen(false)
-                }}
-                wordId={wordId}
-            />
+            <Suspense fallback={<Spinner />}>
+                <ModalAddWord
+                    isOpen={isModalAddWordOpen}
+                    onClose={() => {
+                        setIsModalAddWordOpen(false);
+                    }}
+                />
+            </Suspense>
+            <Suspense fallback={<Spinner />}>
+                <ModalVocabulary
+                    isOpen={isModalVocabularyOpen}
+                    onClose={() => {
+                        setIsModalVocabularyOpen(false);
+                    }}
+                    wordId={wordId}
+                />
+            </Suspense>
 
-        </>
+        </Box>
     )
 }

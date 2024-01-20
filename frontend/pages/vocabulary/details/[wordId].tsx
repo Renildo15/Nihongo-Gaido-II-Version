@@ -1,5 +1,6 @@
 import React from "react"
 import { GetServerSidePropsContext } from "next"
+import { Box } from "native-base"
 import { redirectIfNoCredentials } from "../../../utils"
 import { BaseLayout } from "../../../components/home/BaseLayout"
 import { useRouter } from "next/router"
@@ -14,7 +15,13 @@ export default function WordDetails() {
     const wordId = parseInt(router.query.wordId?.toString() || "")
     return (
         <BaseLayout title="Word Details">
-            <WordDetailsAndExamples wordId={wordId}/>
+            <Box
+                w={'100%'}
+                justifyContent={'center'}
+                alignItems={'center'}
+            >
+                <WordDetailsAndExamples wordId={wordId}/>
+            </Box>
         </BaseLayout>
     )
 }

@@ -181,6 +181,7 @@ class Conjugation(models.Model):
     potential = models.CharField(max_length=20, blank=True, null=True)
     imperative = models.CharField(max_length=20, blank=True, null=True)
     causative = models.CharField(max_length=20, blank=True, null=True)
+    causative_passive = models.CharField(max_length=20, blank=True, null=True)
     conditional = models.CharField(max_length=20, blank=True, null=True)
     passive = models.CharField(max_length=20, blank=True, null=True)
     created_by = models.ForeignKey(

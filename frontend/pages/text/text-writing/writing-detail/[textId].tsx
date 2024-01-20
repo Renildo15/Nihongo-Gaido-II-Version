@@ -5,6 +5,7 @@ import { BaseLayout } from "../../../../components/home/BaseLayout"
 import { useRouter } from "next/router"
 import { useTextWriting } from "../../../../utils/api/text"
 import TextWritingDetail from "../../../../components/text/TextWriting/TextWritingDetail"
+import { Box } from "native-base"
 
 export async function getServerSideProps({req, res}: GetServerSidePropsContext) {
     return redirectIfNoCredentials({req, res});
@@ -17,7 +18,11 @@ export default function  WritingDetail() {
 
     return (
         <BaseLayout title={`${text?.title}`}>
-            <TextWritingDetail textId={textId}/>
+            <Box
+                w={'100%'}
+            >
+                <TextWritingDetail textId={textId}/>
+            </Box>
         </BaseLayout>
     )
 }

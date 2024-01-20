@@ -5,7 +5,6 @@ import { fetcchSimple } from './user';
 export interface IExampleList {
     id: number;
     example: string;
-    reading: string;
     meaning: string;
     annotation: string;
     wordId: number;

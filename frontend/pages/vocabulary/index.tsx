@@ -16,11 +16,13 @@ export default function Vocabulary() {
     const [filters, setFilters] = useState<IVocabularyFilters>()
     return (
         <BaseLayout title="Vocabulary">
-            <SearchVocabulary onFiltersChanged={setFilters}/>
             <Box
                 justifyContent={'center'}
                 alignItems={'center'}
+                w={'100%'}
+                flex={2}
             >
+                <SearchVocabulary onFiltersChanged={setFilters}/>
                 <WordList filters={filters} />    
             </Box>
         </BaseLayout>
