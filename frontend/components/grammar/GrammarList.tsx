@@ -170,7 +170,7 @@ export default function GrammarList(props: IGrammarListProps) {
     }
 
     return (
-        <Box p={5}>
+        <Box p={5} w={'100%'}>
             <FlatList
                 data={filteredGrammars}
                 ListHeaderComponent={header}

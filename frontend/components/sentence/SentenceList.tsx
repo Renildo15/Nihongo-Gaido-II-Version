@@ -3,7 +3,7 @@ import { ISentenceList } from "../../utils/api/sentence"
 import ModalSentence from "./modal/ModalSentence"
 import ModalAddSentence from "./modal/ModalAddSentence"
 import { ListRenderItemInfo } from "react-native"
-import { FlatList, Pressable, Text, Divider, Row, Column, Button } from "native-base"
+import { FlatList, Pressable, Text, Divider, Row, Column, Button, Box } from "native-base"
 import { MdList, MdAdd } from "react-icons/md"
 import DataEmpty from "../DataEmpty"
 
@@ -69,7 +69,7 @@ export default function SentenceList(props: ISentenceListProps) {
 
 
     return (
-        <>
+        <Box w={'50%'}>
             <FlatList
                 data={props.sentences}
                 renderItem={items}
@@ -90,6 +90,6 @@ export default function SentenceList(props: ISentenceListProps) {
                 grammarId={props.grammarId}
             />
 
-        </>
+        </Box>
     )
 }
