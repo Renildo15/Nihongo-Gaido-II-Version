@@ -32,7 +32,7 @@ export default function SearchGrammar (props: ISearchGrammarProps) {
     }
 
     return (
-        <Row justifyContent={'space-between'} p={5}>
+        <Row justifyContent={'space-between'} alignItems={'center'} p={5} w={'100%'}>
             <Column space={'20px'}> 
                 <Input
                     placeholder="Search grammar"
