@@ -22,12 +22,16 @@ def category_list(request):
         serializer = CategorySerializer(result_page, many=True)
 
         return paginator.get_paginated_response(serializer.data)
+    
     elif request.method == "POST":
         serializer = CategoryCreateSerializer(data=request.data)
 
         if serializer.is_valid():
             serializer.save(created_by=request.user, is_created_by_user=True)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+            data = {"message": "Category created", "category": serializer.data}
+
+            return Response(data=data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
