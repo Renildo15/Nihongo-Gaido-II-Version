@@ -7,6 +7,7 @@ import Error from "../Error"
 import { IVocabularyFilters } from "./SearchVocabulary"
 const ModalAddWord = lazy(() => import("./ModalAddWord"));
 const ModalVocabulary = lazy(() => import("./ModalVocabulary"));
+import CategoryAddModal from "../category/CategoryAddModal"
 import { useRouter } from "next/router"
 
 interface IWordListProps {
@@ -18,6 +19,7 @@ export default function WordList(props: IWordListProps) {
     const [isModalAddWordOpen, setIsModalAddWordOpen] = useState(false)
     const [wordId, setWordId] = useState<number | null>(null)
     const [isModalVocabularyOpen, setIsModalVocabularyOpen] = useState(false)
+    const [isModalCategoryOpen, setIsModalCategoryOpen] = useState(false)
     const router = useRouter()
 
     const {
@@ -80,6 +82,19 @@ export default function WordList(props: IWordListProps) {
                 <Text fontSize={20} fontWeight={700}>Words({words?.length})</Text>
                 <Button
                     onPress={() => {
+                        setIsModalCategoryOpen(true)
+                    }}
+                    bg={'#D02C23'}
+                    _hover={{bg: '#ae251e'}}
+                    _pressed={{bg: '#ae251e'}}
+                    size={'md'}
+                    startIcon={<MdAdd size={25} color="white" />}
+                >
+                    Add category
+                </Button>
+
+                <Button
+                    onPress={() => {
                         setIsModalAddWordOpen(true)
                     }}
                     bg={'#D02C23'}
@@ -88,7 +103,7 @@ export default function WordList(props: IWordListProps) {
                     size={'md'}
                     startIcon={<MdAdd size={25} color="white" />}
                 >
-                    Add
+                    Add word
                 </Button>
             </Row>
         )
@@ -171,6 +186,15 @@ export default function WordList(props: IWordListProps) {
                         setIsModalVocabularyOpen(false);
                     }}
                     wordId={wordId}
+                />
+            </Suspense>
+
+            <Suspense fallback={<Spinner />}>
+                <CategoryAddModal
+                    isOpen={isModalCategoryOpen}
+                    onClose={() => {
+                        setIsModalCategoryOpen(false);
+                    }}
                 />
             </Suspense>
 
