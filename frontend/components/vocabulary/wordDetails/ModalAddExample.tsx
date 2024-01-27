@@ -1,6 +1,9 @@
 import React, { useRef, useState } from "react";
-import { Modal, FormControl, Input, Button, useToast, Box, Column, TextArea } from "native-base";
+import { Modal, Button, useToast, Column } from "native-base";
 import { createExample, useExamples } from "../../../utils/api/example";
+import { useForm } from "react-hook-form"
+import Input from "../../Input";
+import Textarea from "../../Textarea";
 
 interface IModalAddExampleProps {
     isOpen: boolean
@@ -8,22 +11,22 @@ interface IModalAddExampleProps {
     onClose: () => void
 }
 
-export default function ModalAddExample(props: IModalAddExampleProps) {
+interface IFormInput {
+    example: string
+    meaning: string
+    annotation: string
+}
 
-    const initialRef = useRef(null);
-    const finalRef = useRef(null);
+export default function ModalAddExample(props: IModalAddExampleProps) {
 
     const {mutate: examplesRevalidate} = useExamples(props.wordId)
 
-    const [example, setExample] = useState('')
-    const [meaning, setMeaning] = useState('')
-    const [annotation, setAnnotation] = useState('')
-
-    const [isExampleValid, setIsExampleValid] = useState(false)
-    const [isMeaningValid, setIsMeaningValid] = useState(false)
-
-    const [exampleErrorMessage, setExampleErrorMessage] = useState('')
-    const [meaningErrorMessage, setMeaningErrorMessage] = useState('')
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        
+    } = useForm<IFormInput>();
 
     const [saving, setSaving] = useState(false)
 
@@ -31,48 +34,35 @@ export default function ModalAddExample(props: IModalAddExampleProps) {
 
     const japaneseRegex = /^$|^[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\u002B\u002A\u007E\u002F]+$/;
 
-    const handleExampleChange = (text: string) => {
-        setExample(text)
-        if (text.trim().length === 0) {
-            setIsExampleValid(false);
-            setExampleErrorMessage('Example is required')
-        } else if (!japaneseRegex.test(text)) {
-            setIsExampleValid(false)
-            setExampleErrorMessage('Example must be in Japanese')
-        } else {
-            setIsExampleValid(true);
-            setExampleErrorMessage('')
-        }
+    const onSubmit = async (data: IFormInput) => {
 
-    }
-
-    const handleMeaningChange = (text: string) => {
-        setMeaning(text)
-        if (text.trim().length === 0) {
-            setIsMeaningValid(false);
-            setMeaningErrorMessage('Meaning is required')
-        } else {
-            setIsMeaningValid(true);
-            setMeaningErrorMessage('')
-        }
-    }
-
-    async function save(){
         setSaving(true)
+
         try {
-            await createExample(props.wordId,{example, meaning, annotation, wordId: props.wordId})
-            toast.show({
-                title: 'Success',
-                description: 'Example created',
-                placement: 'top',
-                duration: 2000
-            })
+            const newExample = await createExample(
+                props.wordId,
+                {
+                    example: data.example,
+                    meaning: data.meaning,
+                    annotation: data.annotation,
+                    wordId: props.wordId
+                }
+            )
+
+            if (newExample) {
+                toast.show({
+                    title: 'Success',
+                    description: `Example added`,
+                    placement: 'top',
+                    duration: 2000
+                })
+            }
             examplesRevalidate()
             props.onClose()
         } catch (error) {
             toast.show({
                 title: 'Error',
-                description: 'Something went wrong',
+                description: `Something went wrong`,
                 placement: 'top',
                 duration: 2000
             })
@@ -81,8 +71,9 @@ export default function ModalAddExample(props: IModalAddExampleProps) {
         }
     }
 
+
     return (
-        <Modal isOpen={props.isOpen} onClose={props.onClose} initialFocusRef={initialRef} finalFocusRef={finalRef} >
+        <Modal isOpen={props.isOpen} onClose={props.onClose}>
             <Modal.Content 
                 maxWidth="400px"
                 _light={{
@@ -96,69 +87,31 @@ export default function ModalAddExample(props: IModalAddExampleProps) {
                 <Modal.Header _text={{color:'#D02C23'}}>Add new example</Modal.Header>
                 <Modal.Body>
                     <Column>
-                        <FormControl isInvalid={!isExampleValid} isRequired>
-                            <FormControl.Label _text={{color:'#D02C23', fontWeight: '600'}}>Example</FormControl.Label>
-                            <Input
-                                _light={{
-                                    bg: 'white'
-                                }}
-                                _dark={{
-                                    bg: '#262626'
-                                }}
-                                onChangeText={handleExampleChange}
-                                value={example}
-                                shadow={1}
-                                _focus={{borderColor: '#D02C23'}}
-                                _hover={{borderColor: '#D02C23'}}
-                                focusOutlineColor={'#D02C23'}
-                                placeholder="Example"
-                            />
-                            <FormControl.ErrorMessage>
-                                {exampleErrorMessage}
-                            </FormControl.ErrorMessage>
-                        </FormControl>
-                        <FormControl isRequired isInvalid={!isMeaningValid}>
-                            <FormControl.Label _text={{color:'#D02C23', fontWeight: '600'}}>Meaning</FormControl.Label>
-                            <Input
-                                onChangeText={handleMeaningChange}
-                                value={meaning}
-                                _light={{
-                                    bg: 'white'
-                                }}
-                                _dark={{
-                                    bg: '#262626'
-                                }}
-                                shadow={1}
-                                _focus={{borderColor: '#D02C23'}}
-                                _hover={{borderColor: '#D02C23'}}
-                                focusOutlineColor={'#D02C23'}
-                                placeholder="Meaning"
-                            />
-                            <FormControl.ErrorMessage>
-                                {meaningErrorMessage}
-                            </FormControl.ErrorMessage>
-                        </FormControl>
+                        <Input 
+                            label="Example" 
+                            name="example" 
+                            type="text" 
+                            register={register} 
+                            // @ts-ignore
+                            errors={errors} 
+                            patternError="Structure must be in Japanese"
+                            pattern={japaneseRegex}
+                        />
 
-                        <FormControl>
-                            <FormControl.Label _text={{color:'#D02C23', fontWeight: '600'}}>Annotation</FormControl.Label>
-                            <TextArea
-                                _light={{
-                                    bg: 'white'
-                                }}
-                                _dark={{
-                                    bg: '#262626'
-                                }}  
-                                autoCompleteType={'off'}
-                                onChangeText={text => setAnnotation(text)}
-                                value={annotation}
-                                h={100}
-                                shadow={1}
-                                _focus={{borderColor: '#D02C23'}}
-                                _hover={{borderColor: '#D02C23'}}
-                                focusOutlineColor={'#D02C23'}
-                                placeholder="Annotation"
-                            />
-                        </FormControl>
+                        <Input 
+                            label="Meaning" 
+                            name="meaning" 
+                            type="text" 
+                            register={register} 
+                            // @ts-ignore
+                            errors={errors} 
+                        />
+
+                        <Textarea 
+                            label="Annotation" 
+                            name="annotation" 
+                            register={register} 
+                        />
                     </Column>
                 </Modal.Body>
                 <Modal.Footer>
@@ -176,9 +129,10 @@ export default function ModalAddExample(props: IModalAddExampleProps) {
                             bg={'#D02C23'}
                             _hover={{bg: '#ae251e'}}
                             _pressed={{bg: '#ae251e'}}
-                            isDisabled={ !isExampleValid || !isMeaningValid }
                             isLoading={saving}
-                            onPress={save}
+                            onPress={() => {    
+                                handleSubmit(onSubmit)()
+                            }}
                         >
                             Save
                         </Button>

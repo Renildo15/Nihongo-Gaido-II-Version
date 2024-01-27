@@ -1,19 +1,28 @@
-import React, { useRef, useState } from "react";
-import { Modal, FormControl, Input, Button, useToast, Box, Column, Select } from "native-base";
+import React, { useState } from "react";
+import { Modal, Button, useToast, Box, Column } from "native-base";
 import { createWord, useWords } from "../../utils/api/vocabulary";
 import { levelOptions, typeWordsOptions } from "../../utils/options";
 import { ICategoryList, useCategories } from "../../utils/api/category";
 import { TypeLevel, TypeWord } from "../../utils/api/types";
+import { useForm } from "react-hook-form"
+import Select from "../Select";
+import Input from "../Input";
 
 interface IModalAddWordProps {
     isOpen: boolean
     onClose: () => void
 }
 
-export default function ModalAddWord(props: IModalAddWordProps) {
+interface IFormInput {
+    word: string
+    reading: string
+    meaning: string
+    type: TypeWord
+    level: TypeLevel
+    category: string
+}
 
-    const initialRef = useRef(null);
-    const finalRef = useRef(null);
+export default function ModalAddWord(props: IModalAddWordProps) {
 
     const {
         mutate: wordsRevalidate
@@ -24,142 +33,50 @@ export default function ModalAddWord(props: IModalAddWordProps) {
         mutate: categoriesRevalidate
     } = useCategories()
     
-
-    const [word, setWord] = useState('')
-    const [reading, setReading] = useState('')
-    const [meaning, setMeaning] = useState('')
-    const [type, setType] = useState('')
-    const [level, setLevel] = useState('')
-    const [category, setCategory] = useState<ICategoryList | undefined>()
-
-    const [isWordValid, setIsWordValid] = useState(false)
-    const [isReadingValid, setIsReadingValid] = useState(false)
-    const [isMeaningValid, setIsMeaningValid] = useState(false)
-    const [isTypeValid, setIsTypeValid] = useState(false)
-    const [isLevelValid, setIsLevelValid] = useState(false)
-    const [isCategoryValid, setIsCategoryValid] = useState(false)
-
-    const [saving, setSaving] = useState(false)
-
-    const [wordErrorMessage, setWordErrorMessage] = useState('')
-    const [readingErrorMessage, setReadingErrorMessage] = useState('')
-    const [meaningErrorMessage, setMeaningErrorMessage] = useState('')
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        
+    } = useForm<IFormInput>();
 
     const toast = useToast()
+    const [saving, setSaving] = useState(false)
+    const japaneseRegex = /^$|^[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\u002B\u002A\u007E\u002F]+$/;
 
-    const handleWordChange = (text: string) => {
-        setWord(text)
-        const japaneseRegex = /^$|^[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\u002B\u002A\u007E\u002F]+$/;
-
-        if (text.trim().length === 0) {
-            setIsWordValid(false)
-            setWordErrorMessage('Word is required')
-        } else if (!japaneseRegex.test(text)) {
-            setIsWordValid(false)
-            setWordErrorMessage('Word must be in Japanese')
-        } else {
-            setIsWordValid(true)
-            setWordErrorMessage('')
-        }
-    }
-
-    const handleReading = (text: string) => {
-        setReading(text)
-        const japaneseRegex = /^$|^[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\u002B\u002A\u007E\u002F]+$/;
-
-        if (text.trim().length === 0) {
-            setIsReadingValid(false)
-            setReadingErrorMessage('Reading is required')
-        } else if (!japaneseRegex.test(text)) {
-            setIsReadingValid(false)
-            setReadingErrorMessage('Reading must be in Japanese')
-        } else {
-            setIsReadingValid(true)
-            setReadingErrorMessage('')
-        }
-    }
-
-    const handleMeaning = (text: string) => {
-        setMeaning(text)
-        if (text.trim().length === 0) {
-            setIsMeaningValid(false)
-            setMeaningErrorMessage('Meaning is required')
-        } else {
-            setIsMeaningValid(true)
-            setMeaningErrorMessage('')
-        }
-    }
-
-    const handleSelectType = (text: string) => {
-        setType(text)
-        if (text.trim().length === 0) {
-            setIsTypeValid(false);
-        } else {
-            setIsTypeValid(true);
-        }
-    }
-
-    const handleSelectLevel = (text: string) => {
-        setLevel(text)
-        if (text.trim().length === 0) {
-            setIsLevelValid(false);
-        } else {
-            setIsLevelValid(true);
-        }
-    }
-
-    const handleSelectCategory = (text: string) => {
-        setCategory(categories?.find(category => category.name === text))
-        if (text.trim().length === 0) {
-            setIsCategoryValid(false);
-        } else {
-            setIsCategoryValid(true);
-        }
-    }
-
-    async function save() {
+    const onSubmit = async (data: IFormInput) => {
+        console.log(data)
         setSaving(true)
+
         try {
             const newWord = await createWord({
-                word: word,
-                reading: reading,
-                meaning: meaning,
-                type: type as TypeWord,
-                level: level as TypeLevel,
-                category: category?.id || 0 // Provide a default value of 0
+                word: data.word,
+                reading: data.reading,
+                meaning: data.meaning,
+                type: data.type,
+                level: data.level,
+                category: parseInt(data.category)
             })
 
             if (newWord) {
                 toast.show({
                     title: 'Success',
-                    description: 'Word created successfully',
+                    description: `Word added`,
                     placement: 'top',
                     duration: 2000
                 })
-
-                wordsRevalidate()
-                categoriesRevalidate()
-                props.onClose()
-                clearInputs()
             }
+            categoriesRevalidate()
+            wordsRevalidate()
+            props.onClose()
         } catch (error) {
             alert(error)
         } finally {
             setSaving(false)
         }
-    }
-
-    function clearInputs() {
-        setWord('')
-        setReading('')
-        setMeaning('')
-        setType('')
-        setLevel('')
-        setCategory(undefined)
-    }
-
+    };
     return (
-        <Modal isOpen={props.isOpen} onClose={props.onClose} initialFocusRef={initialRef} finalFocusRef={finalRef} >
+        <Modal isOpen={props.isOpen} onClose={props.onClose}>
         <Modal.Content 
             maxWidth="400px"
             _light={{
@@ -173,155 +90,68 @@ export default function ModalAddWord(props: IModalAddWordProps) {
             <Modal.Header _text={{color:'#D02C23'}}>Add new word</Modal.Header>
             <Modal.Body>
                 <Column>
-                    <FormControl isInvalid={!isWordValid} isRequired>
-                        <FormControl.Label _text={{color:'#D02C23', fontWeight: '600'}}>Word</FormControl.Label>
-                        <Input
-                            _light={{
-                                bg: 'white'
-                            }}
-                            _dark={{
-                                bg: '#262626'
-                            }}
-                            onChangeText={handleWordChange}
-                            value={word}
-                            shadow={1}
-                            _focus={{borderColor: '#D02C23'}}
-                            _hover={{borderColor: '#D02C23'}}
-                            focusOutlineColor={'#D02C23'}
-                            placeholder="Word"
-                        />
-                        <FormControl.ErrorMessage>
-                            {wordErrorMessage}
-                        </FormControl.ErrorMessage>
-                    </FormControl>
-                    <FormControl isRequired isInvalid={!isReadingValid}>
-                        <FormControl.Label _text={{color:'#D02C23', fontWeight: '600'}}>Reading</FormControl.Label>
-                        <Input
-                            onChangeText={handleReading}
-                            value={reading}
-                            _light={{
-                                bg: 'white'
-                            }}
-                            _dark={{
-                                bg: '#262626'
-                            }}
-                            shadow={1}
-                            _focus={{borderColor: '#D02C23'}}
-                            _hover={{borderColor: '#D02C23'}}
-                            focusOutlineColor={'#D02C23'}
-                            placeholder="Reading"
-                        />
-                        <FormControl.ErrorMessage>
-                            {readingErrorMessage}
-                        </FormControl.ErrorMessage>
-                    </FormControl>
-                    <FormControl isRequired isInvalid={!isMeaningValid}>
-                        <FormControl.Label _text={{color:'#D02C23', fontWeight: '600'}}>Meaning</FormControl.Label>
-                        <Input
-                            onChangeText={handleMeaning}
-                            value={meaning}
-                            _light={{
-                                bg: 'white'
-                            }}
-                            _dark={{
-                                bg: '#262626'
-                            }}
-                            shadow={1}
-                            _focus={{borderColor: '#D02C23'}}
-                            _hover={{borderColor: '#D02C23'}}
-                            focusOutlineColor={'#D02C23'}
-                            placeholder="Meaning"
-                        />
-                        <FormControl.ErrorMessage>
-                            {meaningErrorMessage}
-                        </FormControl.ErrorMessage>
-                    </FormControl>
-                    <FormControl isRequired isInvalid={!isLevelValid}>
-                        <FormControl.Label _text={{color:'#D02C23', fontWeight: '600'}}>Level</FormControl.Label>
-                        <Select
-                            selectedValue={level}
-                            _light={{
-                                bg: 'white'
-                            }}
-                            _dark={{
-                                bg: '#262626'
-                            }}
-                            minWidth={200}
-                            accessibilityLabel="Select level"
-                            placeholder="Select level"
-                            onValueChange={handleSelectLevel}
-                            _selectedItem={{
-                                bg: "cyan.600",
-                                endIcon: <Box size={4} />,
-                            }}
-                        > 
-                            <Select.Item label="level" value="" />
-                            {levelOptions.map((level, index)=> (
-                                <Select.Item key={index} label={level.label} value={level.value} />
-                            ))}
-                        </Select>
-                        <FormControl.ErrorMessage>
-                            Level is required
-                        </FormControl.ErrorMessage>
-                    </FormControl>
-                    <FormControl isRequired isInvalid={!isTypeValid}>
-                        <FormControl.Label _text={{color:'#D02C23', fontWeight: '600'}}>Type word</FormControl.Label>
-                        <Select
-                            selectedValue={type}
-                            _light={{
-                                bg: 'white'
-                            }}
-                            _dark={{
-                                bg: '#262626'
-                            }}
-                            minWidth={200}
-                            accessibilityLabel="Select type word"
-                            placeholder="Select type word"
-                            onValueChange={handleSelectType}
-                            _selectedItem={{
-                                bg: "cyan.600",
-                                endIcon: <Box size={4} />,
-                            }}
-                        > 
-                            <Select.Item label="type word" value="" />
-                            {typeWordsOptions.map((type, index)=> (
-                                <Select.Item key={index} label={type.label} value={type.value} />
-                            ))}
-                        </Select>
-                        <FormControl.ErrorMessage>
-                            Type word is required
-                        </FormControl.ErrorMessage>
-                    </FormControl>
+                    <Input 
+                        label="Word" 
+                        name="word" 
+                        type="text" 
+                        register={register} 
+                        // @ts-ignore
+                        errors={errors} 
+                        patternError="Word must be in Japanese"
+                        pattern={japaneseRegex}
+                    />
 
-                    <FormControl isRequired isInvalid={!isCategoryValid}>
-                        <FormControl.Label _text={{color:'#D02C23', fontWeight: '600'}}>Category</FormControl.Label>
-                        <Select
-                            selectedValue={category?.name}
-                            _light={{
-                                bg: 'white'
-                            }}
-                            _dark={{
-                                bg: '#262626'
-                            }}
-                            minWidth={200}
-                            accessibilityLabel="Select category"
-                            placeholder="Select category"
-                            onValueChange={handleSelectCategory}
-                            _selectedItem={{
-                                bg: "cyan.600",
-                                endIcon: <Box size={4} />,
-                            }}
-                        > 
-                            <Select.Item label="category" value="" />
-                            {categories?.map((category, index)=> (
-                                <Select.Item key={index} label={category.name} value={category.name} />
-                            )) || []}
-                        </Select>
-                        <FormControl.ErrorMessage>
-                            Category is required
-                        </FormControl.ErrorMessage>
-                    </FormControl>
-                    
+                    <Input 
+                        label="Reading" 
+                        name="reading" 
+                        type="text" 
+                        register={register} 
+                        // @ts-ignore
+                        errors={errors} 
+                        patternError="Reading must be in Japanese"
+                        pattern={japaneseRegex}
+                    />
+
+                    <Input 
+                        label="Meaning" 
+                        name="meaning" 
+                        type="text" 
+                        register={register} 
+                        // @ts-ignore
+                        errors={errors}
+                    />
+
+                    <Select 
+                        label="Type" 
+                        name="type" 
+                        register={register} 
+                        // @ts-ignore
+                        errors={errors}
+                        options={typeWordsOptions}
+                    />
+
+                    <Select 
+                        label="Level" 
+                        name="level" 
+                        register={register} 
+                        // @ts-ignore
+                        errors={errors}
+                        options={levelOptions}
+                    />
+
+                    <Select 
+                        label="Category" 
+                        name="category" 
+                        register={register} 
+                        // @ts-ignore
+                        errors={errors}
+                        options={categories?.map((category: ICategoryList) => {
+                            return {
+                                label: category.name,
+                                value: category.id
+                            }
+                        })}
+                    />
                 </Column>
             </Modal.Body>
             <Modal.Footer>
@@ -339,17 +169,10 @@ export default function ModalAddWord(props: IModalAddWordProps) {
                         bg={'#D02C23'}
                         _hover={{bg: '#ae251e'}}
                         _pressed={{bg: '#ae251e'}}
-                        isDisabled={ 
-                            !isWordValid || 
-                            !isReadingValid || 
-                            !isMeaningValid || 
-                            !isLevelValid || 
-                            !isTypeValid || 
-                            !isCategoryValid || 
-                            !isLevelValid 
-                        }
                         isLoading={saving}
-                        onPress={save}
+                        onPress={() => {
+                            handleSubmit(onSubmit)()
+                        }}
                     >
                         Save
                     </Button>

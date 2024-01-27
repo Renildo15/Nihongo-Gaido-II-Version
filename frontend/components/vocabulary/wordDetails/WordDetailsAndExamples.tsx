@@ -118,7 +118,7 @@ function Header({word}: IHeaderProps){
                     opacity={['Verb - Group 1', 'Verb - Group 2', 'Verb - Group 3'].includes(word.type) ? 1 : 0.5}
                 >
                     <Text
-                        fontWeight={'bold'}
+                        color={'white'}
                     >
                         Conjugation
                     </Text>
@@ -135,7 +135,7 @@ function Header({word}: IHeaderProps){
                     
                 >
                     <Text
-                        fontWeight={'bold'}
+                        color={'white'}
                     >
                         Example
                     </Text>

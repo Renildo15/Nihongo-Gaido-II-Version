@@ -17,7 +17,6 @@ export default function TextTranslate() {
                 justifyContent={'space-around'}
                 alignItems={'flex-start'}
                 mt={'10px'}
-                borderWidth={1}
                 w={'100%'}
             >
                 <Translate />
