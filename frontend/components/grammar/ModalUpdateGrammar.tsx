@@ -12,7 +12,7 @@ import { IGrammarFormInput } from "./ModalAddGrammar";
 interface IModalUpdateGrammarProps {
     isOpen: boolean
     onClose: () => void
-    grammarId: number
+    grammarId: number | null
 }
 
 export default function ModalUpdateGrammar(props: IModalUpdateGrammarProps) {
@@ -24,7 +24,7 @@ export default function ModalUpdateGrammar(props: IModalUpdateGrammarProps) {
     const {
         data: originalGrammar,
         error: origialGrammarError
-    } = useGrammar(props.grammarId)
+    } = useGrammar(props.grammarId || 0)
 
     const {
         register,
@@ -52,6 +52,9 @@ export default function ModalUpdateGrammar(props: IModalUpdateGrammarProps) {
         setSaving(true)
 
         try {
+
+            if (!props.grammarId) return
+            
             const updatedGrammar = await updateGrammar(props.grammarId, {
                 grammar: data.grammar,
                 structure: data.structure,

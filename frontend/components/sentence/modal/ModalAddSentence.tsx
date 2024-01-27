@@ -11,7 +11,7 @@ interface IModalAddSentenceProps {
     grammarId: number | null
 }
 
-interface IFormInput {
+export interface ISentenceFormInput {
     sentence: string
     translate: string
     annotation: string
@@ -24,7 +24,7 @@ export default function ModalAddSentence(props: IModalAddSentenceProps) {
         handleSubmit,
         formState: { errors },
         
-    } = useForm<IFormInput>();
+    } = useForm<ISentenceFormInput>();
 
     const toast = useToast()
 
@@ -33,7 +33,7 @@ export default function ModalAddSentence(props: IModalAddSentenceProps) {
     const [saving, setSaving] = useState(false)
     const japaneseRegex = /^$|^[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\u002B\u002A\u007E\u002F]+$/;
 
-    const onSubmit = async (data: IFormInput) => {
+    const onSubmit = async (data: ISentenceFormInput) => {
         setSaving(true)
 
         try {
