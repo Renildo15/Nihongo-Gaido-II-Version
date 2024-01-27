@@ -1,26 +1,20 @@
 import React, { useState } from "react";
 import { Modal, Button, useToast, Column } from "native-base";
-import { createGrammar, useGrammars } from "../../utils/api/grammar";
-import { levelOptions } from "../../utils/options";
+import { createCategory, useCategories } from "../../utils/api/category";
 import { useForm } from "react-hook-form"
-import Input from "../Input";
-import Select from "../Select";
-import Textarea from "../Textarea";
 
-interface IModalAddGrammarProps {
+import Input from "../Input";
+
+interface IModalAddCategoryProps {
     isOpen: boolean
     onClose: () => void
 }
 
 interface IFormInput {
-    grammar: string
-    structure: string
-    level: string
-    explain: string
+    category: string
 }
 
-export default function ModalAddGrammar(props: IModalAddGrammarProps) {
-
+export default function CategoryAddModal(props: IModalAddCategoryProps) {
     const {
         register,
         handleSubmit,
@@ -28,37 +22,30 @@ export default function ModalAddGrammar(props: IModalAddGrammarProps) {
         
     } = useForm<IFormInput>();
 
-    const {
-        mutate: grammarsRevalidate
-    } = useGrammars()
-
+    const { mutate: categoriesRevalidate } = useCategories()
 
     const [saving, setSaving] = useState(false)
-    const japaneseRegex = /^$|^[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\u002B\u002A\u007E\u002F]+$/;
 
     const toast = useToast()
 
     const onSubmit = async (data: IFormInput) => {
-        
+        console.log(data.category)
         setSaving(true)
 
         try {
-            const newGrammar = await createGrammar({
-                grammar: data.grammar,
-                structure: data.structure,
-                level: data.level,
-                explain: data.explain
+            const newCategory = await createCategory({
+                name: data.category
             })
 
-            if (newGrammar) {
+            if (newCategory) {
                 toast.show({
                     title: 'Success',
-                    description: `Grammar added`,
+                    description: `Category added`,
                     placement: 'top',
                     duration: 2000
                 })
             }
-            grammarsRevalidate()
+            categoriesRevalidate()
             props.onClose()
         } catch (error) {
             alert(error)
@@ -66,6 +53,7 @@ export default function ModalAddGrammar(props: IModalAddGrammarProps) {
             setSaving(false)
         }
     };
+
     return (
         <Modal isOpen={props.isOpen} onClose={props.onClose} >
             <Modal.Content 
@@ -78,41 +66,17 @@ export default function ModalAddGrammar(props: IModalAddGrammarProps) {
                 }}
             >
                 <Modal.CloseButton />
-                <Modal.Header _text={{color:'#D02C23'}}>Add new grammar</Modal.Header>
+                <Modal.Header _text={{color:'#D02C23'}}>Add new category</Modal.Header>
                 <Modal.Body>
                     <Column>
                         
                         <Input 
-                            label="Grammar" 
-                            name="grammar" 
+                            label="Category" 
+                            name="category" 
                             type="text" 
                             register={register} 
                             // @ts-ignore
                             errors={errors} 
-                        />
-                        <Input 
-                            label="Structure" 
-                            name="structure" 
-                            type="text" 
-                            register={register} 
-                            // @ts-ignore
-                            errors={errors} 
-                            patternError="Structure must be in Japanese"
-                            pattern={japaneseRegex}
-                        />
-                        <Select
-                            label="Level"
-                            name="level"
-                            register={register}
-                            // @ts-ignore
-                            errors={errors}
-                            options={levelOptions}
-                        />
-
-                        <Textarea 
-                            label="Explain" 
-                            name="explain" 
-                            register={register} 
                         />
                     </Column>
                 </Modal.Body>
