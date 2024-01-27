@@ -11,7 +11,7 @@ interface IModalAddGrammarProps {
     onClose: () => void
 }
 
-interface IFormInput {
+export interface IGrammarFormInput {
     grammar: string
     structure: string
     level: string
@@ -25,7 +25,7 @@ export default function ModalAddGrammar(props: IModalAddGrammarProps) {
         handleSubmit,
         formState: { errors },
         
-    } = useForm<IFormInput>();
+    } = useForm<IGrammarFormInput>();
 
     const {
         mutate: grammarsRevalidate
@@ -37,7 +37,7 @@ export default function ModalAddGrammar(props: IModalAddGrammarProps) {
 
     const toast = useToast()
 
-    const onSubmit = async (data: IFormInput) => {
+    const onSubmit = async (data: IGrammarFormInput) => {
 
         setSaving(true)
 

@@ -1,18 +1,21 @@
-import React, { useRef, useState, useEffect } from "react";
-import { Modal, FormControl, Input, Button, useToast, Box, Column, TextArea, Select } from "native-base";
+import React, { useState, useEffect } from "react";
+import { Modal, Button, useToast, Column } from "native-base";
 import { updateGrammar, useGrammar, useGrammars } from "../../utils/api/grammar";
 import { levelOptions } from "../../utils/options";
 import Error from "../Error"
+import { useForm } from "react-hook-form"
+import Input from "../Input";
+import Select from "../Select";
+import Textarea from "../Textarea";
+import { IGrammarFormInput } from "./ModalAddGrammar";
+
 interface IModalUpdateGrammarProps {
     isOpen: boolean
     onClose: () => void
-    grammarId: number | null
+    grammarId: number
 }
 
 export default function ModalUpdateGrammar(props: IModalUpdateGrammarProps) {
-
-    const initialRef = useRef(null);
-    const finalRef = useRef(null);
 
     const {
         mutate: grammarsRevalidate
@@ -21,96 +24,40 @@ export default function ModalUpdateGrammar(props: IModalUpdateGrammarProps) {
     const {
         data: originalGrammar,
         error: origialGrammarError
-    } = useGrammar(props.grammarId ?? 1)
+    } = useGrammar(props.grammarId)
 
-    const [grammar, setGrammar] = useState('')
-    const [structure, setStructure] = useState('')
-    const [level, setLevel] = useState('')
-    const [explain, setExplain] = useState('')
-
-    const [isGrammarValid, setIsGrammarValid] = useState(true)
-    const [isStructureValid, setIsStructureValid] = useState(true)
-    const [isLevelValid, setIsLevelValid] = useState(true)
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        setValue
+    } = useForm<IGrammarFormInput>();
 
     const [saving, setSaving] = useState(false)
-
-    const [structureErrorMessage, setStructureErrorMessage] = useState('')
+    const japaneseRegex = /^$|^[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\u002B\u002A\u007E\u002F]+$/;
 
     const toast = useToast()
 
-    const someInfoChanged = (
-        grammar !== originalGrammar?.grammar ||
-        structure !== originalGrammar?.structure ||
-        level !== originalGrammar?.level ||
-        explain !== originalGrammar?.explain
-    )
-
     useEffect(() => {
         if (originalGrammar) {
-            setGrammar(originalGrammar.grammar)
-            setStructure(originalGrammar.structure)
-            setLevel(originalGrammar.level)
-            setExplain(originalGrammar.explain)
+            setValue('grammar', originalGrammar.grammar)
+            setValue('structure', originalGrammar.structure)
+            setValue('level', originalGrammar.level)
+            setValue('explain', originalGrammar.explain)
         }
-    }, [originalGrammar])
+    }, [originalGrammar, setValue])
 
-    function setOriginalValues () {
-        if (originalGrammar) {
-            setGrammar(originalGrammar.grammar)
-            setStructure(originalGrammar.structure)
-            setLevel(originalGrammar.level)
-            setExplain(originalGrammar.explain)
-        }
-    }
+    const onSubmit = async (data: IGrammarFormInput) => {
 
-    const handleGrammarChange = (text: string) => {
-        setGrammar(text)
-        if (text.trim().length === 0 || text.length <= 3) {
-            setIsGrammarValid(false);
-        } else {
-            setIsGrammarValid(true);
-        }
-    }
-
-    const handleStructure = (text: string) => {
-        setStructure(text)
-
-        const japaneseRegex = /^$|^[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\u002B\u002A\u007E\u002F]+$/;
-
-        if (text.trim().length === 0) {
-            setIsStructureValid(false)
-            setStructureErrorMessage('Structure is required')
-        } else if (!japaneseRegex.test(text)) {
-            setIsStructureValid(false)
-            setStructureErrorMessage('Structure must be in Japanese')
-        } else {
-            setIsStructureValid(true)
-            setStructureErrorMessage('')
-        }
-    }
-
-    const handleSelectLevel = (text: string) => {
-        setLevel(text)
-        if (text.trim().length === 0) {
-            setIsLevelValid(false);
-        } else {
-            setIsLevelValid(true);
-        }
-    }
-
-    async function save() {
         setSaving(true)
-        if (props.grammarId === null) return
+
         try {
-            const updatedGrammar = await updateGrammar(
-                props.grammarId,
-                {
-                    grammar: grammar,
-                    structure: structure,
-                    level: level,
-                    explain: explain
-                }
-            )
+            const updatedGrammar = await updateGrammar(props.grammarId, {
+                grammar: data.grammar,
+                structure: data.structure,
+                level: data.level,
+                explain: data.explain
+            })
 
             if (updatedGrammar) {
                 toast.show({
@@ -123,14 +70,23 @@ export default function ModalUpdateGrammar(props: IModalUpdateGrammarProps) {
             grammarsRevalidate()
             props.onClose()
         } catch (error) {
-            alert(error)
+            toast.show({
+                title: 'Error',
+                description: `Something went wrong`,
+                placement: 'top',
+                duration: 2000
+            })
         } finally {
             setSaving(false)
         }
-    } 
+    }
+
+    if (origialGrammarError) {
+        return <Error message={origialGrammarError.message} />
+    }
 
     return (
-        <Modal isOpen={props.isOpen} onClose={props.onClose} initialFocusRef={initialRef} finalFocusRef={finalRef} >
+        <Modal isOpen={props.isOpen} onClose={props.onClose}>
             <Modal.Content 
                 maxWidth="400px" 
                 _light={{
@@ -144,97 +100,38 @@ export default function ModalUpdateGrammar(props: IModalUpdateGrammarProps) {
                 <Modal.Header _text={{color:'#D02C23'}}>Update grammar</Modal.Header>
                 <Modal.Body>
                     <Column>
-                        <FormControl isInvalid={!isGrammarValid} isRequired>
-                            <FormControl.Label _text={{color:'#D02C23', fontWeight: '600'}}>Grammar</FormControl.Label>
-                            <Input
-                                _light={{
-                                    bg: 'white'
-                                }}
-                                _dark={{
-                                    bg: '#262626'
-                                }}
-                                onChangeText={handleGrammarChange}
-                                value={grammar}
-                                shadow={1}
-                                _focus={{borderColor: '#D02C23'}}
-                                _hover={{borderColor: '#D02C23'}}
-                                focusOutlineColor={'#D02C23'}
-                                placeholder="Grammar"
-                            />
-                            <FormControl.ErrorMessage>
-                                Grammar is required
-                            </FormControl.ErrorMessage>
-                        </FormControl>
-                        <FormControl isRequired isInvalid={!isStructureValid}>
-                            <FormControl.Label _text={{color:'#D02C23', fontWeight: '600'}}>Structure</FormControl.Label>
-                            <Input
-                                onChangeText={handleStructure}
-                                value={structure}
-                                _light={{
-                                    bg: 'white'
-                                }}
-                                _dark={{
-                                    bg: '#262626'
-                                }}
-                                shadow={1}
-                                _focus={{borderColor: '#D02C23'}}
-                                _hover={{borderColor: '#D02C23'}}
-                                focusOutlineColor={'#D02C23'}
-                                placeholder="Structure"
-                            />
-                            <FormControl.ErrorMessage>
-                                {structureErrorMessage}
-                            </FormControl.ErrorMessage>
-                        </FormControl>
-                        <FormControl isRequired isInvalid={!isLevelValid}>
-                            <FormControl.Label _text={{color:'#D02C23', fontWeight: '600'}}>Level</FormControl.Label>
-                            <Select
-                                selectedValue={level}
-                                _light={{
-                                    bg: 'white'
-                                }}
-                                _dark={{
-                                    bg: '#262626'
-                                }}
-                                minWidth={200}
-                                accessibilityLabel="Select level"
-                                placeholder="Select level"
-                                onValueChange={handleSelectLevel}
-                                _selectedItem={{
-                                    bg: "cyan.600",
-                                    endIcon: <Box size={4} />,
-                                }}
-                            > 
-                                <Select.Item label="level" value="" />
-                                {levelOptions.map((level, index)=> (
-                                    <Select.Item key={index} label={level.label} value={level.value} />
-                                ))}
-                            </Select>
-                            <FormControl.ErrorMessage>
-                                Level is required
-                            </FormControl.ErrorMessage>
-                        </FormControl>
+                        <Input 
+                            label="Grammar" 
+                            name="grammar" 
+                            type="text" 
+                            register={register} 
+                            // @ts-ignore
+                            errors={errors} 
+                        />
+                        <Input 
+                            label="Structure" 
+                            name="structure" 
+                            type="text" 
+                            register={register} 
+                            // @ts-ignore
+                            errors={errors} 
+                            patternError="Structure must be in Japanese"
+                            pattern={japaneseRegex}
+                        />
+                        <Select
+                            label="Level"
+                            name="level"
+                            register={register}
+                            // @ts-ignore
+                            errors={errors}
+                            options={levelOptions}
+                        />
 
-                        <FormControl>
-                            <FormControl.Label _text={{color:'#D02C23', fontWeight: '600'}}>Explain</FormControl.Label>
-                            <TextArea
-                                _light={{
-                                    bg: 'white'
-                                }}
-                                _dark={{
-                                    bg: '#262626'
-                                }}
-                                autoCompleteType={'off'}
-                                onChangeText={text => setExplain(text)}
-                                value={explain}
-                                h={100}
-                                shadow={1}
-                                _focus={{borderColor: '#D02C23'}}
-                                _hover={{borderColor: '#D02C23'}}
-                                focusOutlineColor={'#D02C23'}
-                                placeholder="Explain"
-                            />
-                        </FormControl>
+                        <Textarea 
+                            label="Explain" 
+                            name="explain" 
+                            register={register} 
+                        />
                     </Column>
                 </Modal.Body>
                 <Modal.Footer>
@@ -243,7 +140,7 @@ export default function ModalUpdateGrammar(props: IModalUpdateGrammarProps) {
                             variant="ghost" 
                             colorScheme="blueGray" 
                             onPress={()=> {
-                                setOriginalValues()
+                                
                                 props.onClose()
                             }}
                         >
@@ -253,9 +150,10 @@ export default function ModalUpdateGrammar(props: IModalUpdateGrammarProps) {
                             bg={'#D02C23'}
                             _hover={{bg: '#ae251e'}}
                             _pressed={{bg: '#ae251e'}}
-                            isDisabled={ !isGrammarValid || !isStructureValid || !isLevelValid || !someInfoChanged }
                             isLoading={saving}
-                            onPress={save}
+                            onPress={() => {
+                                handleSubmit(onSubmit)()
+                            }}
                         >
                             Save
                         </Button>
