@@ -11,7 +11,7 @@ interface IModalAddExampleProps {
     onClose: () => void
 }
 
-interface IFormInput {
+export interface IExampleFormInput {
     example: string
     meaning: string
     annotation: string
@@ -26,7 +26,7 @@ export default function ModalAddExample(props: IModalAddExampleProps) {
         handleSubmit,
         formState: { errors },
         
-    } = useForm<IFormInput>();
+    } = useForm<IExampleFormInput>();
 
     const [saving, setSaving] = useState(false)
 
@@ -34,7 +34,7 @@ export default function ModalAddExample(props: IModalAddExampleProps) {
 
     const japaneseRegex = /^$|^[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\u002B\u002A\u007E\u002F]+$/;
 
-    const onSubmit = async (data: IFormInput) => {
+    const onSubmit = async (data: IExampleFormInput) => {
 
         setSaving(true)
 

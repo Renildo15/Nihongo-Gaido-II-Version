@@ -13,7 +13,7 @@ interface IModalAddWordProps {
     onClose: () => void
 }
 
-interface IFormInput {
+export interface IVocabularyFormInput {
     word: string
     reading: string
     meaning: string
@@ -38,13 +38,13 @@ export default function ModalAddWord(props: IModalAddWordProps) {
         handleSubmit,
         formState: { errors },
         
-    } = useForm<IFormInput>();
+    } = useForm<IVocabularyFormInput>();
 
     const toast = useToast()
     const [saving, setSaving] = useState(false)
     const japaneseRegex = /^$|^[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\u002B\u002A\u007E\u002F]+$/;
 
-    const onSubmit = async (data: IFormInput) => {
+    const onSubmit = async (data: IVocabularyFormInput) => {
         console.log(data)
         setSaving(true)
 
