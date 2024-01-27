@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -5,22 +6,19 @@ from rest_framework.response import Response
 
 from core.models import Conjugation, Word
 from core.serializers import ConjugationCreateSerializer, ConjugationSerializer
-from django.shortcuts import get_object_or_404
 
 
 @api_view(["GET", "POST"])
 @permission_classes([IsAuthenticated])
 def conjugation_list(request, word_id):
-    
     try:
         word = Word.objects.get(pk=word_id)
     except Word.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     if request.method == "GET":
-        
         conjugation = get_object_or_404(Conjugation, word=word)
         serializer = ConjugationSerializer(conjugation)
-        
+
         data = {
             "conjugation": serializer.data,
         }
@@ -41,8 +39,9 @@ def conjugation_list(request, word_id):
             return Response(data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    else: 
+    else:
         return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
 
 @api_view(["PATCH", "DELETE"])
 @permission_classes([IsAuthenticated])
