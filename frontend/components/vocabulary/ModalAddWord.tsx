@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 
-import { Box, Button, Column, Modal, useToast } from "native-base"
+import { Button, Column, Modal, useToast } from "native-base"
 import { useForm } from "react-hook-form"
 
 import { ICategoryList, useCategories } from "../../utils/api/category"
@@ -93,7 +93,7 @@ export default function ModalAddWord(props: IModalAddWordProps) {
               name="word"
               type="text"
               register={register}
-              // @ts-ignore
+              // @ts-expect-error: levelOptions is not assignable to type
               errors={errors}
               patternError="Word must be in Japanese"
               pattern={japaneseRegex}
@@ -104,7 +104,7 @@ export default function ModalAddWord(props: IModalAddWordProps) {
               name="reading"
               type="text"
               register={register}
-              // @ts-ignore
+              // @ts-expect-error: levelOptions is not assignable to type
               errors={errors}
               patternError="Reading must be in Japanese"
               pattern={japaneseRegex}
@@ -115,7 +115,7 @@ export default function ModalAddWord(props: IModalAddWordProps) {
               name="meaning"
               type="text"
               register={register}
-              // @ts-ignore
+              // @ts-expect-error: levelOptions is not assignable to type
               errors={errors}
             />
 
@@ -123,7 +123,7 @@ export default function ModalAddWord(props: IModalAddWordProps) {
               label="Type"
               name="type"
               register={register}
-              // @ts-ignore
+              // @ts-expect-error: levelOptions is not assignable to type
               errors={errors}
               options={typeWordsOptions}
             />
@@ -132,7 +132,7 @@ export default function ModalAddWord(props: IModalAddWordProps) {
               label="Level"
               name="level"
               register={register}
-              // @ts-ignore
+              // @ts-expect-error: levelOptions is not assignable to type
               errors={errors}
               options={levelOptions}
             />
@@ -141,7 +141,7 @@ export default function ModalAddWord(props: IModalAddWordProps) {
               label="Category"
               name="category"
               register={register}
-              // @ts-ignore
+             // @ts-expect-error: levelOptions is not assignable to type
               errors={errors}
               options={categories?.map((category: ICategoryList) => {
                 return {

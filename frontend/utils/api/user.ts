@@ -1,7 +1,7 @@
 import axios from "axios"
 import useSWR from "swr"
 
-export const fetcchSimple = (url: string) => axios.get(url).then((res) => res.data)
+export const fetcchSimple = async (url: string) => await axios.get(url).then((res) => res.data)
 
 export interface IUser {
   id: number
@@ -60,16 +60,12 @@ export async function doLogin(username: string, password: string) {
     user: IUser
   }
 
-  try {
-    const response = await axios.post<ILoginResponse>("/api/auth/login/", { username, password })
-    if (response.status < 200 || response.status >= 300) {
-      return
-    }
-
-    return response.data?.user
-  } catch (err) {
-    throw err
+  const response = await axios.post<ILoginResponse>("/api/auth/login/", { username, password })
+  if (response.status < 200 || response.status >= 300) {
+    return
   }
+
+  return response.data?.user
 }
 
 export async function doRegister(user: IUserCreate) {
@@ -78,23 +74,19 @@ export async function doRegister(user: IUserCreate) {
     user: IUser
   }
 
-  try {
-    const response = await axios.post<IResponse>("/api/user", {
-      first_name: user.first_name,
-      last_name: user.last_name,
-      username: user.username,
-      email: user.email,
-      password: user.password,
-    })
+  const response = await axios.post<IResponse>("/api/user", {
+    first_name: user.first_name,
+    last_name: user.last_name,
+    username: user.username,
+    email: user.email,
+    password: user.password,
+  })
 
-    if (response.status < 200 || response.status >= 300) {
-      return
-    }
-
-    return response.data?.user
-  } catch (err) {
-    throw err
+  if (response.status < 200 || response.status >= 300) {
+    return
   }
+
+  return response.data?.user
 }
 
 export function useProfile(userId: number | undefined) {

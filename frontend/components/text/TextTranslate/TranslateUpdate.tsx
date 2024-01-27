@@ -30,7 +30,7 @@ export default function TranslateUpdate(props: ITranslateUpdateProps) {
   const { mutate: textsRevalidate } = useTexts()
   const { data: originalText } = useText(props.textId)
 
-  const [AddAnnotation, setAddAnnotation] = useState<boolean>(originalText?.annotation ? true : false)
+  const [AddAnnotation, setAddAnnotation] = useState<boolean>(!!originalText?.annotation)
   const japaneseRegex =
     /^$|^[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\u002B\u002A\u007E\u3000-\u303F\u002F<>a-zA-Z0-9!@#$%^&*(),.?":{}|_]+$/
 
@@ -117,10 +117,10 @@ export default function TranslateUpdate(props: ITranslateUpdateProps) {
     setSaving(true)
     try {
       const updatedText = await updateText(props.textId, {
-        title: title,
-        text: text,
-        translate: translate,
-        annotation: annotation,
+        title,
+        text,
+        translate,
+        annotation,
       })
 
       if (updatedText) {

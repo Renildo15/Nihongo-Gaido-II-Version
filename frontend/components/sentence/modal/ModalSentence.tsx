@@ -71,13 +71,13 @@ export default function ModalSentence(props: ModalSentenceProps) {
       </Modal.Content>
       <ModalUpdateSentence
         isOpen={modalVisible}
-        onClose={() => setModalVisible(false)}
+        onClose={() => {setModalVisible(false)}}
         sentenceId={props.sentenceId}
         grammarId={props.grammarId}
       />
       <ModalDeleteSentence
         isOpen={modalDeleteVisible}
-        onClose={() => setModalDeleteVisible(false)}
+        onClose={() => {setModalDeleteVisible(false)}}
         sentenceId={props.sentenceId}
         grammarId={props.grammarId}
       />

@@ -1,6 +1,6 @@
 import React from "react"
 
-import { Box, Column, Row, Text } from "native-base"
+import { Column, Row } from "native-base"
 
 import TextTranslateCard from "./TextTranslate/TextTranslateCard"
 import TextWritingCard from "./TextWriting/TextWritingCard"

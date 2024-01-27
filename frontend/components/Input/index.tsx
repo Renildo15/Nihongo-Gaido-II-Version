@@ -28,7 +28,7 @@ export default function Input({ label, name, type, register, errors, patternErro
         className={Style.inputs}
         type={type}
         placeholder={label.toLowerCase()}
-        {...register(name, { required: true, pattern: pattern })}
+        {...register(name, { required: true, pattern })}
       />
       {errors?.[name]?.type === "required" && <Text color={"red.500"}>{`${label} is required.`}</Text>}
       {errors?.[name]?.type === "pattern" && (

@@ -123,13 +123,13 @@ export default function SentenceList(props: ISentenceListProps) {
       />
       <ModalSentence
         isOpen={modalVisible}
-        onClose={() => setModalVisible(false)}
+        onClose={() => {setModalVisible(false)}}
         sentenceId={sentenceId}
         grammarId={props.grammarId}
       />
       <ModalAddSentence
         isOpen={modalAddVisible}
-        onClose={() => setModalAddVisible(false)}
+        onClose={() => {setModalAddVisible(false)}}
         grammarId={props.grammarId}
       />
     </Box>

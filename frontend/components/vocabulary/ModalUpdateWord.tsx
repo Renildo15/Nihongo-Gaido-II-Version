@@ -114,7 +114,7 @@ export default function ModalUpdateWord(props: IModalAddWordProps) {
               name="word"
               type="text"
               register={register}
-              // @ts-ignore
+              // @ts-expect-error: levelOptions is not assignable to type
               errors={errors}
               patternError="Word must be in Japanese"
               pattern={japaneseRegex}
@@ -125,7 +125,7 @@ export default function ModalUpdateWord(props: IModalAddWordProps) {
               name="reading"
               type="text"
               register={register}
-              // @ts-ignore
+              // @ts-expect-error: levelOptions is not assignable to type
               errors={errors}
               patternError="Reading must be in Japanese"
               pattern={japaneseRegex}
@@ -136,7 +136,7 @@ export default function ModalUpdateWord(props: IModalAddWordProps) {
               name="meaning"
               type="text"
               register={register}
-              // @ts-ignore
+              // @ts-expect-error: levelOptions is not assignable to type
               errors={errors}
             />
 
@@ -144,7 +144,7 @@ export default function ModalUpdateWord(props: IModalAddWordProps) {
               label="Type"
               name="type"
               register={register}
-              // @ts-ignore
+              // @ts-expect-error: levelOptions is not assignable to type
               errors={errors}
               options={typeWordsOptions}
             />
@@ -153,7 +153,7 @@ export default function ModalUpdateWord(props: IModalAddWordProps) {
               label="Level"
               name="level"
               register={register}
-              // @ts-ignore
+              // @ts-expect-error: levelOptions is not assignable to type
               errors={errors}
               options={levelOptions}
             />
@@ -162,7 +162,7 @@ export default function ModalUpdateWord(props: IModalAddWordProps) {
               label="Category"
               name="category"
               register={register}
-              // @ts-ignore
+              // @ts-expect-error: levelOptions is not assignable to type
               errors={errors}
               options={categories?.map((category: ICategoryList) => {
                 return {

@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState } from "react"
 
 import format from "date-fns/format"
-import { Box, Button, Column, FormControl, Input, Modal, Row, Text, useToast } from "native-base"
+import { Button, Column, FormControl, Input, Modal, Row, useToast } from "native-base"
 
 import { WhoIam, updateProfile, useProfile } from "../../utils/api/user"
 import {
-  dateBirthIsValid,
   emailIsValid,
   nameIsValid,
   removePhoneFormatting,
@@ -39,7 +38,7 @@ export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
   const [isLastNameValid, setIsLastNameValid] = useState(true)
   const [isUsernameValid, setIsUsernameValid] = useState(true)
   const [isEmailValid, setIsEmailValid] = useState(true)
-  const [isDateBirthValid, setIsDateBirthValid] = useState(true)
+  const [isDateBirthValid] = useState(true)
   const [isPhoneValid, setIsPhoneValid] = useState(true)
 
   const toast = useToast()
@@ -136,13 +135,13 @@ export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
     try {
       const telefoneSemFormatacao = removePhoneFormatting(phone)
       const dataNascimentoFormatada = format(new Date(dateBirth), "yyyy-MM-dd")
-      const userId = userInfo?.id as number | undefined
+      const userId = userInfo?.id;
 
       const profileUpdated = await updateProfile(userId, {
         first_name: firstName,
         last_name: lastName,
-        username: username,
-        email: email,
+        username,
+        email,
         phone: telefoneSemFormatacao,
         date_of_birth: dataNascimentoFormatada,
       })
@@ -322,7 +321,7 @@ export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
                 <FormControl.Label _text={{ color: "#D02C23", fontWeight: "600" }}>DateBirth</FormControl.Label>
                 <Input
                   value={dateBirth}
-                  onChangeText={(text) => setDateBirth(text)}
+                  onChangeText={(text) => {setDateBirth(text)}}
                   placeholder="Confirm password"
                   shadow={1}
                   _focus={{ borderColor: "#D02C23" }}

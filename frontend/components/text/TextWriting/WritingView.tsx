@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 
 import { Button, Column, Row, Text } from "native-base"
-// @ts-ignore
+// @ts-expect-error: react-html-renderer does not have types
 import HTMLRenderer from "react-html-renderer"
 
 import { useTextWriting } from "../../../utils/api/text"
@@ -91,7 +91,7 @@ export default function WritingView(props: IWritinglProps) {
           <Button
             variant={"ghost"}
             colorScheme={"red"}
-            onPress={() => setModalDeleteText(true)}
+            onPress={() => {setModalDeleteText(true)}}
           >
             Delete text
           </Button>
@@ -99,7 +99,7 @@ export default function WritingView(props: IWritinglProps) {
       </Column>
       <ModalDeleteTextWriting
         isOpen={modalDeleteText}
-        onClose={() => setModalDeleteText(false)}
+        onClose={() => {setModalDeleteText(false)}}
         textId={props.textId}
       />
     </Column>

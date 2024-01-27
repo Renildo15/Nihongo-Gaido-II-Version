@@ -85,7 +85,7 @@ export default function ModalAddGrammar(props: IModalAddGrammarProps) {
               name="grammar"
               type="text"
               register={register}
-              // @ts-ignore
+              // @ts-expect-error: errors type is not compatible with InputProps
               errors={errors}
             />
             <Input
@@ -93,7 +93,7 @@ export default function ModalAddGrammar(props: IModalAddGrammarProps) {
               name="structure"
               type="text"
               register={register}
-              // @ts-ignore
+              // @ts-expect-error: errors type is not compatible with InputProps
               errors={errors}
               patternError="Structure must be in Japanese"
               pattern={japaneseRegex}
@@ -102,7 +102,7 @@ export default function ModalAddGrammar(props: IModalAddGrammarProps) {
               label="Level"
               name="level"
               register={register}
-              // @ts-ignore
+              // @ts-expect-error: errors type is not compatible with InputProps
               errors={errors}
               options={levelOptions}
             />

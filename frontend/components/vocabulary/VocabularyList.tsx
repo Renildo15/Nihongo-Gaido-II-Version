@@ -9,8 +9,8 @@ import DataEmpty from "../DataEmpty"
 import Error from "../Error"
 import { IVocabularyFilters } from "./SearchVocabulary"
 
-const ModalAddWord = lazy(() => import("./ModalAddWord"))
-const ModalVocabulary = lazy(() => import("./ModalVocabulary"))
+const ModalAddWord = lazy(async () => await import("./ModalAddWord"))
+const ModalVocabulary = lazy(async () => await import("./ModalVocabulary"))
 
 interface IWordListProps {
   filters?: IVocabularyFilters

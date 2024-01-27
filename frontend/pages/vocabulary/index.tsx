@@ -4,8 +4,7 @@ import { Box } from "native-base"
 import { GetServerSidePropsContext } from "next"
 
 import { BaseLayout } from "../../components/home/BaseLayout"
-import SearchVocabulary from "../../components/vocabulary/SearchVocabulary"
-import { IVocabularyFilters } from "../../components/vocabulary/SearchVocabulary"
+import SearchVocabulary, { IVocabularyFilters } from "../../components/vocabulary/SearchVocabulary"
 import WordList from "../../components/vocabulary/VocabularyList"
 import { redirectIfNoCredentials } from "../../utils"
 

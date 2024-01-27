@@ -20,6 +20,8 @@
     "@typescript-eslint/naming-convention": "off",
     "@typescript-eslint/space-before-function-paren": "off",
     "@typescript-eslint/consistent-indexed-object-style": "off",
-    "@typescript-eslint/triple-slash-reference": "warn"
+    "@typescript-eslint/triple-slash-reference": "warn",
+    "no-control-regex": "off",
+    "@typescript-eslint/no-unsafe-argument": "off"
   }
 }

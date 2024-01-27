@@ -19,14 +19,12 @@ export default function SentenceMain(props: ISentenceMainProps) {
     data: sentences,
     error: sentencesError,
     isLoading: sentencesIsLoading,
-    mutate: sentencesMutate,
   } = useSentences(props.grammarId)
 
   const {
     data: grammar,
     error: grammarError,
     isLoading: grammarIsLoading,
-    mutate: grammarMutate,
   } = useGrammar(props.grammarId)
 
   if (sentencesError) return <Error message="Error loading sentences" />

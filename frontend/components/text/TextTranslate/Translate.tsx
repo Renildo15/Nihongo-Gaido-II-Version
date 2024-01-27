@@ -86,10 +86,10 @@ export default function Translate() {
     setSaving(true)
     try {
       const newText = await createText({
-        title: title,
-        text: text,
-        translate: translate,
-        annotation: annotation,
+        title,
+        text,
+        translate,
+        annotation,
       })
 
       if (newText) {
@@ -245,10 +245,6 @@ export default function Translate() {
         <Button
           onPress={() => {
             setAddAnnotation(!AddAnnotation)
-            if (!AddAnnotation && annotationRef.current) {
-              // @ts-ignore
-              annotationRef.current.focus()
-            }
           }}
           w={"40%"}
           bg={"#D02C23"}

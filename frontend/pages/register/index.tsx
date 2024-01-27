@@ -2,7 +2,7 @@ import React, { useState } from "react"
 
 import { AxiosError } from "axios"
 import Cookies from "cookies"
-import { Button, Center, Column, FormControl, Input, Pressable, Row, Text, Toast, useToast } from "native-base"
+import { Button, Center, Column, FormControl, Input, Pressable, Row, Text, useToast } from "native-base"
 import { GetServerSidePropsContext } from "next"
 import { useRouter } from "next/dist/client/router"
 import Head from "next/head"
@@ -103,9 +103,9 @@ export default function Register() {
       const user: IUserCreate = {
         first_name: firstName,
         last_name: lastName,
-        username: username,
-        email: email,
-        password: password,
+        username,
+        email,
+        password,
       }
 
       const userRegistered = await doRegister(user)
@@ -330,11 +330,11 @@ export default function Register() {
           <Column width={"100%"}>
             <Row>
               <Text mr={"6px"}>Already have an account?</Text>
-              <Pressable onPress={() => router.push("/register")}>
+              <Pressable onPress={() => {router.push("/register")}}>
                 <Text
                   fontWeight={"600"}
                   color={"#D02C23"}
-                  onPress={() => router.push("/login")}
+                  onPress={() => {router.push("/login")}}
                 >
                   login
                 </Text>

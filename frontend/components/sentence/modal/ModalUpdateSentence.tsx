@@ -91,7 +91,7 @@ export default function ModalUpdateSentence(props: IModalUpdateSentenceProps) {
               name="sentence"
               type="text"
               register={register}
-              // @ts-ignore
+              // @ts-expect-error: patternError is not in the type
               errors={errors}
               patternError="Sentence must be in Japanese"
               pattern={japaneseRegex}
@@ -102,7 +102,7 @@ export default function ModalUpdateSentence(props: IModalUpdateSentenceProps) {
               name="translate"
               type="text"
               register={register}
-              // @ts-ignore
+              // @ts-expect-error: patternError is not in the type
               errors={errors}
             />
 

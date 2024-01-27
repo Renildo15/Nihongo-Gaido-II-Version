@@ -5,8 +5,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "format": "prettier . -w"
+    "lint": "eslint . --ext .tsx --ext .ts",
+    "format": "prettier . -w",
+    "check-format": "prettier . -c"
   },
   "dependencies": {
     "@native-base/icons": "^0.0.11",

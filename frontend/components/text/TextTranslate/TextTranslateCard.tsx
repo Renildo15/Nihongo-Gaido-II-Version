@@ -8,7 +8,7 @@ export default function TextTranslateCard() {
   const router = useRouter()
   return (
     <Pressable
-      onPress={() => router.push("/text/text-translate")}
+      onPress={() => {router.push("/text/text-translate")}}
       p={"10px"}
       _hover={{
         bg: "gray.500",

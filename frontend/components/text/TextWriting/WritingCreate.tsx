@@ -66,9 +66,9 @@ export default function WritingCreate() {
     setSaving(true)
     try {
       const newText = await createTextWriting({
-        title: title,
-        text: text,
-        annotation: annotation,
+        title,
+        text,
+        annotation,
       })
 
       if (newText) {
@@ -202,7 +202,7 @@ export default function WritingCreate() {
           onPress={() => {
             setAddAnnotation(!AddAnnotation)
             if (!AddAnnotation && annotationRef.current) {
-              // @ts-ignore
+              // @ts-expect-error: focus is not in the type
               annotationRef.current.focus()
             }
           }}

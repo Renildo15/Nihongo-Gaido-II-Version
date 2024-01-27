@@ -6,7 +6,7 @@ import Head from "next/head"
 import { Heading } from "./Heading"
 import { LateralMenu } from "./LateralMenu"
 
-type Props = {
+interface Props {
   children: React.ReactNode
   title: string
 }

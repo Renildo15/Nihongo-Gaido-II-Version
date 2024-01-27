@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react"
 
-import { Button, Column, Input, Row, Select } from "native-base"
-import { MdAdd, MdSearch } from "react-icons/md"
+import { Select } from "native-base"
+import { MdAdd } from "react-icons/md"
 
 import { useGrammars } from "../../utils/api/grammar"
 
