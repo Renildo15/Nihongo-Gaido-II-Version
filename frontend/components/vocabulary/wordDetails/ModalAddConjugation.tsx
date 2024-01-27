@@ -11,7 +11,7 @@ interface IModalAddConjugationProps {
     onClose: () => void
 }
 
-interface IFormInput {
+export interface IConjugationFormInput {
     present: string
     past: string
     negative: string
@@ -34,7 +34,7 @@ export default function ModalAddConjugation(props: IModalAddConjugationProps) {
         handleSubmit,
         formState: { errors },
         
-    } = useForm<IFormInput>();
+    } = useForm<IConjugationFormInput>();
 
 
     const [saving, setSaving] = useState(false)
@@ -43,7 +43,7 @@ export default function ModalAddConjugation(props: IModalAddConjugationProps) {
 
     const japaneseRegex = /^$|^[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\u002B\u002A\u007E\u002F]+$/;
 
-    const onSubmit = async (data: IFormInput) => {
+    const onSubmit = async (data: IConjugationFormInput) => {
 
         setSaving(true)
 
