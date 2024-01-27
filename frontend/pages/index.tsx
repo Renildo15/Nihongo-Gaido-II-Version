@@ -1,16 +1,17 @@
-import React from "react";
-import { GetServerSidePropsContext } from "next";
-import Cookies from "cookies";  
+import React from "react"
 
-export async function getServerSideProps({ req, res}: GetServerSidePropsContext) {
+import Cookies from "cookies"
+import { GetServerSidePropsContext } from "next"
+
+export async function getServerSideProps({ req, res }: GetServerSidePropsContext) {
   const cookies = new Cookies(req, res)
 
-  if(!cookies.get("auth-token")){
+  if (!cookies.get("auth-token")) {
     return {
       redirect: {
         destination: "/login",
         permanent: false,
-      }
+      },
     }
   }
 
@@ -18,13 +19,10 @@ export async function getServerSideProps({ req, res}: GetServerSidePropsContext)
     redirect: {
       destination: "/home",
       permanent: false,
-    }
+    },
   }
 }
 
 export default function Index() {
-
-  return (
-    <></>
-  );
+  return <></>
 }

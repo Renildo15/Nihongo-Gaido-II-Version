@@ -1,31 +1,31 @@
-import React, {useState} from "react";
-import { GetServerSidePropsContext } from "next";
-import { redirectIfNoCredentials } from "../../utils";
-import { BaseLayout } from "../../components/home/BaseLayout";
-import WordList from "../../components/vocabulary/VocabularyList";
-import SearchVocabulary from "../../components/vocabulary/SearchVocabulary";
-import { Box } from "native-base";
-import { IVocabularyFilters } from "../../components/vocabulary/SearchVocabulary";
+import React, { useState } from "react"
 
-export async function getServerSideProps({req, res}: GetServerSidePropsContext) {
-    return redirectIfNoCredentials({req, res});
+import { Box } from "native-base"
+import { GetServerSidePropsContext } from "next"
+
+import { BaseLayout } from "../../components/home/BaseLayout"
+import SearchVocabulary from "../../components/vocabulary/SearchVocabulary"
+import { IVocabularyFilters } from "../../components/vocabulary/SearchVocabulary"
+import WordList from "../../components/vocabulary/VocabularyList"
+import { redirectIfNoCredentials } from "../../utils"
+
+export async function getServerSideProps({ req, res }: GetServerSidePropsContext) {
+  return redirectIfNoCredentials({ req, res })
 }
 
-
 export default function Vocabulary() {
-    const [filters, setFilters] = useState<IVocabularyFilters>()
-    return (
-        <BaseLayout title="Vocabulary">
-            <Box
-                justifyContent={'center'}
-                alignItems={'center'}
-                w={'100%'}
-                flex={2}
-            >
-                <SearchVocabulary onFiltersChanged={setFilters}/>
-                <WordList filters={filters} />    
-            </Box>
-        </BaseLayout>
-            
-    );
+  const [filters, setFilters] = useState<IVocabularyFilters>()
+  return (
+    <BaseLayout title="Vocabulary">
+      <Box
+        justifyContent={"center"}
+        alignItems={"center"}
+        w={"100%"}
+        flex={2}
+      >
+        <SearchVocabulary onFiltersChanged={setFilters} />
+        <WordList filters={filters} />
+      </Box>
+    </BaseLayout>
+  )
 }

@@ -1,30 +1,29 @@
-import React from "react";
-import { GetServerSidePropsContext } from "next";
-import { redirectIfNoCredentials } from "../../utils";
-import { BaseLayout } from "../../components/home/BaseLayout";
-import TextOptions from "../../components/text/TextOptions";
-import { Box , Text as Textt} from "native-base";
+import React from "react"
 
-export async function getServerSideProps({req, res}: GetServerSidePropsContext) {
-    return redirectIfNoCredentials({req, res});
+import { Box, Text as Textt } from "native-base"
+import { GetServerSidePropsContext } from "next"
+
+import { BaseLayout } from "../../components/home/BaseLayout"
+import TextOptions from "../../components/text/TextOptions"
+import { redirectIfNoCredentials } from "../../utils"
+
+export async function getServerSideProps({ req, res }: GetServerSidePropsContext) {
+  return redirectIfNoCredentials({ req, res })
 }
 
 export default function Text() {
-    return (
-        <BaseLayout title="Text">
-            <Box
-                w={'100%'}
-            >
-                <Textt
-                    textAlign={'center'}
-                    fontSize={'xl'}
-                    fontWeight={'bold'}
-                >
-                    Choose an option
-                </Textt>
-                <TextOptions />
-            </Box>
-        </BaseLayout>
-            
-    );
+  return (
+    <BaseLayout title="Text">
+      <Box w={"100%"}>
+        <Textt
+          textAlign={"center"}
+          fontSize={"xl"}
+          fontWeight={"bold"}
+        >
+          Choose an option
+        </Textt>
+        <TextOptions />
+      </Box>
+    </BaseLayout>
+  )
 }
