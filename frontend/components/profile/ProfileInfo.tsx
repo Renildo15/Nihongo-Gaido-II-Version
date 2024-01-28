@@ -96,6 +96,7 @@ export default function ProfileInfo() {
           >
             {profile?.user.username}
           </Text>
+          
         </Row>
         <Column p={5}>
           <Text color="#D02C23">
@@ -173,14 +174,14 @@ export default function ProfileInfo() {
             bg={"#D02C23"}
             _hover={{ bg: "#ae251e" }}
             _pressed={{ bg: "#ae251e" }}
-            onPress={() => setModalVisible(true)}
+            onPress={() => {setModalVisible(true)}}
           >
             Change profile
           </Button>
         </Row>
         <ModalProfile
           isOpen={modalVisible}
-          onClose={() => setModalVisible(false)}
+          onClose={() => {setModalVisible(false)}}
         />
       </Column>
     </Box>
