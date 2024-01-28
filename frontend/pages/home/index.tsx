@@ -1,20 +1,16 @@
-import React from "react";
-import { GetServerSidePropsContext } from "next";
-import { redirectIfNoCredentials } from "../../utils";
+import React from "react"
 
-import { BaseLayout } from "../../components/home/BaseLayout";
+import { GetServerSidePropsContext } from "next"
 
+import { BaseLayout } from "../../components/home/BaseLayout"
+import { redirectIfNoCredentials } from "../../utils"
 
-export async function getServerSideProps({req, res}: GetServerSidePropsContext) {
-    return redirectIfNoCredentials({req, res});
+export async function getServerSideProps({ req, res }: GetServerSidePropsContext) {
+  return redirectIfNoCredentials({ req, res })
 }
 
 export default function Home() {
-
-    return (
-        <BaseLayout title="Home">
-        
-        </BaseLayout>
-            
-    );
+  return <BaseLayout title="Home">
+    <h1>Home</h1>
+  </BaseLayout>
 }

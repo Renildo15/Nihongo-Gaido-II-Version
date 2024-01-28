@@ -3,10 +3,11 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from core.filters import TextFilter
 from core.models import Text
 from core.serializers import TextCreateSerializer, TextSerializer
 from core.utils.paginationn import CustomPagination
-from core.filters import TextFilter
+
 
 @api_view(["GET", "POST"])
 @permission_classes([IsAuthenticated])
@@ -33,6 +34,7 @@ def text_list(request):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
 
 @api_view(["GET", "PATCH", "DELETE"])
 @permission_classes([IsAuthenticated])

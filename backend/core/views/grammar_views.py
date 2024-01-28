@@ -3,10 +3,11 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from core.filters import GrammarFilter
 from core.models import Grammar
 from core.serializers import GrammarCreateSerializer, GrammarSerializer
 from core.utils.paginationn import CustomPagination
-from core.filters import GrammarFilter
+
 
 @api_view(["GET", "POST"])
 @permission_classes([IsAuthenticated])
@@ -32,6 +33,7 @@ def grammar_list(request):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
 
 @api_view(["GET", "PUT", "PATCH", "DELETE"])
 @permission_classes([IsAuthenticated])

@@ -3,10 +3,11 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from core.filters import WordFilter
 from core.models import Word
 from core.serializers import WordCreateSerializer, WordSerializer
 from core.utils.paginationn import CustomPagination
-from core.filters import WordFilter
+
 
 @api_view(["GET", "POST"])
 @permission_classes([IsAuthenticated])
@@ -18,7 +19,7 @@ def word_list(request):
         paginator = CustomPagination()
         result_page = paginator.paginate_queryset(filter.qs, request)
         serializer = WordSerializer(result_page, many=True)
-    
+
         return paginator.get_paginated_response(serializer.data)
     elif request.method == "POST":
         serializer = WordCreateSerializer(data=request.data)

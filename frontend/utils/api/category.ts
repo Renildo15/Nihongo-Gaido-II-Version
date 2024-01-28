@@ -3,12 +3,12 @@ import { fetcchSimple } from "./user";
 import useSWR from "swr";
 
 export interface ICategoryList {
-    id: number;
-    name: string;
-    isCreatedByUser: boolean;
-    created_by: number;
-    created_at: string;
-    updated_at: string;
+  id: number
+  name: string
+  isCreatedByUser: boolean
+  created_by: number
+  created_at: string
+  updated_at: string
 }
 
 export interface ICategory {
@@ -16,10 +16,9 @@ export interface ICategory {
 }
 
 export function useCategories() {
-    interface CategoriesResponse {
-        results: ICategoryList[];
-    }
-
+  interface CategoriesResponse {
+    results: ICategoryList[]
+  }
     const { 
         data, 
         error, 

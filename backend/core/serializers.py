@@ -113,7 +113,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 class ProfileUpdateSerializer(serializers.Serializer):
     phone = serializers.CharField(max_length=20, required=False)
-    date_of_birth = serializers.DateField(required=False, format='%d/%m/%Y')
+    date_of_birth = serializers.DateField(required=False, format="%d/%m/%Y")
     avatar = serializers.ImageField(required=False)
     username = serializers.CharField(max_length=150, required=False)
     email = serializers.EmailField(required=False)
@@ -366,7 +366,6 @@ class WordSerializer(serializers.ModelSerializer):
 
 
 class ConjugationCreateSerializer(serializers.ModelSerializer):
-
     def validate_present(self, value):
         pattern = r"^[ぁ-んァ-ン一-龯]+$"
 
@@ -511,14 +510,12 @@ class ConjugationSerializer(serializers.ModelSerializer):
 
 
 class ExampleCreateSerializer(serializers.ModelSerializer):
-    
     class Meta:
         model = Example
         fields = ["example", "meaning", "annotation"]
 
 
 class ExampleSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Example
         fields = [
@@ -562,6 +559,7 @@ class TextSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
         ]
+
 
 class TextWritingCreateSerializer(serializers.ModelSerializer):
     def validate_title(self, value):

@@ -1,23 +1,28 @@
-import React from "react";
-import "../styles/globals.css";
-import type { AppProps } from "next/app";
-import { ColorMode, NativeBaseProvider, StorageManager } from "native-base";
-import { SWRConfig } from 'swr';
+import React from "react"
+
+import { ColorMode, NativeBaseProvider, StorageManager } from "native-base"
+import type { AppProps } from "next/app"
+import { SWRConfig } from "swr"
+
+import "../styles/globals.css"
 
 const colorModeManager: StorageManager = {
   get: async () => {
-    let val = localStorage.getItem('@color-mode');
-    return val === 'dark' ? 'dark' : 'light';
+    let val = localStorage.getItem("@color-mode")
+    return val === "dark" ? "dark" : "light"
   },
   set: async (value: ColorMode) => {
-    let strValue = value ? value.toString() : '';
-    localStorage.setItem('@color-mode', strValue);
+    let strValue = value ? value.toString() : ""
+    localStorage.setItem("@color-mode", strValue)
   },
 }
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <NativeBaseProvider isSSR colorModeManager={colorModeManager}>
+    <NativeBaseProvider
+      isSSR
+      colorModeManager={colorModeManager}
+    >
       <SWRConfig
         value={{
           revalidateOnFocus: false,
@@ -27,7 +32,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <Component {...pageProps} />
       </SWRConfig>
     </NativeBaseProvider>
-  );
+  )
 }
 
-export default MyApp;
+export default MyApp

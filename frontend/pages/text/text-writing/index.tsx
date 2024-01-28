@@ -1,29 +1,29 @@
-import React from "react";
-import { GetServerSidePropsContext } from "next";
-import { redirectIfNoCredentials } from "../../../utils";
-import { BaseLayout } from "../../../components/home/BaseLayout";
-import WritingCreate from "../../../components/text/TextWriting/WritingCreate";
-import WritingList from "../../../components/text/TextWriting/WritingList";
-import { Row } from "native-base";
+import React from "react"
 
-export async function getServerSideProps({req, res}: GetServerSidePropsContext) {
-    return redirectIfNoCredentials({req, res});
+import { Row } from "native-base"
+import { GetServerSidePropsContext } from "next"
+
+import { BaseLayout } from "../../../components/home/BaseLayout"
+import WritingCreate from "../../../components/text/TextWriting/WritingCreate"
+import WritingList from "../../../components/text/TextWriting/WritingList"
+import { redirectIfNoCredentials } from "../../../utils"
+
+export async function getServerSideProps({ req, res }: GetServerSidePropsContext) {
+  return redirectIfNoCredentials({ req, res })
 }
 
-
 export default function TextWriting() {
-    return (
-        <BaseLayout title="Text writing">
-            <Row
-                justifyContent={'space-around'}
-                alignItems={'flex-start'}
-                mt={'10px'}
-                w={'100%'}
-            >
-                <WritingCreate />
-                <WritingList />
-            </Row>
-        </BaseLayout>
-            
-    );
+  return (
+    <BaseLayout title="Text writing">
+      <Row
+        justifyContent={"space-around"}
+        alignItems={"flex-start"}
+        mt={"10px"}
+        w={"100%"}
+      >
+        <WritingCreate />
+        <WritingList />
+      </Row>
+    </BaseLayout>
+  )
 }

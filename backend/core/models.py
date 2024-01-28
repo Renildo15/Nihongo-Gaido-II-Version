@@ -146,7 +146,7 @@ class Word(models.Model):
         ("Onomatopoeia", "Onomatopoeia"),
         ("Proverb", "Proverb"),
         ("Other", "Other"),
-        ("Unknow", "Unknow")
+        ("Unknow", "Unknow"),
     )
     word = models.CharField(max_length=20)
     reading = models.CharField(max_length=20)
@@ -237,6 +237,7 @@ class Text(models.Model):
 
     def __str__(self):
         return self.title
+
 
 class TextWriting(models.Model):
     title = models.CharField(max_length=200)

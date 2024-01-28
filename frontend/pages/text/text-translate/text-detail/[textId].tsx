@@ -1,28 +1,28 @@
 import React from "react"
-import { GetServerSidePropsContext } from "next"
-import { redirectIfNoCredentials } from "../../../../utils"
-import { BaseLayout } from "../../../../components/home/BaseLayout"
-import { useRouter } from "next/router"
-import { useText } from "../../../../utils/api/text"
-import TextTranslateDetail from "../../../../components/text/TextTranslate/TextTranslateDetail"
-import { Box } from "native-base"
 
-export async function getServerSideProps({req, res}: GetServerSidePropsContext) {
-    return redirectIfNoCredentials({req, res});
+import { Box } from "native-base"
+import { GetServerSidePropsContext } from "next"
+import { useRouter } from "next/router"
+
+import { BaseLayout } from "../../../../components/home/BaseLayout"
+import TextTranslateDetail from "../../../../components/text/TextTranslate/TextTranslateDetail"
+import { redirectIfNoCredentials } from "../../../../utils"
+import { useText } from "../../../../utils/api/text"
+
+export async function getServerSideProps({ req, res }: GetServerSidePropsContext) {
+  return redirectIfNoCredentials({ req, res })
 }
 
 export default function TextDetail() {
-    const router = useRouter()
-    const textId = parseInt(router.query.textId?.toString() || "")
-    const {data: text} = useText(textId)
+  const router = useRouter()
+  const textId = parseInt(router.query.textId?.toString() || "")
+  const { data: text } = useText(textId)
 
-    return (
-        <BaseLayout title={`${text?.title}`}>
-            <Box
-                w={'100%'}
-            >
-                <TextTranslateDetail textId={textId}/>
-            </Box>
-        </BaseLayout>
-    )
+  return (
+    <BaseLayout title={`${text?.title}`}>
+      <Box w={"100%"}>
+        <TextTranslateDetail textId={textId} />
+      </Box>
+    </BaseLayout>
+  )
 }
