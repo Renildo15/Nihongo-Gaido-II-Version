@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios, { AxiosError } from "axios"
 import useSWR from "swr"
 
 export const fetcchSimple = async (url: string) => await axios.get(url).then((res) => res.data)
@@ -102,6 +102,32 @@ export function useProfile(userId: number | undefined) {
     isLoading,
     isValidating,
     mutate,
+  }
+}
+
+export async function updateProfileAvatar(userId: number | undefined, avatar: File) {
+  interface IUpdateResponse {
+    profile: IProfile
+  }
+
+  try {
+    const formData = new FormData()
+
+    formData.append("avatar", avatar)
+
+    const res = await axios.patch<IUpdateResponse>(`/api/profile/${userId}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },  
+    })
+
+    return res.data?.profile
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      window.alert(error.response?.data?.error)
+    } else {
+      window.alert(error)
+    }
   }
 }
 
