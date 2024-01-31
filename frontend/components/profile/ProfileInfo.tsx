@@ -5,7 +5,7 @@ import { Box, Button, Column, Row, Text, useToast } from "native-base"
 import Image from "next/image"
 
 import Default from "../../public/images/default.jpg"
-import { WhoIam, useProfile, updateProfileAvatar } from "../../utils/api/user"
+import { WhoIam, updateProfileAvatar, useProfile } from "../../utils/api/user"
 import { applyPhoneMask } from "../../utils/validation"
 import Error from "../Error"
 import ModalProfile from "./ModalProfile"
@@ -22,7 +22,7 @@ export default function ProfileInfo() {
     error: profileError,
     isLoading: profileLoading,
     isValidating: profileValidating,
-    mutate: profileRevalidate
+    mutate: profileRevalidate,
   } = useProfile(userInfo?.id)
 
   async function handleUpdateProfileAvatar() {
@@ -38,7 +38,7 @@ export default function ProfileInfo() {
           placement: "top",
           duration: 2000,
         })
-      } 
+      }
 
       userRevalidate()
       profileRevalidate()
@@ -122,35 +122,32 @@ export default function ProfileInfo() {
               />
             )}
           </Box>
-          <Column 
-            space={'12px'}
-            p={'12px'}
+          <Column
+            space={"12px"}
+            p={"12px"}
           >
             <label>Change profile avatar</label>
-            <input 
-                type="file" 
-                accept="image/*" 
-                onChange={(e) => {
-                  const selectedImage = e.target.files
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                const selectedImage = e.target.files
 
-                  if (selectedImage) {
-                    setImage(selectedImage[0])
-
-                  }
-                
-                }}
-              />
-              <Button  
-                onPress={handleUpdateProfileAvatar}
-                bg={"#D02C23"}
-                _hover={{ bg: "#ae251e" }}
-                _pressed={{ bg: "#ae251e" }}
-                isLoading={saving}
-              >
-                Save
-              </Button>
+                if (selectedImage) {
+                  setImage(selectedImage[0])
+                }
+              }}
+            />
+            <Button
+              onPress={handleUpdateProfileAvatar}
+              bg={"#D02C23"}
+              _hover={{ bg: "#ae251e" }}
+              _pressed={{ bg: "#ae251e" }}
+              isLoading={saving}
+            >
+              Save
+            </Button>
           </Column>
-          
         </Row>
         <Column p={5}>
           <Text color="#D02C23">
@@ -228,14 +225,18 @@ export default function ProfileInfo() {
             bg={"#D02C23"}
             _hover={{ bg: "#ae251e" }}
             _pressed={{ bg: "#ae251e" }}
-            onPress={() => {setModalVisible(true)}}
+            onPress={() => {
+              setModalVisible(true)
+            }}
           >
             Change profile
           </Button>
         </Row>
         <ModalProfile
           isOpen={modalVisible}
-          onClose={() => {setModalVisible(false)}}
+          onClose={() => {
+            setModalVisible(false)
+          }}
         />
       </Column>
     </Box>

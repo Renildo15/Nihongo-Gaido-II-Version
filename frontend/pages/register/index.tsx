@@ -330,11 +330,17 @@ export default function Register() {
           <Column width={"100%"}>
             <Row>
               <Text mr={"6px"}>Already have an account?</Text>
-              <Pressable onPress={() => {router.push("/register")}}>
+              <Pressable
+                onPress={() => {
+                  router.push("/register")
+                }}
+              >
                 <Text
                   fontWeight={"600"}
                   color={"#D02C23"}
-                  onPress={() => {router.push("/login")}}
+                  onPress={() => {
+                    router.push("/login")
+                  }}
                 >
                   login
                 </Text>

@@ -26,7 +26,9 @@ export default function TextWritingCard() {
       }}
       h={"200px"}
       w={"200px"}
-      onPress={() => {router.push("/text/text-writing")}}
+      onPress={() => {
+        router.push("/text/text-writing")
+      }}
     >
       <Column space={2}>
         <Box

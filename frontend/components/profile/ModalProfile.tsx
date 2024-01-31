@@ -4,12 +4,7 @@ import format from "date-fns/format"
 import { Button, Column, FormControl, Input, Modal, Row, useToast } from "native-base"
 
 import { WhoIam, updateProfile, useProfile } from "../../utils/api/user"
-import {
-  emailIsValid,
-  nameIsValid,
-  removePhoneFormatting,
-  usernameIsValid,
-} from "../../utils/validation"
+import { emailIsValid, nameIsValid, removePhoneFormatting, usernameIsValid } from "../../utils/validation"
 import Error from "../Error"
 
 interface ModalProfileProps {
@@ -135,7 +130,7 @@ export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
     try {
       const telefoneSemFormatacao = removePhoneFormatting(phone)
       const dataNascimentoFormatada = format(new Date(dateBirth), "yyyy-MM-dd")
-      const userId = userInfo?.id;
+      const userId = userInfo?.id
 
       const profileUpdated = await updateProfile(userId, {
         first_name: firstName,
@@ -321,7 +316,9 @@ export default function ModalProfile({ isOpen, onClose }: ModalProfileProps) {
                 <FormControl.Label _text={{ color: "#D02C23", fontWeight: "600" }}>DateBirth</FormControl.Label>
                 <Input
                   value={dateBirth}
-                  onChangeText={(text) => {setDateBirth(text)}}
+                  onChangeText={(text) => {
+                    setDateBirth(text)
+                  }}
                   placeholder="Confirm password"
                   shadow={1}
                   _focus={{ borderColor: "#D02C23" }}

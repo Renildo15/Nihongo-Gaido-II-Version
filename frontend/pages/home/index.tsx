@@ -10,7 +10,9 @@ export async function getServerSideProps({ req, res }: GetServerSidePropsContext
 }
 
 export default function Home() {
-  return <BaseLayout title="Home">
-    <h1>Home</h1>
-  </BaseLayout>
+  return (
+    <BaseLayout title="Home">
+      <h1>Home</h1>
+    </BaseLayout>
+  )
 }

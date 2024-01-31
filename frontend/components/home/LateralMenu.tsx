@@ -11,7 +11,9 @@ import Logo from "../../public/images/logo.png"
 export function LateralMenu() {
   const router = useRouter()
   const logout = () => {
-    axios.post("/api/auth/logout").catch(() => {router.push("/login")})
+    axios.post("/api/auth/logout").catch(() => {
+      router.push("/login")
+    })
   }
   return (
     <VStack
@@ -25,7 +27,11 @@ export function LateralMenu() {
           alignItems={"center"}
           justifyContent={"center"}
         >
-          <Pressable onPress={() => {router.push("/home")}}>
+          <Pressable
+            onPress={() => {
+              router.push("/home")
+            }}
+          >
             <Image
               src={Logo}
               alt="Logo"
@@ -60,7 +66,11 @@ export function LateralMenu() {
           h={"28%"}
           p={"10px"}
         >
-          <Pressable onPress={() => {router.push("/home")}}>
+          <Pressable
+            onPress={() => {
+              router.push("/home")
+            }}
+          >
             <HStack
               flexDirection={"row"}
               alignItems={"center"}
@@ -81,7 +91,9 @@ export function LateralMenu() {
           </Pressable>
           <Pressable
             mt={"10px"}
-            onPress={() => {router.push("/grammar")}}
+            onPress={() => {
+              router.push("/grammar")
+            }}
           >
             <HStack
               flexDirection={"row"}
@@ -103,7 +115,9 @@ export function LateralMenu() {
           </Pressable>
           <Pressable
             mt={"10px"}
-            onPress={() => { router.push("/vocabulary")}}
+            onPress={() => {
+              router.push("/vocabulary")
+            }}
           >
             <HStack
               flexDirection={"row"}
@@ -125,7 +139,9 @@ export function LateralMenu() {
           </Pressable>
           <Pressable
             mt={"10px"}
-            onPress={() => {router.push("/text")}}
+            onPress={() => {
+              router.push("/text")
+            }}
           >
             <HStack
               flexDirection={"row"}
@@ -152,7 +168,11 @@ export function LateralMenu() {
           h={"28%"}
           p={"10px"}
         >
-          <Pressable onPress={() => {router.push("//profile")}}>
+          <Pressable
+            onPress={() => {
+              router.push("//profile")
+            }}
+          >
             <HStack
               flexDirection={"row"}
               alignItems={"center"}

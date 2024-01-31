@@ -129,7 +129,11 @@ export default function GrammarList(props: IGrammarListProps) {
         }}
       >
         <Column w={"150px"}>
-          <Pressable onPress={() => {router.push(`/grammar/sentences/${item.id}`)}}>
+          <Pressable
+            onPress={() => {
+              router.push(`/grammar/sentences/${item.id}`)
+            }}
+          >
             <Text>{item.grammar}</Text>
           </Pressable>
         </Column>
@@ -144,7 +148,9 @@ export default function GrammarList(props: IGrammarListProps) {
           w={"110px"}
         >
           <Pressable
-            onPress={() => {handleChangeGrammarId(item.id)}}
+            onPress={() => {
+              handleChangeGrammarId(item.id)
+            }}
             _light={{
               bg: "#F2F2F2",
             }}
@@ -159,7 +165,9 @@ export default function GrammarList(props: IGrammarListProps) {
             <Text color={"#D02C23"}>Edit</Text>
           </Pressable>
           <Pressable
-            onPress={() => {handleChangeDeleteGrammarId(item.id)}}
+            onPress={() => {
+              handleChangeDeleteGrammarId(item.id)
+            }}
             _light={{
               bg: "#F2F2F2",
             }}
@@ -209,12 +217,16 @@ export default function GrammarList(props: IGrammarListProps) {
       />
       <ModalUpdateGrammar
         isOpen={modalVisible}
-        onClose={() => {setModalVisible(false)}}
+        onClose={() => {
+          setModalVisible(false)
+        }}
         grammarId={grammarId}
       />
       <ModalDeleteGrammar
         isOpen={modalDeleteVisible}
-        onClose={() => {setModalDeleteVisible(false)}}
+        onClose={() => {
+          setModalDeleteVisible(false)
+        }}
         grammarId={grammarId}
       />
     </Box>

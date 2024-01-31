@@ -118,7 +118,7 @@ export async function updateProfileAvatar(userId: number | undefined, avatar: Fi
     const res = await axios.patch<IUpdateResponse>(`/api/profile/${userId}`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
-      },  
+      },
     })
 
     return res.data?.profile

@@ -16,7 +16,9 @@ export default function TextEditor(props: ITextEditorProps) {
       apiKey={NEXT_PUBLIC_TINY_API_KEY}
       ref={props.ref}
       value={props.content}
-      onEditorChange={(content) => {props.onContentChanged(content)}}
+      onEditorChange={(content) => {
+        props.onContentChanged(content)
+      }}
       init={{
         height: 340,
         menubar: false,

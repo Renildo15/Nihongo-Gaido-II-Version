@@ -35,7 +35,9 @@ export function Heading({ title }: IHeadingProps) {
         flexDirection={"row"}
       >
         <IconButton
-          onPress={() => {router.back()}}
+          onPress={() => {
+            router.back()
+          }}
           icon={
             <Icon color={"white"}>
               <MdArrowBack size={24} />
@@ -70,7 +72,9 @@ export function Heading({ title }: IHeadingProps) {
             justifyContent="space-between"
             flexDirection={"row"}
             w={140}
-            onPress={() => {router.push("/profile")}}
+            onPress={() => {
+              router.push("/profile")
+            }}
           >
             <Box style={{ borderRadius: 50, overflow: "hidden" }}>
               {profile?.avatar ? (

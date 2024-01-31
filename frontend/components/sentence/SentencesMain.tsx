@@ -15,17 +15,9 @@ interface ISentenceMainProps {
 }
 
 export default function SentenceMain(props: ISentenceMainProps) {
-  const {
-    data: sentences,
-    error: sentencesError,
-    isLoading: sentencesIsLoading,
-  } = useSentences(props.grammarId)
+  const { data: sentences, error: sentencesError, isLoading: sentencesIsLoading } = useSentences(props.grammarId)
 
-  const {
-    data: grammar,
-    error: grammarError,
-    isLoading: grammarIsLoading,
-  } = useGrammar(props.grammarId)
+  const { data: grammar, error: grammarError, isLoading: grammarIsLoading } = useGrammar(props.grammarId)
 
   if (sentencesError) return <Error message="Error loading sentences" />
   if (grammarError) return <Error message="Error loading grammar" />
