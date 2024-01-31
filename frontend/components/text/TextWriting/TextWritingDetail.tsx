@@ -23,7 +23,9 @@ export default function TextWritingDetail(props: IWritingDetailProps) {
         return (
           <WritingView
             textId={props.textId}
-            onEdit={() => {setCurrentComponent(TextWritingComponent.WritingUpdate)}}
+            onEdit={() => {
+              setCurrentComponent(TextWritingComponent.WritingUpdate)
+            }}
           />
         )
 
@@ -35,7 +37,9 @@ export default function TextWritingDetail(props: IWritingDetailProps) {
           >
             <WritingUpdate
               textId={props.textId}
-              onBack={() => {setCurrentComponent(TextWritingComponent.WritingView)}}
+              onBack={() => {
+                setCurrentComponent(TextWritingComponent.WritingView)
+              }}
             />
           </Column>
         )

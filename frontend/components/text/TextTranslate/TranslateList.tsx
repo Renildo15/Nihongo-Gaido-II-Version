@@ -34,7 +34,11 @@ export default function TranslateList() {
 
   function item({ item }: ListRenderItemInfo<ITextList>) {
     return (
-      <Pressable onPress={() => {router.push(`/text/text-translate/text-detail/${item.id}`)}}>
+      <Pressable
+        onPress={() => {
+          router.push(`/text/text-translate/text-detail/${item.id}`)
+        }}
+      >
         <Box
           width={"100%"}
           px={3}

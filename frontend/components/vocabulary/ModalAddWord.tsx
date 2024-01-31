@@ -141,7 +141,7 @@ export default function ModalAddWord(props: IModalAddWordProps) {
               label="Category"
               name="category"
               register={register}
-             // @ts-expect-error: levelOptions is not assignable to type
+              // @ts-expect-error: levelOptions is not assignable to type
               errors={errors}
               options={categories?.map((category: ICategoryList) => {
                 return {

@@ -132,7 +132,9 @@ export default function Translate(props: ITextDetailProps) {
             <Button
               variant={"ghost"}
               colorScheme={"red"}
-              onPress={() => {setModalDeleteText(true)}}
+              onPress={() => {
+                setModalDeleteText(true)
+              }}
             >
               Delete text
             </Button>
@@ -142,7 +144,9 @@ export default function Translate(props: ITextDetailProps) {
 
       <ModalDeleteText
         isOpen={modalDeleteText}
-        onClose={() => {setModalDeleteText(false)}}
+        onClose={() => {
+          setModalDeleteText(false)
+        }}
         textId={props.textId}
       />
     </Column>

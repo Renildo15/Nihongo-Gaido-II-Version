@@ -63,13 +63,17 @@ export default function ModalVocabulary(props: ModalVocabularyProps) {
       </Modal.Content>
       <ModalUpdateWord
         isOpen={modalVisible}
-        onClose={() => {setModalVisible(false)}}
+        onClose={() => {
+          setModalVisible(false)
+        }}
         wordId={props.wordId}
       />
 
       <ModalDeleteWord
         isOpen={modalDeleteVisible}
-        onClose={() => {setModalDeleteVisible(false)}}
+        onClose={() => {
+          setModalDeleteVisible(false)
+        }}
         wordId={props.wordId}
       />
     </Modal>

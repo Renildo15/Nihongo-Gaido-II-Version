@@ -138,7 +138,9 @@ export default function Login() {
             <FormControl.Label _text={{ color: "#D02C23", fontWeight: "600" }}>Username</FormControl.Label>
             <Input
               value={userName}
-              onChangeText={(text) => {setUserName(text)}}
+              onChangeText={(text) => {
+                setUserName(text)
+              }}
               placeholder="Username"
               shadow={1}
               _focus={{ borderColor: "#D02C23" }}
@@ -156,7 +158,9 @@ export default function Login() {
             <FormControl.Label _text={{ color: "#D02C23", fontWeight: "600" }}>Password</FormControl.Label>
             <Input
               value={password}
-              onChangeText={(text) => {setPassword(text)}}
+              onChangeText={(text) => {
+                setPassword(text)
+              }}
               type={showPassword ? "text" : "password"}
               placeholder="Password"
               shadow={1}
@@ -188,11 +192,17 @@ export default function Login() {
           <Column width={"100%"}>
             <Row>
               <Text mr={"6px"}>Don t have an account?</Text>
-              <Pressable onPress={() => {router.push("/register")}}>
+              <Pressable
+                onPress={() => {
+                  router.push("/register")
+                }}
+              >
                 <Text
                   fontWeight={"600"}
                   color={"#D02C23"}
-                  onPress={() => {router.push("/register")}}
+                  onPress={() => {
+                    router.push("/register")
+                  }}
                 >
                   Register
                 </Text>
@@ -205,7 +215,9 @@ export default function Login() {
               <Text
                 fontWeight={"600"}
                 color={"#D02C23"}
-                onPress={() => {router.push("/forgot-password")}}
+                onPress={() => {
+                  router.push("/forgot-password")
+                }}
               >
                 Reset
               </Text>

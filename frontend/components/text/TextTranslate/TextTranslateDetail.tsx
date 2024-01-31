@@ -23,7 +23,9 @@ export default function TextTranslateDetail(props: ITextDetailProps) {
         return (
           <TranslateView
             textId={props.textId}
-            onEdit={() => {setCurrentComponent(TextTranslateComponent.TranslateUpdate)}}
+            onEdit={() => {
+              setCurrentComponent(TextTranslateComponent.TranslateUpdate)
+            }}
           />
         )
 
@@ -35,7 +37,9 @@ export default function TextTranslateDetail(props: ITextDetailProps) {
           >
             <TranslateUpdate
               textId={props.textId}
-              onBack={() => {setCurrentComponent(TextTranslateComponent.TranslateView)}}
+              onBack={() => {
+                setCurrentComponent(TextTranslateComponent.TranslateView)
+              }}
             />
           </Column>
         )

@@ -51,7 +51,9 @@ export default function SearchGrammar(props: ISearchGrammarProps) {
           }}
           w={"700px"}
           size={"md"}
-          onChangeText={(text) => {handleFilterChanged({ ...filters, searchText: text })}}
+          onChangeText={(text) => {
+            handleFilterChanged({ ...filters, searchText: text })
+          }}
           value={filters.searchText ?? ""}
           InputRightElement={
             <MdSearch
@@ -61,17 +63,27 @@ export default function SearchGrammar(props: ISearchGrammarProps) {
           }
         />
         <Column width={"200px"}>
-          <FilterByLevel onLevelSelected={(level) => {handleFilterChanged({ ...filters, level })}} />
+          <FilterByLevel
+            onLevelSelected={(level) => {
+              handleFilterChanged({ ...filters, level })
+            }}
+          />
         </Column>
       </Column>
       <Column
         space={"20px"}
         alignItems={"flex-end"}
       >
-        <FilterByMonth onMonthSelected={(month) => {handleFilterChanged({ ...filters, month })}} />
+        <FilterByMonth
+          onMonthSelected={(month) => {
+            handleFilterChanged({ ...filters, month })
+          }}
+        />
         <Button
           bg={"#D02C23"}
-          onPress={() => {setModalVisible(true)}}
+          onPress={() => {
+            setModalVisible(true)
+          }}
           _hover={{ bg: "#ae251e" }}
           _pressed={{ bg: "#ae251e" }}
           size={"md"}
@@ -88,7 +100,9 @@ export default function SearchGrammar(props: ISearchGrammarProps) {
       </Column>
       <ModalAddGrammar
         isOpen={modalVisible}
-        onClose={() => {setModalVisible(false)}}
+        onClose={() => {
+          setModalVisible(false)
+        }}
       />
     </Row>
   )

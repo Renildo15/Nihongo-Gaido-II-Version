@@ -1,11 +1,11 @@
 import React, { useState } from "react"
 
 import format from "date-fns/format"
-import { Box, Button, Column, Row, Text } from "native-base"
+import { Box, Button, Column, Row, Text, useToast } from "native-base"
 import Image from "next/image"
 
 import Default from "../../public/images/default.jpg"
-import { WhoIam, useProfile } from "../../utils/api/user"
+import { WhoIam, updateProfileAvatar, useProfile } from "../../utils/api/user"
 import { applyPhoneMask } from "../../utils/validation"
 import Error from "../Error"
 import ModalProfile from "./ModalProfile"
@@ -13,14 +13,46 @@ import ProfileSkeleton from "./ProfileSkeleton"
 
 export default function ProfileInfo() {
   const [modalVisible, setModalVisible] = useState(false)
-  const { data: userInfo, error: userInfoError } = WhoIam()
-
+  const { data: userInfo, error: userInfoError, mutate: userRevalidate } = WhoIam()
+  const [image, setImage] = useState<File>()
+  const [saving, setSaving] = useState(false)
+  const toast = useToast()
   const {
     data: profile,
     error: profileError,
     isLoading: profileLoading,
     isValidating: profileValidating,
+    mutate: profileRevalidate,
   } = useProfile(userInfo?.id)
+
+  async function handleUpdateProfileAvatar() {
+    setSaving(true)
+    try {
+      if (!image) return
+
+      const avatarUpdated = await updateProfileAvatar(userInfo?.id, image)
+      if (avatarUpdated) {
+        toast.show({
+          title: "Success",
+          description: `Avatar profile updated`,
+          placement: "top",
+          duration: 2000,
+        })
+      }
+
+      userRevalidate()
+      profileRevalidate()
+    } catch (error) {
+      toast.show({
+        title: "Error",
+        description: error,
+        placement: "top",
+        duration: 2000,
+      })
+    } finally {
+      setSaving(false)
+    }
+  }
 
   if (profileLoading || profileValidating) {
     return (
@@ -90,13 +122,32 @@ export default function ProfileInfo() {
               />
             )}
           </Box>
-          <Text
-            color="#D02C23"
-            fontWeight="bold"
+          <Column
+            space={"12px"}
+            p={"12px"}
           >
-            {profile?.user.username}
-          </Text>
-          
+            <label>Change profile avatar</label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                const selectedImage = e.target.files
+
+                if (selectedImage) {
+                  setImage(selectedImage[0])
+                }
+              }}
+            />
+            <Button
+              onPress={handleUpdateProfileAvatar}
+              bg={"#D02C23"}
+              _hover={{ bg: "#ae251e" }}
+              _pressed={{ bg: "#ae251e" }}
+              isLoading={saving}
+            >
+              Save
+            </Button>
+          </Column>
         </Row>
         <Column p={5}>
           <Text color="#D02C23">
@@ -106,7 +157,7 @@ export default function ProfileInfo() {
             >
               Nome:{" "}
             </Text>
-            {profile?.user.first_name}
+            {profile?.user.first_name ?? "Nome não disponível"}
           </Text>
           <Text
             color="#D02C23"
@@ -118,7 +169,7 @@ export default function ProfileInfo() {
             >
               Sobrenome:{" "}
             </Text>
-            {profile?.user.last_name}
+            {profile?.user.last_name ?? "Sobrenome não disponível"}
           </Text>
           <Text
             color="#D02C23"
@@ -142,7 +193,7 @@ export default function ProfileInfo() {
             >
               Email:{" "}
             </Text>
-            {profile?.user.email}
+            {profile?.user.email ?? "Email não disponível"}
           </Text>
           <Text
             color="#D02C23"
@@ -154,7 +205,7 @@ export default function ProfileInfo() {
             >
               Telefone:{" "}
             </Text>
-            {applyPhoneMask(profile?.phone)}
+            {applyPhoneMask(profile?.phone) ?? "Telefone não disponível"}
           </Text>
           <Text
             color="#D02C23"
@@ -174,14 +225,18 @@ export default function ProfileInfo() {
             bg={"#D02C23"}
             _hover={{ bg: "#ae251e" }}
             _pressed={{ bg: "#ae251e" }}
-            onPress={() => {setModalVisible(true)}}
+            onPress={() => {
+              setModalVisible(true)
+            }}
           >
             Change profile
           </Button>
         </Row>
         <ModalProfile
           isOpen={modalVisible}
-          onClose={() => {setModalVisible(false)}}
+          onClose={() => {
+            setModalVisible(false)
+          }}
         />
       </Column>
     </Box>

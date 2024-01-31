@@ -52,7 +52,9 @@ export default function SearchVocabulary(props: ISearchVocabularyProps) {
           }}
           w={"700px"}
           size={"md"}
-          onChangeText={(text) => {handleFilterChanged({ ...filters, searchText: text })}}
+          onChangeText={(text) => {
+            handleFilterChanged({ ...filters, searchText: text })
+          }}
           value={filters.searchText ?? ""}
           InputRightElement={
             <MdSearch
@@ -62,15 +64,27 @@ export default function SearchVocabulary(props: ISearchVocabularyProps) {
           }
         />
         <Column width={"200px"}>
-          <FilterByCategory onCategorySelected={(category) => {handleFilterChanged({ ...filters, category })}} />
+          <FilterByCategory
+            onCategorySelected={(category) => {
+              handleFilterChanged({ ...filters, category })
+            }}
+          />
         </Column>
       </Column>
       <Column
         space={"20px"}
         alignItems={"flex-end"}
       >
-        <FilterByLevel onLevelSelected={(level) => {handleFilterChanged({ ...filters, level })}} />
-        <FilterByType onTypeSelected={(type) =>{ handleFilterChanged({ ...filters, type })}} />
+        <FilterByLevel
+          onLevelSelected={(level) => {
+            handleFilterChanged({ ...filters, level })
+          }}
+        />
+        <FilterByType
+          onTypeSelected={(type) => {
+            handleFilterChanged({ ...filters, type })
+          }}
+        />
       </Column>
     </Row>
   )
